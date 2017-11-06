@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using OpenCvSharp;
 
 // Parallel computation support
-//using Uk.Org.Adcock.Parallel;
+using Uk.Org.Adcock.Parallel;
 using System;
 using System.Runtime.InteropServices;
 
@@ -114,14 +114,14 @@ public class FaceDetection : MonoBehaviour
                 textureCount++;
 
                 // convert texture of original video to OpenCVSharp Mat object
-                //TextureToMat();
+                TextureToMat();
                 // update the opencv window of source video
                 UpdateWindow(videoSourceImage);
                 // create the canny edge image out of source image
                 ProcessImage(videoSourceImage);
                 // convert the OpenCVSharp Mat of canny image to Texture2D
                 // the texture will be displayed automatically
-                //MatToTexture();
+                MatToTexture();
 
             }
 
@@ -142,63 +142,65 @@ public class FaceDetection : MonoBehaviour
     }
 
 
-    //// Convert Unity Texture2D object to OpenCVSharp Mat object
-    //void TextureToMat()
-    //{
-    //    // Color32 array : r, g, b, a
-    //    Color32[] c = _webcamTexture.GetPixels32();
+    // Convert Unity Texture2D object to OpenCVSharp Mat object
+    void TextureToMat()
+    {
+        // Color32 array : r, g, b, a
+        Color32[] c = _webcamTexture.GetPixels32();
 
-    //    // Parallel for loop
-    //    // convert Color32 object to Vec3b object
-    //    // Vec3b is the representation of pixel for Mat
-    //    Parallel.For(0, imHeight, i => {
-    //        for (var j = 0; j < imWidth; j++)
-    //        {
-    //            var col = c[j + i * imWidth];
-    //            var vec3 = new Vec3b
-    //            {
-    //                Item0 = col.b,
-    //                Item1 = col.g,
-    //                Item2 = col.r
-    //            };
-    //            // set pixel to an array
-    //            videoSourceImageData[j + i * imWidth] = vec3;
-    //        }
-    //    });
-    //    // assign the Vec3b array to Mat
-    //    videoSourceImage.SetArray(0, 0, videoSourceImageData);
-    //}
+        // Parallel for loop
+        // convert Color32 object to Vec3b object
+        // Vec3b is the representation of pixel for Mat
+        Parallel.For(0, imHeight, i =>
+        {
+            for (var j = 0; j < imWidth; j++)
+            {
+                var col = c[j + i * imWidth];
+                var vec3 = new Vec3b
+                {
+                    Item0 = col.b,
+                    Item1 = col.g,
+                    Item2 = col.r
+                };
+                // set pixel to an array
+                videoSourceImageData[j + i * imWidth] = vec3;
+            }
+        });
+        // assign the Vec3b array to Mat
+        videoSourceImage.SetArray(0, 0, videoSourceImageData);
+    }
 
 
 
-    //// Convert OpenCVSharp Mat object to Unity Texture2D object
-    //void MatToTexture()
-    //{
-    //    // cannyImageData is byte array, because canny image is grayscale
-    //    cannyImage.GetArray(0, 0, cannyImageData);
-    //    // create Color32 array that can be assigned to Texture2D directly
-    //    Color32[] c = new Color32[imHeight * imWidth];
+    // Convert OpenCVSharp Mat object to Unity Texture2D object
+    void MatToTexture()
+    {
+        // cannyImageData is byte array, because canny image is grayscale
+        cannyImage.GetArray(0, 0, cannyImageData);
+        // create Color32 array that can be assigned to Texture2D directly
+        Color32[] c = new Color32[imHeight * imWidth];
 
-    //    // parallel for loop
-    //    Parallel.For(0, imHeight, i => {
-    //        for (var j = 0; j < imWidth; j++)
-    //        {
-    //            byte vec = cannyImageData[j + i * imWidth];
-    //            var color32 = new Color32
-    //            {
-    //                r = vec,
-    //                g = vec,
-    //                b = vec,
-    //                a = 0
-    //            };
-    //            c[j + i * imWidth] = color32;
-    //        }
-    //    });
+        // parallel for loop
+        Parallel.For(0, imHeight, i =>
+        {
+            for (var j = 0; j < imWidth; j++)
+            {
+                byte vec = cannyImageData[j + i * imWidth];
+                var color32 = new Color32
+                {
+                    r = vec,
+                    g = vec,
+                    b = vec,
+                    a = 0
+                };
+                c[j + i * imWidth] = color32;
+            }
+        });
 
-    //    processedTexture.SetPixels32(c);
-    //    // to update the texture, OpenGL manner
-    //    processedTexture.Apply();
-    //}
+        processedTexture.SetPixels32(c);
+        // to update the texture, OpenGL manner
+        processedTexture.Apply();
+    }
 
 
 
