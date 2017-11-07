@@ -26,10 +26,13 @@ using System.Collections;
 using System.Collections.Generic;
 using OpenCvSharp;
 
+
 // Parallel computation support
 using Uk.Org.Adcock.Parallel;
 using System;
+using System.Web;
 using System.Runtime.InteropServices;
+using System.IO;
 
 
 // class for video display and processed video display
@@ -59,10 +62,13 @@ public class FaceDetection : MonoBehaviour
     private int updateFrameCount = 0;
     private int textureCount = 0;
     private int displayCount = 0;
-
+    
     void Start()
     {
-
+        if (Debug.isDebugBuild)
+        {
+            Debug.Log("it's debug");
+        }
         // create a list of webcam devices that is available
         WebCamDevice[] devices = WebCamTexture.devices;
 
@@ -93,7 +99,7 @@ public class FaceDetection : MonoBehaviour
         }
 
         // create opencv window to display the original video
-        Cv2.NamedWindow("Copy video");
+        Cv2.NamedWindow("Haar Detection");
 
 
     }
@@ -176,7 +182,8 @@ public class FaceDetection : MonoBehaviour
     void MatToTexture()
     {
         // cannyImageData is byte array, because canny image is grayscale
-        cannyImage.GetArray(0, 0, cannyImageData);
+        //cannyImage.GetArray(0, 0, cannyImageData);
+        videoSourceImage.GetArray(0, 0, videoSourceImageData);
         // create Color32 array that can be assigned to Texture2D directly
         Color32[] c = new Color32[imHeight * imWidth];
 
@@ -185,12 +192,13 @@ public class FaceDetection : MonoBehaviour
         {
             for (var j = 0; j < imWidth; j++)
             {
-                byte vec = cannyImageData[j + i * imWidth];
+                //byte vec = cannyImageData[j + i * imWidth];
+                Vec3b vec = videoSourceImageData[j + i * imWidth];
                 var color32 = new Color32
                 {
-                    r = vec,
-                    g = vec,
-                    b = vec,
+                    r = vec.Item0,
+                    g = vec.Item1,
+                    b = vec.Item2,
                     a = 0
                 };
                 c[j + i * imWidth] = color32;
@@ -208,7 +216,66 @@ public class FaceDetection : MonoBehaviour
     void ProcessImage(Mat _image)
     {
         Cv2.Flip(_image, _image, FlipMode.X);
-        Cv2.Canny(_image, cannyImage, 100, 100);
+        //Cv2.Canny(_image, cannyImage, 100, 100);
+
+        var grayImage = new Mat();
+        Cv2.CvtColor(_image, grayImage, ColorConversionCodes.BGRA2GRAY);
+        Cv2.EqualizeHist(grayImage, grayImage);
+
+        var cascade = new CascadeClassifier(Application.dataPath + "/Plugins/Classifiers/haarcascade_frontalface_alt2.xml");
+        cascade.Load(Application.dataPath + "/Plugins/Classifiers/haarcascade_frontalface_alt2.xml");
+        Debug.Log(" ");
+
+        var faces = cascade.DetectMultiScale(
+                image: grayImage,
+                scaleFactor: 1.1,
+                minNeighbors: 2,
+                flags: HaarDetectionType.DoRoughSearch | HaarDetectionType.ScaleImage,
+                minSize: new Size(30, 30)
+        );
+        Console.WriteLine("Detected faces: {0}", faces.Length);
+        Debug.Log(faces.Length);
+
+        var rnd = new System.Random();
+        var count = 1;
+        foreach (var faceRect in faces)
+        {
+            var detectedFaceImage = new Mat(_image, faceRect);
+            Cv2.ImShow(string.Format("Face {0}", count), detectedFaceImage);
+            //Cv2.WaitKey(1); // do events
+
+            var color = Scalar.FromRgb(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
+            Cv2.Rectangle(_image, faceRect, color, 3);
+
+
+            var detectedFaceGrayImage = new Mat();
+            Cv2.CvtColor(detectedFaceImage, detectedFaceGrayImage, ColorConversionCodes.BGRA2GRAY);
+            //var nestedObjects = nestedCascade.DetectMultiScale(
+            //    image: detectedFaceGrayImage,
+            //    scaleFactor: 1.1,
+            //    minNeighbors: 2,
+            //    flags: HaarDetectionType.DoRoughSearch | HaarDetectionType.ScaleImage,
+            //    minSize: new Size(30, 30)
+            //    );
+
+            //Console.WriteLine("Nested Objects[{0}]: {1}", count, nestedObjects.Length);
+
+            //foreach (var nestedObject in nestedObjects)
+            //{
+            //    var center = new Point
+            //    {
+            //        X = (int)(Math.Round(nestedObject.X + nestedObject.Width * 0.5, MidpointRounding.ToEven) + faceRect.Left),
+            //        Y = (int)(Math.Round(nestedObject.Y + nestedObject.Height * 0.5, MidpointRounding.ToEven) + faceRect.Top)
+            //    };
+            //    var radius = Math.Round((nestedObject.Width + nestedObject.Height) * 0.25, MidpointRounding.ToEven);
+            //    Cv2.Circle(srcImage, center, (int)radius, color, thickness: 3);
+            //}
+
+            count++;
+        }
+
+        Cv2.ImShow("Haar Detection", _image);
+        //Cv2.WaitKey(1); // do events
     }
 
 
@@ -216,7 +283,7 @@ public class FaceDetection : MonoBehaviour
     void UpdateWindow(Mat _image)
     {
         Cv2.Flip(_image, _image, FlipMode.X);
-        Cv2.ImShow("Copy video", _image);
+        //Cv2.ImShow("Copy video", _image);
         displayCount++;
     }
 
