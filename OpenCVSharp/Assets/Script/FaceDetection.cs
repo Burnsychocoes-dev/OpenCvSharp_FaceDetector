@@ -236,7 +236,7 @@ public class FaceDetection : MonoBehaviour
         var face_cascade = new CascadeClassifier();
         face_cascade.Load(Application.dataPath + "/Plugins/Classifiers/haarcascade_frontalface_default.xml");
         var eye_cascade = new CascadeClassifier();
-        eye_cascade.Load(Application.dataPath + "/Plugins/Classifiers/haarcascade_eye.xml");
+        eye_cascade.Load(Application.dataPath + "/Plugins/Classifiers/haarcascade_eye_tree_eyeglasses.xml");
         //Debug.Log(" ");
 
         var faces = face_cascade.DetectMultiScale(
