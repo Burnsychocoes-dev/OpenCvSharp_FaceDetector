@@ -40,6 +40,11 @@ using UnityEngine.SceneManagement;
 // current process is canny edge detection
 public class FaceDetection : MonoBehaviour
 {
+    SoundEffectsHelper soundEffects;
+    private int frameCount = 0;
+    [SerializeField]
+    private int maxCount = 3;
+    private bool waitSoundEffect = false;
 
     // Video parameters
     public MeshRenderer WebCamTextureRenderer;
@@ -68,6 +73,8 @@ public class FaceDetection : MonoBehaviour
     {
         // create a list of webcam devices that is available
         WebCamDevice[] devices = WebCamTexture.devices;
+
+        soundEffects = GetComponent<SoundEffectsHelper>();
 
         if (devices.Length > 0)
         {
@@ -128,6 +135,14 @@ public class FaceDetection : MonoBehaviour
                 // the texture will be displayed automatically
                 MatToTexture();
 
+                if(waitSoundEffect)
+                {
+                    frameCount++;
+                    if(frameCount == maxCount)
+                    {
+                        SceneManager.LoadScene("Analyse_photo");
+                    }
+                }
             }
 
         }
@@ -300,7 +315,7 @@ public class FaceDetection : MonoBehaviour
             face_count++;
         }
         //Debug.Log(face_count);
-        if (face_count == 1)
+        if (face_count == 1 && !waitSoundEffect)
         {
             //Debug.Log(faces[0]);
             //Debug.Log(meshRendererCenter.x);
@@ -318,7 +333,8 @@ public class FaceDetection : MonoBehaviour
             {
                 Debug.Log("Take photo !");
                 TakePhoto();
-                SceneManager.LoadScene("Analyse_photo");
+                soundEffects.MakePhotoSound();
+                waitSoundEffect = true;
             }
         }
 

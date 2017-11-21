@@ -271,6 +271,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1387142007}
+  - component: {fileID: 1387142009}
   - component: {fileID: 1387142008}
   m_Layer: 0
   m_Name: Video Processer
@@ -305,9 +306,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b4cda3ee51947243a6a09a81bbe72cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxCount: 3
   WebCamTextureRenderer: {fileID: 2020194192}
   ProcessedTextureRenderer: {fileID: 1323197309}
   deviceNumber: 0
+--- !u!114 &1387142009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1387142006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52b20d370ae28db4782a0f690f85ccab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  takePhotoSound: {fileID: 8300000, guid: 8e431b9171fd7f846be3bbc92cc5c45c, type: 3}
 --- !u!1 &2020194190
 GameObject:
   m_ObjectHideFlags: 0
