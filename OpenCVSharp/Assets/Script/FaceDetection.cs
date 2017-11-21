@@ -135,10 +135,10 @@ public class FaceDetection : MonoBehaviour
                 // the texture will be displayed automatically
                 MatToTexture();
 
-                if(waitSoundEffect)
+                if (waitSoundEffect)
                 {
                     frameCount++;
-                    if(frameCount == maxCount)
+                    if (frameCount == maxCount)
                     {
                         SceneManager.LoadScene("Analyse_photo");
                     }
@@ -153,10 +153,10 @@ public class FaceDetection : MonoBehaviour
 
 
         // output frame rate information
-        if (updateFrameCount % 30 == 0)
-        {
-            Debug.Log("Frame count: " + updateFrameCount + ", Texture count: " + textureCount + ", Display count: " + displayCount);
-        }
+        //if (updateframecount % 30 == 0)
+        //{
+        //    debug.log("frame count: " + updateframecount + ", texture count: " + texturecount + ", display count: " + displaycount);
+        //}
 
 
     }
@@ -328,8 +328,8 @@ public class FaceDetection : MonoBehaviour
                 origin.X + width < (int)meshRendererCenter.x + 350 + 600 &&
                 origin.Y > (int)meshRendererCenter.y + 50 &&
                 origin.Y + height < (int)meshRendererCenter.y + 5 + 600 &&
-                width > 400 &&
-                height > 400)
+                width > 300 &&
+                height > 300)
             {
                 Debug.Log("Take photo !");
                 TakePhoto();
@@ -345,10 +345,8 @@ public class FaceDetection : MonoBehaviour
     }
 
 
-    private IEnumerator TakePhoto()
+    void TakePhoto()
     {
-        yield return new WaitForEndOfFrame();
-
         Texture2D photo = new Texture2D(_webcamTexture.width, _webcamTexture.height);
         photo.SetPixels(_webcamTexture.GetPixels());
         photo.Apply();
