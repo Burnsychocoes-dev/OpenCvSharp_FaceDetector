@@ -33,6 +33,7 @@ using System;
 using System.Web;
 using System.Runtime.InteropServices;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 
 // class for video display and processed video display
@@ -90,7 +91,6 @@ public class FaceDetection : MonoBehaviour
 
             // assign the processedTexture to the meshrenderer for display
             ProcessedTextureRenderer.material.mainTexture = processedTexture;
-
 
         }
 
@@ -247,19 +247,26 @@ public class FaceDetection : MonoBehaviour
                 minSize: new Size(100, 100)
         );
 
-       
+        Bounds meshRendererBounds = GetComponentInChildren<MeshRenderer>().bounds;
+        Vector3 meshRendererCenter = meshRendererBounds.center;
+        Vector3 maxBound = meshRendererBounds.max;
+        Vector3 minBound = meshRendererBounds.min;
+        OpenCvSharp.Rect rect = new OpenCvSharp.Rect((int)meshRendererCenter.x + 350,(int)meshRendererCenter.y + 50, 600,600);
+        var global_rectangle_color = Scalar.FromRgb(0, 0, 255);
+        Cv2.Rectangle(_image, rect, global_rectangle_color, 3);
         //Console.WriteLine("Detected faces: {0}", faces.Length);
         //Debug.Log(faces.Length);
 
         //var rnd = new System.Random();
-        var face_count = 1;
+
+        var face_count = 0;
         foreach (var faceRect in faces)
         {
             var detectedFaceImage = new Mat(_image, faceRect);
             //Cv2.ImShow(string.Format("Face {0}", face_count), detectedFaceImage);
             //Cv2.WaitKey(1); // do events
 
-            var facec_rectangle_color = Scalar.FromRgb(0, 0, 255);
+            var facec_rectangle_color = Scalar.FromRgb(255, 0, 0);
             Cv2.Rectangle(_image, faceRect, facec_rectangle_color, 3);
 
 
@@ -290,14 +297,51 @@ public class FaceDetection : MonoBehaviour
 
                 eye_count++;
             }
-
             face_count++;
+        }
+        //Debug.Log(face_count);
+        if (face_count == 1)
+        {
+            //Debug.Log(faces[0]);
+            //Debug.Log(meshRendererCenter.x);
+            //Debug.Log((int)meshRendererCenter.y + 50);
+            Point origin = faces[0].Location;
+            float width = faces[0].Width;
+            float height = faces[0].Height;
+            // Verification si le rect de la face est bien dans la zone de photo
+            if(origin.X > (int)meshRendererCenter.x + 350 && 
+                origin.X + width < (int)meshRendererCenter.x + 350 + 600 &&
+                origin.Y > (int)meshRendererCenter.y + 50 &&
+                origin.Y + height < (int)meshRendererCenter.y + 5 + 600 &&
+                width > 400 &&
+                height > 400)
+            {
+                Debug.Log("Take photo !");
+                TakePhoto();
+                SceneManager.LoadScene("Analyse_photo");
+            }
         }
 
 
 
         //Cv2.ImShow("Haar Detection", _image);
         //Cv2.WaitKey(1); // do events
+    }
+
+
+    private IEnumerator TakePhoto()
+    {
+        yield return new WaitForEndOfFrame();
+
+        Texture2D photo = new Texture2D(_webcamTexture.width, _webcamTexture.height);
+        photo.SetPixels(_webcamTexture.GetPixels());
+        photo.Apply();
+
+        // Encoding the photo to a PNG
+        byte[] bytes = photo.EncodeToPNG();
+
+        // Write out the PNG in the mention path
+        File.WriteAllBytes("C:/Users/steph/OneDrive/Documents/GitHub/OpenCvSharp_FaceDetector/OpenCVSharp/Assets/" + "photo.png", bytes);
     }
 
 
