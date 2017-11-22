@@ -43,13 +43,13 @@ public class LandmarksRetriever : MonoBehaviour {
 
         HttpResponseMessage response = client.PostAsync("v2/detect", content).Result;
 
-        /*
-        HttpResponseMessage response = client.PostAsync("/v2/detect", content).Result;
-        response.EnsureSuccessStatusCode();
 
-        string responseBodyAsText = response.Content.ReadAsStringAsync().Result;*/
+        //HttpResponseMessage response = client.PostAsync("/v2/detect", content).Result;
+        //response.EnsureSuccessStatusCode();
 
-        //write in file (file, responseBodyAsText)
+        //string responseBodyAsText = response.Content.ReadAsStringAsync().Result;
+
+        //write in file(file, responseBodyAsText);
     }
 
 }
