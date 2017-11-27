@@ -34,11 +34,12 @@ using System.Web;
 using System.Runtime.InteropServices;
 using System.IO;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 // class for video display and processed video display
 // current process is canny edge detection
-public class FaceDetection : MonoBehaviour
+public class FaceDetectionImage : MonoBehaviour
 {
     SoundEffectsHelper soundEffects;
     private int frameCount = 0;
@@ -47,10 +48,9 @@ public class FaceDetection : MonoBehaviour
     private bool waitSoundEffect = false;
 
     // Video parameters
-    public MeshRenderer WebCamTextureRenderer;
+    private Image image;
+    private Texture2D imageTexture;
     public MeshRenderer ProcessedTextureRenderer;
-    public int deviceNumber;
-    private WebCamTexture _webcamTexture;
 
     // Video size
     private const int imWidth = 1280;
@@ -71,40 +71,20 @@ public class FaceDetection : MonoBehaviour
     
     void Start()
     {
-        // create a list of webcam devices that is available
-        WebCamDevice[] devices = WebCamTexture.devices;
+        image = FindObjectOfType<Image>();
+        imageTexture = (Texture2D) image.mainTexture;
+        
+        // initialize video / image with given size
+        videoSourceImage = new Mat(imHeight, imWidth, MatType.CV_8UC3);
+        videoSourceImageData = new Vec3b[imHeight * imWidth];
+        cannyImage = new Mat(imHeight, imWidth, MatType.CV_8UC1);
+        cannyImageData = new byte[imHeight * imWidth];
 
-        soundEffects = GetComponent<SoundEffectsHelper>();
+        // create processed video texture as Texture2D object
+        processedTexture = new Texture2D(imWidth, imHeight, TextureFormat.RGBA32, true, true);
 
-        if (devices.Length > 0)
-        {
-
-            // initialized the webcam texture by the specific device number
-            _webcamTexture = new WebCamTexture(devices[deviceNumber].name, imWidth, imHeight);
-            // assign webcam texture to the meshrenderer for display
-            WebCamTextureRenderer.material.mainTexture = _webcamTexture;
-
-            // Play the video source
-            _webcamTexture.Play();
-
-            // initialize video / image with given size
-            videoSourceImage = new Mat(imHeight, imWidth, MatType.CV_8UC3);
-            videoSourceImageData = new Vec3b[imHeight * imWidth];
-            cannyImage = new Mat(imHeight, imWidth, MatType.CV_8UC1);
-            cannyImageData = new byte[imHeight * imWidth];
-
-            // create processed video texture as Texture2D object
-            processedTexture = new Texture2D(imWidth, imHeight, TextureFormat.RGBA32, true, true);
-
-            // assign the processedTexture to the meshrenderer for display
-            ProcessedTextureRenderer.material.mainTexture = processedTexture;
-
-        }
-
-        // create opencv window to display the original video
-        //Cv2.NamedWindow("Haar Detection");
-
-
+        // assign the processedTexture to the meshrenderer for display
+        ProcessedTextureRenderer.material.mainTexture = processedTexture;
     }
 
 
@@ -114,49 +94,18 @@ public class FaceDetection : MonoBehaviour
 
         updateFrameCount++;
 
-        if (_webcamTexture.isPlaying)
-        {
+        // convert texture of original video to OpenCVSharp Mat object
+        TextureToMat();
 
-            if (_webcamTexture.didUpdateThisFrame)
-            {
+        // create the canny edge image out of source image
+        ProcessImage(videoSourceImage);
 
-                textureCount++;
+        // update the opencv window of source video
+        UpdateWindow(videoSourceImage);
 
-                // convert texture of original video to OpenCVSharp Mat object
-                TextureToMat();
-                
-                // create the canny edge image out of source image
-                ProcessImage(videoSourceImage);
-               
-                // update the opencv window of source video
-                UpdateWindow(videoSourceImage);
-                
-                // convert the OpenCVSharp Mat of canny image to Texture2D
-                // the texture will be displayed automatically
-                MatToTexture();
-
-                if (waitSoundEffect)
-                {
-                    frameCount++;
-                    if (frameCount == maxCount)
-                    {
-                        SceneManager.LoadScene("Analyse_photo");
-                    }
-                }
-            }
-
-        }
-        else
-        {
-            Debug.Log("Can't find camera!");
-        }
-
-
-        // output frame rate information
-        //if (updateframecount % 30 == 0)
-        //{
-        //    debug.log("frame count: " + updateframecount + ", texture count: " + texturecount + ", display count: " + displaycount);
-        //}
+        // convert the OpenCVSharp Mat of canny image to Texture2D
+        // the texture will be displayed automatically
+        MatToTexture();
 
 
     }
@@ -166,7 +115,7 @@ public class FaceDetection : MonoBehaviour
     void TextureToMat()
     {
         // Color32 array : r, g, b, a
-        Color32[] c = _webcamTexture.GetPixels32();
+        Color32[] c = imageTexture.GetPixels32();
 
         // Parallel for loop
         // convert Color32 object to Vec3b object
@@ -262,13 +211,13 @@ public class FaceDetection : MonoBehaviour
                 minSize: new Size(100, 100)
         );
 
-        Bounds meshRendererBounds = GetComponentInChildren<MeshRenderer>().bounds;
-        Vector3 meshRendererCenter = meshRendererBounds.center;
-        Vector3 maxBound = meshRendererBounds.max;
-        Vector3 minBound = meshRendererBounds.min;
-        OpenCvSharp.Rect rect = new OpenCvSharp.Rect((int)meshRendererCenter.x + 350,(int)meshRendererCenter.y + 50, 600,600);
-        var global_rectangle_color = Scalar.FromRgb(0, 0, 255);
-        Cv2.Rectangle(_image, rect, global_rectangle_color, 3);
+        //Bounds meshRendererBounds = GetComponentInChildren<MeshRenderer>().bounds;
+        //Vector3 meshRendererCenter = meshRendererBounds.center;
+        //Vector3 maxBound = meshRendererBounds.max;
+        //Vector3 minBound = meshRendererBounds.min;
+        //OpenCvSharp.Rect rect = new OpenCvSharp.Rect((int)meshRendererCenter.x + 350,(int)meshRendererCenter.y + 50, 600,600);
+        //var global_rectangle_color = Scalar.FromRgb(0, 0, 255);
+        //Cv2.Rectangle(_image, rect, global_rectangle_color, 3);
         //Console.WriteLine("Detected faces: {0}", faces.Length);
         //Debug.Log(faces.Length);
 
@@ -315,28 +264,28 @@ public class FaceDetection : MonoBehaviour
             face_count++;
         }
         //Debug.Log(face_count);
-        if (face_count == 1 && !waitSoundEffect)
-        {
-            //Debug.Log(faces[0]);
-            //Debug.Log(meshRendererCenter.x);
-            //Debug.Log((int)meshRendererCenter.y + 50);
-            Point origin = faces[0].Location;
-            float width = faces[0].Width;
-            float height = faces[0].Height;
-            // Verification si le rect de la face est bien dans la zone de photo
-            if(origin.X > (int)meshRendererCenter.x + 350 && 
-                origin.X + width < (int)meshRendererCenter.x + 350 + 600 &&
-                origin.Y > (int)meshRendererCenter.y + 50 &&
-                origin.Y + height < (int)meshRendererCenter.y + 5 + 600 &&
-                width > 400 &&
-                height > 400)
-            {
-                Debug.Log("Take photo !");
-                TakePhoto();
-                soundEffects.MakePhotoSound();
-                waitSoundEffect = true;
-            }
-        }
+        //if (face_count == 1 && !waitSoundEffect)
+        //{
+        //    //Debug.Log(faces[0]);
+        //    //Debug.Log(meshRendererCenter.x);
+        //    //Debug.Log((int)meshRendererCenter.y + 50);
+        //    Point origin = faces[0].Location;
+        //    float width = faces[0].Width;
+        //    float height = faces[0].Height;
+        //    // Verification si le rect de la face est bien dans la zone de photo
+        //    if(origin.X > (int)meshRendererCenter.x + 350 && 
+        //        origin.X + width < (int)meshRendererCenter.x + 350 + 600 &&
+        //        origin.Y > (int)meshRendererCenter.y + 50 &&
+        //        origin.Y + height < (int)meshRendererCenter.y + 5 + 600 &&
+        //        width > 300 &&
+        //        height > 300)
+        //    {
+        //        Debug.Log("Take photo !");
+        //        //TakePhoto();
+        //        soundEffects.MakePhotoSound();
+        //        waitSoundEffect = true;
+        //    }
+        //}
 
 
 
@@ -345,18 +294,18 @@ public class FaceDetection : MonoBehaviour
     }
 
 
-    void TakePhoto()
-    {
-        Texture2D photo = new Texture2D(_webcamTexture.width, _webcamTexture.height);
-        photo.SetPixels(_webcamTexture.GetPixels());
-        photo.Apply();
+    //void TakePhoto()
+    //{
+    //    Texture2D photo = new Texture2D(_webcamTexture.width, _webcamTexture.height);
+    //    photo.SetPixels(_webcamTexture.GetPixels());
+    //    photo.Apply();
 
-        // Encoding the photo to a PNG
-        byte[] bytes = photo.EncodeToPNG();
+    //    // Encoding the photo to a PNG
+    //    byte[] bytes = photo.EncodeToPNG();
 
-        // Write out the PNG in the mention path
-        File.WriteAllBytes("C:/Users/steph/OneDrive/Documents/GitHub/OpenCvSharp_FaceDetector/OpenCVSharp/Assets/" + "photo.png", bytes);
-    }
+    //    // Write out the PNG in the mention path
+    //    File.WriteAllBytes("C:/Users/steph/OneDrive/Documents/GitHub/OpenCvSharp_FaceDetector/OpenCVSharp/Assets/" + "photo.png", bytes);
+    //}
 
 
     // Display the original video in a opencv window

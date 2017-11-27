@@ -5,15 +5,17 @@ using UnityEngine.UI;
 
 public class UpdatePhoto : MonoBehaviour {
 
-    Image image;
+    private Image image;
+    private Texture2D imageTexture;
 
-	// Use this for initialization
-	void Start () {
-        image = GetComponent<Image>();
-	}
+    // Use this for initialization
+    void Start () {
+        image = FindObjectOfType<Image>();
+        imageTexture = (Texture2D)image.mainTexture;
+    }
 	
 	// Update is called once per frame
 	void Update () {
-        image.GraphicUpdateComplete();
+        imageTexture.Apply();
 	}
 }
