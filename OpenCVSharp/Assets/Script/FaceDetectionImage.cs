@@ -216,7 +216,7 @@ public class FaceDetectionImage : MonoBehaviour
         //Vector3 maxBound = meshRendererBounds.max;
         //Vector3 minBound = meshRendererBounds.min;
         //OpenCvSharp.Rect rect = new OpenCvSharp.Rect((int)meshRendererCenter.x + 350,(int)meshRendererCenter.y + 50, 600,600);
-        //var global_rectangle_color = Scalar.FromRgb(0, 0, 255);
+        var global_rectangle_color = Scalar.FromRgb(0, 0, 255);
         //Cv2.Rectangle(_image, rect, global_rectangle_color, 3);
         //Console.WriteLine("Detected faces: {0}", faces.Length);
         //Debug.Log(faces.Length);
@@ -233,6 +233,10 @@ public class FaceDetectionImage : MonoBehaviour
             var facec_rectangle_color = Scalar.FromRgb(255, 0, 0);
             Cv2.Rectangle(_image, faceRect, facec_rectangle_color, 3);
 
+            OpenCvSharp.Rect rect = new OpenCvSharp.Rect(faceRect.X + faceRect.Width/2 - 25, faceRect.Y + 50, 50, 50);
+            Cv2.Rectangle(_image, rect, global_rectangle_color, 3);
+
+
 
             var detectedFaceGrayImage = new Mat();
             Cv2.CvtColor(detectedFaceImage, detectedFaceGrayImage, ColorConversionCodes.BGRA2GRAY);
@@ -245,7 +249,7 @@ public class FaceDetectionImage : MonoBehaviour
                 minSize: new Size(50, 50)
             );
 
-            var eye_count = 1;
+            var eye_count = 0;
             foreach (var eyeRect in eyes)
             {
                 var detectedEyeImage = new Mat(_image, eyeRect);
@@ -254,6 +258,18 @@ public class FaceDetectionImage : MonoBehaviour
 
                 var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
                 Cv2.Rectangle(_image, eyeRect, eye_rectangle_color, 3);
+
+                if(eye_count == 1)
+                {
+                    OpenCvSharp.Rect rectEye = new OpenCvSharp.Rect(eyeRect.X + 10, eyeRect.Y + 100, 50, 50);
+                    Cv2.Rectangle(_image, rectEye, global_rectangle_color, 3);
+                }
+                else
+                {
+                    OpenCvSharp.Rect rectEye = new OpenCvSharp.Rect(eyeRect.X + 35, eyeRect.Y + 100, 50, 50);
+                    Cv2.Rectangle(_image, rectEye, global_rectangle_color, 3);
+                }
+                
 
 
                 var detectedEyeGrayImage = new Mat();
