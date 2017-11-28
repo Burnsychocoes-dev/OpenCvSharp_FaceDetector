@@ -1,55 +1,84 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Net.HttpWebRequest;
-//using System.Net.HttpRequestHeader;
-//using UnityEngine;
+﻿using System;
+using System.Collections.Specialized;
+using System.IO;
+using System.Net;
+using System.Text;
+using UnityEngine;
 
-//public class LandmarksRetriever : MonoBehaviour {
+public class LandmarksRetriever : MonoBehaviour {
 
-//    [SerializeField]
-//    private string wsUri;
+    [SerializeField]
+    private string apiEndpoint;
 
-//    public static LandmarksRetriever Instance {
-//        get;
-//        private set;
-//    }
+    private int i = 0;
 
-//    private static HttpClient client = new HttpClient();
+    public static LandmarksRetriever Instance {
+        get;
+        private set;
+    }
 
-//    private void Awake() {
-//        if (Instance != null) {
-//            Debug.LogError("There is multiple instance of singleton LandmarksRetriever");
-//            return;
-//        }
-//        Instance = this;
-//    }
-    
-//    public void RetrieveLandmarks(string imagePath) {
-//        client.BaseAddress = new Uri(wsUri);
-//        client.DefaultRequestHeaders.Accept.Clear();
-//        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+    private static HttpWebRequest client;
 
-//        Retrieve();
-//    }
-    
-//    private void Retrieve() {
-//        var values = new Dictionary<string, string> {
-//            { "api_key", "4177793aaba14a666e0b5336f20a669c" },
-//            { "selector", "SETPOSE" },
-//            { "url", "https://scontent-cdg2-1.xx.fbcdn.net/v/t1.0-9/22050258_1696964700323401_583767717233164251_n.jpg?oh=cfd9989607e893e31b7ce74746ce6b3a&oe=5A9F9027" }
-//        };
+    private void Awake() {
+        if (Instance != null) {
+            Debug.LogError("There is multiple instance of singleton LandmarksRetriever");
+            return;
+        }
 
-//        FormUrlEncodedContent content = new FormUrlEncodedContent(values);
+        client = (HttpWebRequest)WebRequest.Create(apiEndpoint);
 
-//        HttpResponseMessage response = client.PostAsync("v2/detect", content).Result;
+        Instance = this;
+    }
 
+    public string PostRequest(string imagePath, NameValueCollection parameters) {
+        string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
+        byte[] boundarybytes = Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
+        client.ContentType = "multipart/form-data; boundary=" + boundary;
+        client.Method = "POST";
+        client.KeepAlive = true;
+        client.Credentials = CredentialCache.DefaultCredentials;
 
-//        //HttpResponseMessage response = client.PostAsync("/v2/detect", content).Result;
-//        //response.EnsureSuccessStatusCode();
+        Stream rs = client.GetRequestStream();
+        string formdataTemplate = "Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}";
 
-//        //string responseBodyAsText = response.Content.ReadAsStringAsync().Result;
+        foreach (string paramName in parameters.Keys) {
+            rs.Write(boundarybytes, 0, boundarybytes.Length);
+            byte[] formitembytes = System.Text.Encoding.UTF8.GetBytes(string.Format(formdataTemplate, paramName, parameters[paramName]));
+            rs.Write(formitembytes, 0, formitembytes.Length);
+        }
 
-//        //write in file(file, responseBodyAsText);
-//    }
+        rs.Write(boundarybytes, 0, boundarybytes.Length);
 
-//}
+        string headerTemplate = "Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\nContent-Type: {2}\r\n\r\n";
+        string header = string.Format(headerTemplate, "image", imagePath, "image/jpeg");
+        byte[] headerbytes = Encoding.UTF8.GetBytes(header);
+        rs.Write(headerbytes, 0, headerbytes.Length);
+
+        FileStream fileStream = new FileStream(imagePath, FileMode.Open, FileAccess.Read);
+        byte[] buffer = new byte[4096];
+        int bytesRead = 0;
+        while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0) {
+            rs.Write(buffer, 0, bytesRead);
+        }
+        fileStream.Close();
+
+        byte[] trailer = Encoding.ASCII.GetBytes("\r\n--" + boundary + "--\r\n");
+        rs.Write(trailer, 0, trailer.Length);
+        rs.Close();
+
+        WebResponse wresp = null;
+        wresp = client.GetResponse();
+        Stream stream2 = wresp.GetResponseStream();
+        StreamReader reader2 = new StreamReader(stream2);
+
+        return reader2.ReadToEnd();
+    }
+
+    public string RetrieveLandmarks(string imagePath) {
+        return PostRequest(imagePath, new NameValueCollection() {
+                { "api_key", "4177793aaba14a666e0b5336f20a669c" },
+                { "selector", "SETPOSE" }
+            });
+    }
+
+}
