@@ -52,6 +52,12 @@ public class FaceDetectionImage : MonoBehaviour
     private Texture2D imageTexture;
     public MeshRenderer ProcessedTextureRenderer;
 
+    // Variables des rectangles de decoupe pour la peau
+    float rectShapeHeight = 50;
+    OpenCvSharp.Rect rectFront;
+    OpenCvSharp.Rect rectEyeLeft;
+    OpenCvSharp.Rect rectEyeRight;
+
     // Video size
     private const int imWidth = 1280;
     private const int imHeight = 720;
@@ -159,6 +165,8 @@ public class FaceDetectionImage : MonoBehaviour
         {
             for (var j = 0; j < imWidth; j++)
             {
+                float coordX = j; 
+                float coordY = imHeight - i;
                 //byte vec = cannyImageData[j + i * imWidth];
                 //var color32 = new Color32
                 //{
@@ -167,17 +175,62 @@ public class FaceDetectionImage : MonoBehaviour
                 //    b = vec,
                 //};
                 //byte vec = cannyImageData[j + i * imWidth];
-                Vec3b vec = videoSourceImageData[j + i * imWidth];
-                var color32 = new Color32
-                {
-                    r = vec.Item0,
-                    g = vec.Item1,
-                    b = vec.Item2,
-               
+                if (coordX > rectFront.X && coordX < rectFront.X + rectFront.Width &&
+                    coordY > rectFront.Y && coordY < rectFront.Y + rectFront.Height)
+                {                  
+                    var color32 = new Color32
+                    {
+                        r = 0,
+                        g = 0,
+                        b = 0,
 
-                    a = 0
-                };
-                c[j + i * imWidth] = color32;
+
+                        a = 0
+                    };
+                    c[j + i * imWidth] = color32;
+                }
+                else if (coordX > rectEyeLeft.X && coordX < rectEyeLeft.X + rectEyeLeft.Width &&
+                    coordY > rectEyeLeft.Y && coordY < rectEyeLeft.Y + rectEyeLeft.Height)
+                {                 
+                    var color32 = new Color32
+                    {
+                        r = 0,
+                        g = 0,
+                        b = 0,
+
+
+                        a = 0
+                    };
+                    c[j + i * imWidth] = color32;
+                }
+                else if (coordX > rectEyeRight.X && coordX < rectEyeRight.X + rectEyeRight.Width &&
+                    coordY > rectEyeRight.Y && coordY < rectEyeRight.Y + rectEyeRight.Height)
+                {
+                    var color32 = new Color32
+                    {
+                        r = 0,
+                        g = 0,
+                        b = 0,
+
+
+                        a = 0
+                    };
+                    c[j + i * imWidth] = color32;
+                }
+                else
+                {
+                    Vec3b vec = videoSourceImageData[j + i * imWidth];
+                    var color32 = new Color32
+                    {
+                        r = vec.Item0,
+                        g = vec.Item1,
+                        b = vec.Item2,
+
+
+                        a = 0
+                    };
+                    c[j + i * imWidth] = color32;
+                }
             }
         });
 
@@ -233,8 +286,8 @@ public class FaceDetectionImage : MonoBehaviour
             var facec_rectangle_color = Scalar.FromRgb(255, 0, 0);
             Cv2.Rectangle(_image, faceRect, facec_rectangle_color, 3);
 
-            OpenCvSharp.Rect rect = new OpenCvSharp.Rect(faceRect.X + faceRect.Width/2 - 25, faceRect.Y + 50, 50, 50);
-            Cv2.Rectangle(_image, rect, global_rectangle_color, 3);
+            rectFront = new OpenCvSharp.Rect(faceRect.X + faceRect.Width/2 - 25, faceRect.Y + 50, 50, 50);
+            Cv2.Rectangle(_image, rectFront, global_rectangle_color, 3);
 
 
 
@@ -261,13 +314,15 @@ public class FaceDetectionImage : MonoBehaviour
 
                 if(eye_count == 1)
                 {
-                    OpenCvSharp.Rect rectEye = new OpenCvSharp.Rect(eyeRect.X + 10, eyeRect.Y + 100, 50, 50);
-                    Cv2.Rectangle(_image, rectEye, global_rectangle_color, 3);
+                    // Par rapport à la position de l'oeil gauche
+                    rectEyeLeft = new OpenCvSharp.Rect(eyeRect.X + 10, eyeRect.Y + 100, 50, 50);
+                    Cv2.Rectangle(_image, rectEyeLeft, global_rectangle_color, 3);
                 }
                 else
                 {
-                    OpenCvSharp.Rect rectEye = new OpenCvSharp.Rect(eyeRect.X + 35, eyeRect.Y + 100, 50, 50);
-                    Cv2.Rectangle(_image, rectEye, global_rectangle_color, 3);
+                    // Par rapport à la position de l'oeil droit
+                    rectEyeRight = new OpenCvSharp.Rect(eyeRect.X + 35, eyeRect.Y + 100, 50, 50);
+                    Cv2.Rectangle(_image, rectEyeRight, global_rectangle_color, 3);
                 }
                 
 
