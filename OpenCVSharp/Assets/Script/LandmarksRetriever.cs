@@ -30,6 +30,11 @@ public class LandmarksRetriever : MonoBehaviour {
         Instance = this;
     }
 
+    void Start()
+    {
+        Debug.Log(RetrieveLandmarks("Assets/photo.png"));
+    }
+
     public string PostRequest(string imagePath, NameValueCollection parameters) {
         string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
         byte[] boundarybytes = Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
