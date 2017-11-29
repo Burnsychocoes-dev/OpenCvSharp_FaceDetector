@@ -4,13 +4,15 @@ using System.IO;
 using System.Net;
 using System.Text;
 using UnityEngine;
+using LitJson;
 
 public class LandmarksRetriever : MonoBehaviour {
 
     [SerializeField]
     private string apiEndpoint;
 
-    private int i = 0;
+    [SerializeField]
+    private string imagePath;
 
     public static LandmarksRetriever Instance {
         get;
@@ -24,31 +26,29 @@ public class LandmarksRetriever : MonoBehaviour {
             Debug.LogError("There is multiple instance of singleton LandmarksRetriever");
             return;
         }
-
         client = (HttpWebRequest)WebRequest.Create(apiEndpoint);
+        client.Method = "POST";
+        client.KeepAlive = true;
+        client.Credentials = CredentialCache.DefaultCredentials;
 
         Instance = this;
     }
 
-    void Start()
-    {
-        Debug.Log(RetrieveLandmarks("Assets/photo.png"));
+    void Start() {
+        RetrieveLandmarks();
     }
 
-    public string PostRequest(string imagePath, NameValueCollection parameters) {
+    public string PostRequest(NameValueCollection parameters) {
         string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
         byte[] boundarybytes = Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
         client.ContentType = "multipart/form-data; boundary=" + boundary;
-        client.Method = "POST";
-        client.KeepAlive = true;
-        client.Credentials = CredentialCache.DefaultCredentials;
 
         Stream rs = client.GetRequestStream();
         string formdataTemplate = "Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}";
 
         foreach (string paramName in parameters.Keys) {
             rs.Write(boundarybytes, 0, boundarybytes.Length);
-            byte[] formitembytes = System.Text.Encoding.UTF8.GetBytes(string.Format(formdataTemplate, paramName, parameters[paramName]));
+            byte[] formitembytes = Encoding.UTF8.GetBytes(string.Format(formdataTemplate, paramName, parameters[paramName]));
             rs.Write(formitembytes, 0, formitembytes.Length);
         }
 
@@ -79,11 +79,13 @@ public class LandmarksRetriever : MonoBehaviour {
         return reader2.ReadToEnd();
     }
 
-    public string RetrieveLandmarks(string imagePath) {
-        return PostRequest(imagePath, new NameValueCollection() {
+    public void RetrieveLandmarks() {
+        string jsonResponse = PostRequest(new NameValueCollection() {
                 { "api_key", "4177793aaba14a666e0b5336f20a669c" },
                 { "selector", "SETPOSE" }
             });
+
+        JsonData data = JsonMapper.ToObject(jsonResponse)["images"][0]["faces"][0];
     }
 
 }
