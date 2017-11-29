@@ -52,11 +52,13 @@ public class FaceDetectionImage : MonoBehaviour
     private Texture2D imageTexture;
     public MeshRenderer ProcessedTextureRenderer;
 
-    // Variables des rectangles de decoupe pour la peau
+    // Variables des rectangles de decoupe
     float rectShapeHeight = 50;
     OpenCvSharp.Rect rectFront;
     OpenCvSharp.Rect rectEyeLeft;
     OpenCvSharp.Rect rectEyeRight;
+    OpenCvSharp.Rect face;
+    OpenCvSharp.Rect rectCheveux;
 
     // Video size
     private const int imWidth = 1280;
@@ -74,7 +76,16 @@ public class FaceDetectionImage : MonoBehaviour
     private int updateFrameCount = 0;
     private int textureCount = 0;
     private int displayCount = 0;
-    
+
+    // Données utiles
+    private Vec3f couleurPeauBasOeilGauche;
+    private Vec3f couleurPeauBasOeilDroit;
+    private Vec3f couleurPeauFront;
+    private Vec3f couleurCheveux;
+    [SerializeField]
+    private float margeErreurCouleurPeau = 20f;
+    private float maxCoordY = 0f;
+
     void Start()
     {
         image = FindObjectOfType<Image>();
@@ -91,12 +102,6 @@ public class FaceDetectionImage : MonoBehaviour
 
         // assign the processedTexture to the meshrenderer for display
         ProcessedTextureRenderer.material.mainTexture = processedTexture;
-    }
-
-
-
-    void Update()
-    {
 
         updateFrameCount++;
 
@@ -109,11 +114,62 @@ public class FaceDetectionImage : MonoBehaviour
         // update the opencv window of source video
         UpdateWindow(videoSourceImage);
 
+        CalculateSkinColor();
+
+        DrawTheLineSeparatingHairAndSkin();
+
+        // update the opencv window of source video
+        UpdateWindow(videoSourceImage);
+
+        CalculateHairColor();
+
         // convert the OpenCVSharp Mat of canny image to Texture2D
         // the texture will be displayed automatically
         MatToTexture();
 
 
+        Debug.Log("Couleur de la peau au niveau du front");
+        Debug.Log(couleurPeauFront.Item0);
+        Debug.Log(couleurPeauFront.Item1);
+        Debug.Log(couleurPeauFront.Item2);
+        Debug.Log("Couleur de la peau au niveau de l'oeil droit");
+        Debug.Log(couleurPeauBasOeilDroit.Item0);
+        Debug.Log(couleurPeauBasOeilDroit.Item1);
+        Debug.Log(couleurPeauBasOeilDroit.Item2);
+        Debug.Log("Couleur de la peau au niveau de l'oeil gauche");
+        Debug.Log(couleurPeauBasOeilGauche.Item0);
+        Debug.Log(couleurPeauBasOeilGauche.Item1);
+        Debug.Log(couleurPeauBasOeilGauche.Item2);
+        Debug.Log("Couleur des cheveux");
+        Debug.Log(couleurCheveux.Item0);
+        Debug.Log(couleurCheveux.Item1);
+        Debug.Log(couleurCheveux.Item2);
+    }
+
+
+
+    void Update()
+    {
+        //updateFrameCount++;
+
+        //// convert texture of original video to OpenCVSharp Mat object
+        //TextureToMat();
+
+        //// create the canny edge image out of source image
+        //ProcessImage(videoSourceImage);
+
+        //// update the opencv window of source video
+        //UpdateWindow(videoSourceImage);
+
+        //// convert the OpenCVSharp Mat of canny image to Texture2D
+        //// the texture will be displayed automatically
+        //MatToTexture();
+
+
+        //DrawTheLineSeparatingHairAndSkin();
+
+
+        //MatToTexture();
     }
 
 
@@ -160,6 +216,7 @@ public class FaceDetectionImage : MonoBehaviour
         // create Color32 array that can be assigned to Texture2D directly
         Color32[] c = new Color32[imHeight * imWidth];
 
+
         // parallel for loop
         Parallel.For(0, imHeight, i =>
         {
@@ -167,22 +224,17 @@ public class FaceDetectionImage : MonoBehaviour
             {
                 float coordX = j; 
                 float coordY = imHeight - i;
-                //byte vec = cannyImageData[j + i * imWidth];
-                //var color32 = new Color32
-                //{
-                //    r = vec,
-                //    g = vec,
-                //    b = vec,
-                //};
-                //byte vec = cannyImageData[j + i * imWidth];
+
+                Vec3b vec = videoSourceImageData[j + i * imWidth];
+
                 if (coordX > rectFront.X && coordX < rectFront.X + rectFront.Width &&
                     coordY > rectFront.Y && coordY < rectFront.Y + rectFront.Height)
-                {                  
+                {
                     var color32 = new Color32
                     {
-                        r = 0,
-                        g = 0,
-                        b = 0,
+                        r = 255,
+                        g = 255,
+                        b = 255,
 
 
                         a = 0
@@ -191,12 +243,12 @@ public class FaceDetectionImage : MonoBehaviour
                 }
                 else if (coordX > rectEyeLeft.X && coordX < rectEyeLeft.X + rectEyeLeft.Width &&
                     coordY > rectEyeLeft.Y && coordY < rectEyeLeft.Y + rectEyeLeft.Height)
-                {                 
+                {
                     var color32 = new Color32
                     {
-                        r = 0,
-                        g = 0,
-                        b = 0,
+                        r = 255,
+                        g = 255,
+                        b = 255,
 
 
                         a = 0
@@ -208,9 +260,23 @@ public class FaceDetectionImage : MonoBehaviour
                 {
                     var color32 = new Color32
                     {
-                        r = 0,
-                        g = 0,
-                        b = 0,
+                        r = 255,
+                        g = 255,
+                        b = 255,
+
+
+                        a = 0
+                    };
+                    c[j + i * imWidth] = color32;
+                }
+                else if (coordX > rectCheveux.X && coordX < rectCheveux.X + rectCheveux.Width &&
+                     coordY > rectCheveux.Y && coordY < rectCheveux.Y + rectCheveux.Height)
+                {
+                    var color32 = new Color32
+                    {
+                        r = 255,
+                        g = 255,
+                        b = 255,
 
 
                         a = 0
@@ -219,12 +285,11 @@ public class FaceDetectionImage : MonoBehaviour
                 }
                 else
                 {
-                    Vec3b vec = videoSourceImageData[j + i * imWidth];
                     var color32 = new Color32
                     {
-                        r = vec.Item0,
+                        r = vec.Item2,
                         g = vec.Item1,
-                        b = vec.Item2,
+                        b = vec.Item0,
 
 
                         a = 0
@@ -239,6 +304,168 @@ public class FaceDetectionImage : MonoBehaviour
         processedTexture.Apply();
     }
 
+
+    void CalculateSkinColor()
+    {
+        // Variables de calcules de moyennne
+        int leftCompteur = 0;
+        float leftEyeSideSkinRedColorAverage = 0f;
+        float leftEyeSideSkinGreenColorAverage = 0f;
+        float leftEyeSideSkinBlueColorAverage = 0f;
+
+        int rightCompteur = 0;
+        float rightEyeSideSkinRedColorAverage = 0f;
+        float rightEyeSideSkinGreenColorAverage = 0f;
+        float rightEyeSideSkinBlueColorAverage = 0f;
+
+        int frontCompteur = 0;
+        float frontSideSkinRedColorAverage = 0f;
+        float frontSideSkinGreenColorAverage = 0f;
+        float frontSideSkinBlueColorAverage = 0f;
+
+        // parallel for loop
+        Parallel.For(0, imHeight, i =>
+        {
+            for (var j = 0; j < imWidth; j++)
+            {
+                float coordX = j;
+                float coordY = imHeight - i;
+
+                Vec3b vec = videoSourceImageData[j + i * imWidth];
+
+                if (coordX > rectFront.X && coordX < rectFront.X + rectFront.Width &&
+                    coordY > rectFront.Y && coordY < rectFront.Y + rectFront.Height)
+                {
+                    frontCompteur++;
+                    frontSideSkinRedColorAverage += vec.Item2;
+                    frontSideSkinGreenColorAverage += vec.Item1;
+                    frontSideSkinBlueColorAverage += vec.Item0;
+                }
+                else if (coordX > rectEyeLeft.X && coordX < rectEyeLeft.X + rectEyeLeft.Width &&
+                    coordY > rectEyeLeft.Y && coordY < rectEyeLeft.Y + rectEyeLeft.Height)
+                {
+                    leftCompteur++;
+                    leftEyeSideSkinRedColorAverage += vec.Item2;
+                    leftEyeSideSkinGreenColorAverage += vec.Item1;
+                    leftEyeSideSkinBlueColorAverage += vec.Item0;
+                }
+                else if (coordX > rectEyeRight.X && coordX < rectEyeRight.X + rectEyeRight.Width &&
+                    coordY > rectEyeRight.Y && coordY < rectEyeRight.Y + rectEyeRight.Height)
+                {
+                    rightCompteur++;
+                    rightEyeSideSkinRedColorAverage += vec.Item2;
+                    rightEyeSideSkinGreenColorAverage += vec.Item1;
+                    rightEyeSideSkinBlueColorAverage += vec.Item0;
+                }
+            }
+        });
+
+        // Front skin color
+        frontSideSkinRedColorAverage = frontSideSkinRedColorAverage / frontCompteur;
+        frontSideSkinGreenColorAverage = frontSideSkinGreenColorAverage / frontCompteur;
+        frontSideSkinBlueColorAverage = frontSideSkinBlueColorAverage / frontCompteur;
+        couleurPeauFront = new Vec3f(frontSideSkinRedColorAverage, frontSideSkinGreenColorAverage, frontSideSkinBlueColorAverage);
+        Debug.Log(frontCompteur);
+
+        // Right eye side skin color
+        rightEyeSideSkinRedColorAverage = rightEyeSideSkinRedColorAverage / rightCompteur;
+        rightEyeSideSkinGreenColorAverage = rightEyeSideSkinGreenColorAverage / rightCompteur;
+        rightEyeSideSkinBlueColorAverage = rightEyeSideSkinBlueColorAverage / rightCompteur;
+        couleurPeauBasOeilDroit = new Vec3f(rightEyeSideSkinRedColorAverage, rightEyeSideSkinGreenColorAverage, rightEyeSideSkinBlueColorAverage);
+        Debug.Log(rightCompteur);
+
+        // Left eye side skin color
+        leftEyeSideSkinRedColorAverage = leftEyeSideSkinRedColorAverage / leftCompteur;
+        leftEyeSideSkinGreenColorAverage = leftEyeSideSkinGreenColorAverage / leftCompteur;
+        leftEyeSideSkinBlueColorAverage = leftEyeSideSkinBlueColorAverage / leftCompteur;
+        couleurPeauBasOeilGauche = new Vec3f(leftEyeSideSkinRedColorAverage, leftEyeSideSkinGreenColorAverage, leftEyeSideSkinBlueColorAverage);
+        Debug.Log(leftCompteur);
+    }
+
+
+    void CalculateHairColor()
+    {
+        int hairCompteur = 0;
+        float hairRedColorAverage = 0f;
+        float hairGreenColorAverage = 0f;
+        float hairBlueColorAverage = 0f;
+
+        // parallel for loop
+        Parallel.For(0, imHeight, i =>
+        {
+            for (var j = 0; j < imWidth; j++)
+            {
+                float coordX = j;
+                float coordY = imHeight - i;
+
+                Vec3b vec = videoSourceImageData[j + i * imWidth];
+
+                if (coordX > rectCheveux.X && coordX < rectCheveux.X + rectCheveux.Width &&
+                     coordY > rectCheveux.Y && coordY < rectCheveux.Y + rectCheveux.Height)
+                {
+                    hairCompteur++;
+                    hairRedColorAverage += vec.Item2;
+                    hairGreenColorAverage += vec.Item1;
+                    hairBlueColorAverage += vec.Item0;
+                }
+            }
+        });
+
+        // hair color
+        hairRedColorAverage = hairRedColorAverage / hairCompteur;
+        hairGreenColorAverage = hairGreenColorAverage / hairCompteur;
+        hairBlueColorAverage = hairBlueColorAverage / hairCompteur;
+        couleurCheveux = new Vec3f(hairRedColorAverage, hairGreenColorAverage, hairBlueColorAverage);
+        Debug.Log(hairCompteur);
+    }
+
+
+    void DrawTheLineSeparatingHairAndSkin()
+    {
+        Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
+        bool isFind = false;
+        // parallel for loop
+        Parallel.For(0, imHeight, i =>
+        {
+            for (var j = 0; j < imWidth; j++)
+            {
+                float coordX = j;
+                float coordY = imHeight - i;
+
+                Vec3b vec = videoSourceImageData[j + i * imWidth];
+
+                if(coordX == rectFront.X && coordY < rectFront.Y)
+                {
+                    if(Mathf.Abs(vec.Item2 - couleurPeauFront.Item0) < margeErreurCouleurPeau &&
+                        Mathf.Abs(vec.Item1 - couleurPeauFront.Item1) < margeErreurCouleurPeau &&
+                        Mathf.Abs(vec.Item0 - couleurPeauFront.Item2) < margeErreurCouleurPeau)
+                    {
+                        if(!isFind)
+                        {
+                            //Debug.Log("jai reussi !");
+                            if(coordY > maxCoordY)
+                            {
+                                maxCoordY = coordY;
+                            }
+                            isFind = true;
+                        }
+                        else
+                        {
+                            
+                        }
+                    }
+                }
+            }
+        });
+
+        Debug.Log("minCoordY");
+        Debug.Log(maxCoordY);
+        //Debug.Log(rectFront.Y);
+        var lineColor = Scalar.FromRgb(0, 0, 255);
+        Cv2.Line(videoSourceImage, face.X, (int)maxCoordY, face.X + face.Width, (int)maxCoordY, lineColor);
+        rectCheveux = new OpenCvSharp.Rect(rectFront.X, (int)maxCoordY, 25, 25);
+        Cv2.Rectangle(videoSourceImage, rectCheveux, lineColor, 3);
+    }
 
 
     // Simple example of canny edge detect
@@ -284,10 +511,12 @@ public class FaceDetectionImage : MonoBehaviour
             //Cv2.WaitKey(1); // do events
 
             var facec_rectangle_color = Scalar.FromRgb(255, 0, 0);
+            face = faceRect;
             Cv2.Rectangle(_image, faceRect, facec_rectangle_color, 3);
 
-            rectFront = new OpenCvSharp.Rect(faceRect.X + faceRect.Width/2 - 25, faceRect.Y + 50, 50, 50);
-            Cv2.Rectangle(_image, rectFront, global_rectangle_color, 3);
+
+            rectFront = new OpenCvSharp.Rect(faceRect.X + faceRect.Width/2, faceRect.Y + 50, 25, 25);
+            //Cv2.Rectangle(_image, rectFront, global_rectangle_color, 3);
 
 
 
@@ -315,14 +544,14 @@ public class FaceDetectionImage : MonoBehaviour
                 if(eye_count == 1)
                 {
                     // Par rapport à la position de l'oeil gauche
-                    rectEyeLeft = new OpenCvSharp.Rect(eyeRect.X + 10, eyeRect.Y + 100, 50, 50);
-                    Cv2.Rectangle(_image, rectEyeLeft, global_rectangle_color, 3);
+                    rectEyeLeft = new OpenCvSharp.Rect(eyeRect.X + 75, eyeRect.Y + 100, 25, 25);
+                    //Cv2.Rectangle(_image, rectEyeLeft, global_rectangle_color, 3);
                 }
                 else
                 {
                     // Par rapport à la position de l'oeil droit
-                    rectEyeRight = new OpenCvSharp.Rect(eyeRect.X + 35, eyeRect.Y + 100, 50, 50);
-                    Cv2.Rectangle(_image, rectEyeRight, global_rectangle_color, 3);
+                    rectEyeRight = new OpenCvSharp.Rect(eyeRect.X, eyeRect.Y + 100, 25, 25);
+                    //Cv2.Rectangle(_image, rectEyeRight, global_rectangle_color, 3);
                 }
                 
 
@@ -334,49 +563,8 @@ public class FaceDetectionImage : MonoBehaviour
             }
             face_count++;
         }
-        //Debug.Log(face_count);
-        //if (face_count == 1 && !waitSoundEffect)
-        //{
-        //    //Debug.Log(faces[0]);
-        //    //Debug.Log(meshRendererCenter.x);
-        //    //Debug.Log((int)meshRendererCenter.y + 50);
-        //    Point origin = faces[0].Location;
-        //    float width = faces[0].Width;
-        //    float height = faces[0].Height;
-        //    // Verification si le rect de la face est bien dans la zone de photo
-        //    if(origin.X > (int)meshRendererCenter.x + 350 && 
-        //        origin.X + width < (int)meshRendererCenter.x + 350 + 600 &&
-        //        origin.Y > (int)meshRendererCenter.y + 50 &&
-        //        origin.Y + height < (int)meshRendererCenter.y + 5 + 600 &&
-        //        width > 300 &&
-        //        height > 300)
-        //    {
-        //        Debug.Log("Take photo !");
-        //        //TakePhoto();
-        //        soundEffects.MakePhotoSound();
-        //        waitSoundEffect = true;
-        //    }
-        //}
-
-
-
-        //Cv2.ImShow("Haar Detection", _image);
-        //Cv2.WaitKey(1); // do events
     }
 
-
-    //void TakePhoto()
-    //{
-    //    Texture2D photo = new Texture2D(_webcamTexture.width, _webcamTexture.height);
-    //    photo.SetPixels(_webcamTexture.GetPixels());
-    //    photo.Apply();
-
-    //    // Encoding the photo to a PNG
-    //    byte[] bytes = photo.EncodeToPNG();
-
-    //    // Write out the PNG in the mention path
-    //    File.WriteAllBytes("C:/Users/steph/OneDrive/Documents/GitHub/OpenCvSharp_FaceDetector/OpenCVSharp/Assets/" + "photo.png", bytes);
-    //}
 
 
     // Display the original video in a opencv window
