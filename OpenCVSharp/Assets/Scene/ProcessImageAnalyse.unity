@@ -259,7 +259,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 188485116}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 369.5, y: 202, z: 0}
+  m_LocalPosition: {x: 369.5, y: 211, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1708058438}
@@ -462,6 +462,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxCount: 3
   ProcessedTextureRenderer: {fileID: 1323197309}
+  margeErreurCouleurPeau: 5
 --- !u!1 &1708058437
 GameObject:
   m_ObjectHideFlags: 0
@@ -486,7 +487,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1708058437}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1252.5, y: 1, z: -135}
+  m_LocalPosition: {x: -1252.5, y: 10, z: -135}
   m_LocalScale: {x: 2.8172355, y: 1.4657007, z: 1}
   m_Children: []
   m_Father: {fileID: 188485120}
