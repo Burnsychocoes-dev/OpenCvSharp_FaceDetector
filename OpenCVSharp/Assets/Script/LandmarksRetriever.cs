@@ -13,6 +13,8 @@ public class LandmarksRetriever : MonoBehaviour {
 
     [SerializeField]
     private string imagePath;
+	
+	public JsonData landmarks;
 
     public static LandmarksRetriever Instance {
         get;
@@ -84,8 +86,8 @@ public class LandmarksRetriever : MonoBehaviour {
                 { "api_key", "4177793aaba14a666e0b5336f20a669c" },
                 { "selector", "SETPOSE" }
             });
-
-        JsonData data = JsonMapper.ToObject(jsonResponse)["images"][0]["faces"][0];
+        
+        landmarks = JsonMapper.ToObject(jsonResponse)["images"][0]["faces"][0];
     }
 
 }

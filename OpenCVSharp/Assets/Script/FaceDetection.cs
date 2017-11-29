@@ -355,7 +355,7 @@ public class FaceDetection : MonoBehaviour
         byte[] bytes = photo.EncodeToPNG();
 
         // Write out the PNG in the mention path
-        File.WriteAllBytes("C:/Users/steph/OneDrive/Documents/GitHub/OpenCvSharp_FaceDetector/OpenCVSharp/Assets/" + "photo.png", bytes);
+        File.WriteAllBytes(@"Assets/photo.png", bytes);
     }
 
 
