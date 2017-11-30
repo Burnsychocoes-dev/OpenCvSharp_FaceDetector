@@ -408,67 +408,53 @@ Prefab:
     - {fileID: 114755034082173976, guid: 87db39d5eee7763469cc46623828caeb, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 87db39d5eee7763469cc46623828caeb, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1880660641
-GameObject:
+--- !u!1001 &1466471005
+Prefab:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1814249226324084, guid: 34fc33e23aa3d804fa6b0b13d1783639,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1880660644}
-  - component: {fileID: 1880660643}
-  - component: {fileID: 1880660642}
-  m_Layer: 0
-  m_Name: LandmarksRetriever
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1880660642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114462641556931228, guid: 34fc33e23aa3d804fa6b0b13d1783639,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1880660641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89e8e47bfef897c49a84f7db5f16f991, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxCount: 3
-  ProcessedTextureRenderer: {fileID: 361924258}
-  margeErreurCouleurPeau: 20
---- !u!114 &1880660643
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114223808791007766, guid: 34fc33e23aa3d804fa6b0b13d1783639,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1880660641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddb1a2f78ac42264d9ed1d2f3976e33c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  apiEndpoint: http://23.21.173.192/v2/detect
-  imagePath: Assets/photo.png
---- !u!4 &1880660644
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4923147643553254, guid: 34fc33e23aa3d804fa6b0b13d1783639,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1880660641}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4923147643553254, guid: 34fc33e23aa3d804fa6b0b13d1783639, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4923147643553254, guid: 34fc33e23aa3d804fa6b0b13d1783639, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4923147643553254, guid: 34fc33e23aa3d804fa6b0b13d1783639, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4923147643553254, guid: 34fc33e23aa3d804fa6b0b13d1783639, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4923147643553254, guid: 34fc33e23aa3d804fa6b0b13d1783639, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4923147643553254, guid: 34fc33e23aa3d804fa6b0b13d1783639, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4923147643553254, guid: 34fc33e23aa3d804fa6b0b13d1783639, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4923147643553254, guid: 34fc33e23aa3d804fa6b0b13d1783639, type: 2}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114462641556931228, guid: 34fc33e23aa3d804fa6b0b13d1783639,
+        type: 2}
+      propertyPath: ProcessedTextureRenderer
+      value: 
+      objectReference: {fileID: 361924258}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 34fc33e23aa3d804fa6b0b13d1783639, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &2028610503
 GameObject:
   m_ObjectHideFlags: 0

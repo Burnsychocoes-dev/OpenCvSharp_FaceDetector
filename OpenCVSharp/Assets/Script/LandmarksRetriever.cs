@@ -138,18 +138,18 @@ public class LandmarksRetriever : MonoBehaviour {
         Debug.Log("face height :");
         Debug.Log(faceHeight);
 
-        if((int)landmarks["rightEarTragusX"] != -1 && (int)landmarks["leftEarTragusX"] != -1)
-        {
-            faceWidth = Math.Abs((double)landmarks["rightEarTragusX"] - (double)landmarks["leftEarTragusX"]);
-            Debug.Log("face width :");
-            Debug.Log(faceWidth);
-        }
-        else
-        {
-            faceWidth = faceAnalyse.Face.Width - 100;
-            Debug.Log("face width :");
-            Debug.Log(faceWidth);
-        }
+        //if((int)landmarks["rightEarTragusX"] != -1 && (int)landmarks["leftEarTragusX"] != -1)
+        //{
+        //faceWidth = Math.Abs((double)landmarks["rightEarTragusX"] - (double)landmarks["leftEarTragusX"]);
+        //Debug.Log("face width :");
+        //Debug.Log(faceWidth);
+        //}
+        //else
+        //{
+        faceWidth = faceAnalyse.Face.Width - 100;
+        Debug.Log("face width :");
+        Debug.Log(faceWidth);
+        //}
 
         distanceBetweenLipAndChin = Math.Abs((double)landmarks["lipLineMiddleY"] - (double)landmarks["chinTipY"]) / faceHeight;
         Debug.Log("distance between lip and chin :");
