@@ -25,9 +25,13 @@ public class HairDetection : MonoBehaviour {
     private float hairColorCbCrThreshold;
 
     private int yHairRoot =-1;
+    //yHairTop représente le plus haut point de la tête
     private int yHairTop =-1;
-    private int yMaxHair;
+    private int yHairMax;
+    private int hairLength;
+
     private FaceDetectionImage faceDetectionImage;
+    private LandmarksRetriever landMarksRetriever;
 
     //Il me faut l'accès à l'image, ainsi que les coordonnées des joues et du front + les landmarks des coins des yeux et du menton
     // Use this for initialization
@@ -35,6 +39,7 @@ public class HairDetection : MonoBehaviour {
         skinColorSampleYCbCr = new Vec3f[colorSampleListSize];
         hairColorSampleYCbCr = new Vec3f[colorSampleListSize];
         faceDetectionImage = GetComponent<FaceDetectionImage>();
+        landMarksRetriever = GetComponent<LandmarksRetriever>();
 	}
 	
 	// Update is called once per frame
@@ -59,7 +64,7 @@ public class HairDetection : MonoBehaviour {
         //On va chercher la partie supérieure des cheveux
         Debug.Log("Finding Hair YTop");
         FindHairTop();
-        //On va clear la partie peau + les moustaches avec
+        //On va clear la partie peau, on peut tout enlever à la place si on veut
         Debug.Log("Clearing Skin");
         ClearSkin();
         //On va chercher le dernier Y où on apperçoit des cheveux
@@ -281,6 +286,11 @@ public class HairDetection : MonoBehaviour {
                     pixelBlancCounter++;
                     lastPixelBlancY = i;
                 }
+                else
+                {
+                    lastPixelBlancY = -1;
+                    pixelBlancCounter = 0;
+                }
                 
                 if(pixelBlancCounter == nbOfPixelBlancThreshold)
                 {
@@ -335,8 +345,20 @@ public class HairDetection : MonoBehaviour {
         Debug.Log("Clear Face");
         //Si on veut clear toute la face, donc les yeux et les moustaches avec
         //On part du yHairRoot jusqu'au yMenton
-        //On part du xMinLeftEye jusqu'au xMaxRightEye
-        //On met en blanc tout ce qu'il y a dedans
+        for (var i = yHairRoot; i < landMarksRetriever.Chin.Item1; i++)
+        {
+            //On part du xMinLeftEye jusqu'au xMaxRightEye
+            for (var j = (int)(landMarksRetriever.LeftEyeBrowLeft.Item0); j < landMarksRetriever.RightEyeBrowRight.Item0; j++)
+            {
+                //On met en blanc tout ce qu'il y a dedans
+                faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth] = new Vec3b
+                {
+                    Item0 = 255,
+                    Item1 = 255,
+                    Item2 = 255
+                };
+            }
+        }
     }
 
     void FindHairYMax()
@@ -369,19 +391,67 @@ public class HairDetection : MonoBehaviour {
                 {
                     lastPixelHairY = i;
                 }
-                //si on ne trouve plus de cheveux, c'est qu'on a trouvé la fin des cheveux, on met à jour yHairMax
+                
             }
             //Si il n'y a pas eu de cheveu
             if(lastPixelHairY != i)
             {
+                if (lastPixelNonHairY == -1)
+                {
+                    lastPixelNonHairY = i;
+                    pixelNonHairCounter++;
+                }
+                //Si le dernier endroit où il n'y a pas de cheveux était juste au dessus
+                else if(lastPixelNonHairY == i - 1)
+                {
+                    lastPixelNonHairY = i;
+                    pixelNonHairCounter++;
+                }
+                else
+                {
+                    lastPixelNonHairY = -1;
+                    pixelNonHairCounter= 0;
+                }
 
+                if (pixelNonHairCounter == nbOfPixelNonHairThreshold)
+                {
+                    //si on ne trouve plus de cheveux sur threshold pixels, c'est qu'on a trouvé la fin des cheveux, on met à jour yHairMax
+                    yHairMax = i - nbOfPixelNonHairThreshold;
+                    Debug.Log("Hair max found, y : ");
+                    Debug.Log(yHairMax);
+                    return;
+                }
             }
+
         }
     }
 
     void GuessHairLength()
     {
+        Debug.Log("Guess Hair Length");
         //on fait yHairMax - yHairRoot et on compare à la longueur du visage
+        if(yHairRoot == -1)
+        {
+            Debug.Log("Cette personne est chauve !");
+            return;
+        }
+
+        //On va comparer yHairMax par rapport aux landmarks : le nez et le menton
+        if (yHairMax <= landMarksRetriever.Nose.Item1)
+        {
+            Debug.Log("Cette personne a les cheveux court !");
+            return;
+        } else if (yHairMax >= landMarksRetriever.Chin.Item1)
+        {
+            Debug.Log("Cette personne a les cheveux longs !");
+            return;
+        }
+        else
+        {
+            Debug.Log("Cette personne a les cheveux moyens !");
+            return;
+        }
+        
     }
 
     //met à jour l'espérance à partir d'un tableau d'échantillons
