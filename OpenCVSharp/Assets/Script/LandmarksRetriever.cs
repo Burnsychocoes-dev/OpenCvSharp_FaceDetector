@@ -116,8 +116,24 @@ public class LandmarksRetriever : MonoBehaviour {
             Debug.Log("C'est une femme");
         }
 
+        faceHeight = faceAnalyse.Face.Height;
+        Debug.Log("face height :");
+        Debug.Log(faceHeight);
 
-        distanceBetweenLipAndChin = Math.Abs((double)landmarks["lipLineMiddleY"] - (double)landmarks["chinTipY"]);
+        if((int)landmarks["rightEarTragusX"] != -1 && (int)landmarks["leftEarTragusX"] != -1)
+        {
+            faceWidth = Math.Abs((double)landmarks["rightEarTragusX"] - (double)landmarks["leftEarTragusX"]);
+            Debug.Log("face width :");
+            Debug.Log(faceWidth);
+        }
+        else
+        {
+            faceWidth = faceAnalyse.Face.Width - 100;
+            Debug.Log("face width :");
+            Debug.Log(faceWidth);
+        }
+
+        distanceBetweenLipAndChin = Math.Abs((double)landmarks["lipLineMiddleY"] - (double)landmarks["chinTipY"]) / faceHeight;
         Debug.Log("distance between lip and chin :");
         Debug.Log(distanceBetweenLipAndChin);
 
@@ -135,11 +151,11 @@ public class LandmarksRetriever : MonoBehaviour {
         Debug.Log(rightEyeCenter.Item0);
         Debug.Log(rightEyeCenter.Item1);
 
-        leftEyeWidth = Math.Abs((double)landmarks["leftEyeCornerLeftX"] - (double)landmarks["leftEyeCornerRightX"]);
+        leftEyeWidth = Math.Abs((double)landmarks["leftEyeCornerLeftX"] - (double)landmarks["leftEyeCornerRightX"]) / faceWidth;
         Debug.Log("left eye width :");
         Debug.Log(leftEyeWidth);
 
-        rightEyeWidth = Math.Abs((double)landmarks["rightEyeCornerLeftX"] - (double)landmarks["rightEyeCornerRightX"]);
+        rightEyeWidth = Math.Abs((double)landmarks["rightEyeCornerLeftX"] - (double)landmarks["rightEyeCornerRightX"]) / faceWidth;
         Debug.Log("right eye width :");
         Debug.Log(rightEyeWidth);
 
@@ -179,31 +195,31 @@ public class LandmarksRetriever : MonoBehaviour {
         Debug.Log(rightEyeBrowRight.Item0);
         Debug.Log(rightEyeBrowRight.Item1);
 
-        distanceBetweenNoseTopAndEyes = Math.Abs((double)landmarks["noseBtwEyesX"] - (double)landmarks["rightEyeCornerLeftX"]);
+        distanceBetweenNoseTopAndEyes = Math.Abs((double)landmarks["noseBtwEyesX"] - (double)landmarks["rightEyeCornerLeftX"]) / faceWidth;
         Debug.Log("distance between nose and eyes :");
         Debug.Log(distanceBetweenNoseTopAndEyes);
 
 
         // Récuperation des infos sur le nez
-        distanceBetweenNoseTipAndLip = Math.Abs((double)landmarks["noseTipY"] - (double)landmarks["lipLineMiddleY"]);
+        distanceBetweenNoseTipAndLip = Math.Abs((double)landmarks["noseTipY"] - (double)landmarks["lipLineMiddleY"]) / faceHeight;
         Debug.Log("distance between nose tip and lip :");
         Debug.Log(distanceBetweenNoseTipAndLip);
 
-        noseHeight = Math.Abs((double)landmarks["noseTipY"] - (double)landmarks["noseBtwEyesY"]);
+        noseHeight = Math.Abs((double)landmarks["noseTipY"] - (double)landmarks["noseBtwEyesY"]) / faceHeight;
         Debug.Log("nose height :");
         Debug.Log(noseHeight);
 
-        noseWidth = Math.Abs((double)landmarks["nostrilLeftSideX"] - (double)landmarks["nostrilRightSideX"]);
+        noseWidth = Math.Abs((double)landmarks["nostrilLeftSideX"] - (double)landmarks["nostrilRightSideX"]) / faceWidth;
         Debug.Log("nose width :");
         Debug.Log(noseWidth);
 
-        nostrilThickness = Math.Abs((double)landmarks["nostrilRightHoleBottomX"] - (double)landmarks["nostrilRightSideX"]);
+        nostrilThickness = Math.Abs((double)landmarks["nostrilRightHoleBottomX"] - (double)landmarks["nostrilRightSideX"]) / faceWidth;
         Debug.Log("nostril thickness :");
         Debug.Log(nostrilThickness);
 
 
         // Récuperation des infos sur la bouche
-        lipWidth = Math.Abs((double)landmarks["lipCornerLeftX"] - (double)landmarks["lipCornerRightX"]);
+        lipWidth = Math.Abs((double)landmarks["lipCornerLeftX"] - (double)landmarks["lipCornerRightX"]) / faceWidth;
         Debug.Log("lip width :");
         Debug.Log(lipWidth);
 
@@ -227,6 +243,11 @@ public class LandmarksRetriever : MonoBehaviour {
         Debug.Log(chin.Item0);
         Debug.Log(chin.Item1);
 
+        nose.Item0 = (double)landmarks["noseTipX"];
+        nose.Item1 = (double)landmarks["noseTipY"];
+        Debug.Log("nose tip position :");
+        Debug.Log(nose.Item0);
+        Debug.Log(nose.Item1);
     }
 
     void Update()
@@ -324,7 +345,7 @@ public class LandmarksRetriever : MonoBehaviour {
 
     public void RetrieveLandmarks() {
         string jsonResponse = PostRequest(new NameValueCollection() {
-                { "api_key", "3f45aaba7a0ac2708fc55a30e11c2b5f" },
+                { "api_key", "33f36945ebb1854e9d0a782e6108c6d5" },
                 { "selector", "SETPOSE" }
             });
 

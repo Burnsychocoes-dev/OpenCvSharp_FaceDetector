@@ -627,7 +627,7 @@ public class FaceDetectionImage : MonoBehaviour
                     //Debug.Log(m.Height);
                     var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
                     Cv2.Rectangle(_image, m, eye_rectangle_color, 3);
-                    lipHeight = m.Height;
+                    lipHeight = (float)m.Height / (float)face.Height;
                 }
 
                 var detectedEyeGrayImage = new Mat();
