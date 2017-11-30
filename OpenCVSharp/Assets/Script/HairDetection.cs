@@ -41,15 +41,16 @@ public class HairDetection : MonoBehaviour {
 
     //Il me faut l'accès à l'image, ainsi que les coordonnées des joues et du front + les landmarks des coins des yeux et du menton
     // Use this for initialization
-    void Start () {
+    public void Init()
+    {
         skinColorSampleYCbCr = new Vec3f[colorSampleListSize];
         hairColorSampleYCbCr = new Vec3f[colorSampleListSize];
         faceDetectionImage = GetComponent<FaceDetectionImage>();
         landMarksRetriever = GetComponent<LandmarksRetriever>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 
@@ -98,7 +99,9 @@ public class HairDetection : MonoBehaviour {
     void GrabCut()
     {
         Debug.Log("GrabCut");
+        //faceDetectionImage = GetComponent<FaceDetectionImage>();
         Mat result = new Mat(faceDetectionImage.VideoSourceImage.Size(), faceDetectionImage.VideoSourceImage.Type());
+        //Mat result = faceDetectionImage.VideoSourceImage;
         Mat bgModel = new Mat(); //background model
         Mat fgModel = new Mat(); //foreground model
 
