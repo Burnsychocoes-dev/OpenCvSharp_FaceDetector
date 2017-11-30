@@ -134,7 +134,7 @@ public class FaceDetectionImage : MonoBehaviour
 
     void Start()
     {
-        landmarks = GetComponent<LandmarksRetriever>();
+        //landmarks = GetComponent<LandmarksRetriever>();
         hair = GetComponent<HairDetection>();
 
         image = FindObjectOfType<Image>();
@@ -143,7 +143,7 @@ public class FaceDetectionImage : MonoBehaviour
         // initialize video / image with given size
         videoSourceImage = new Mat(imHeight, imWidth, MatType.CV_8UC3);
         videoSourceImageData = new Vec3b[imHeight * imWidth];
-        cannyImage = new Mat(imHeight, imWidth, MatType.CV_8UC1);
+        cannyImage = new Mat(imHeight, imWidth, MatType.CV_8UC3);
         cannyImageData = new byte[imHeight * imWidth];
 
         // create processed video texture as Texture2D object
@@ -177,7 +177,7 @@ public class FaceDetectionImage : MonoBehaviour
         //MatToTexture(videoSourceImage);
 
         hair.Pretraitement();
-        MatToTexture(hair.Matrix2_grabcut);
+        MatToTexture(videoSourceImage);
 
 
         Debug.Log("Couleur de la peau au niveau du front");
