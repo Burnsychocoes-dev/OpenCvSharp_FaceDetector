@@ -22,8 +22,6 @@
 //
 
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 using OpenCvSharp;
 
 
@@ -45,10 +43,16 @@ public class FaceDetectionImage : MonoBehaviour
     private int frameCount = 0;
     [SerializeField]
     private int maxCount = 3;
+
+    [SerializeField]
+    private string imagePath;
+
+    [SerializeField]
+    private Image image;
+
     private bool waitSoundEffect = false;
 
     // Video parameters
-    private Image image;
     private Texture2D imageTexture;
     public MeshRenderer ProcessedTextureRenderer;
 
@@ -137,9 +141,13 @@ public class FaceDetectionImage : MonoBehaviour
         //landmarks = GetComponent<LandmarksRetriever>();
         hair = GetComponent<HairDetection>();
 
-        image = FindObjectOfType<Image>();
-        imageTexture = (Texture2D) image.mainTexture;
+        byte[] photoFile = File.ReadAllBytes(imagePath);
+        imageTexture = new Texture2D(2, 2);
+        imageTexture.LoadImage(photoFile);
+        Sprite imageSprite = Sprite.Create(imageTexture, new UnityEngine.Rect(0,0, imageTexture.width, imageTexture.height), new Vector2(2,0));
         
+        image.sprite = imageSprite;
+
         // initialize video / image with given size
         videoSourceImage = new Mat(imHeight, imWidth, MatType.CV_8UC3);
         videoSourceImageData = new Vec3b[imHeight * imWidth];
@@ -165,9 +173,10 @@ public class FaceDetectionImage : MonoBehaviour
 
         CalculateSkinColor();
 
+
         //DrawTheLineSeparatingHairAndSkin();
 
-        // update the opencv window of source video
+        //update the opencv window of source video
         //UpdateWindow(videoSourceImage);
 
         //CalculateHairColor();
@@ -179,6 +188,8 @@ public class FaceDetectionImage : MonoBehaviour
         hair.Init();
         hair.Pretraitement();
         MatToTexture(videoSourceImage);
+
+        UpdateWindow(videoSourceImage);
 
 
         Debug.Log("Couleur de la peau au niveau du front");
