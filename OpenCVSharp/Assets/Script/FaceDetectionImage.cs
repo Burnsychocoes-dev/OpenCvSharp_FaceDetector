@@ -131,9 +131,11 @@ public class FaceDetectionImage : MonoBehaviour
 
     LandmarksRetriever landmarks;
 
+
     void Start()
     {
         landmarks = GetComponent<LandmarksRetriever>();
+        hair = GetComponent<HairDetection>();
 
         image = FindObjectOfType<Image>();
         imageTexture = (Texture2D) image.mainTexture;
@@ -172,7 +174,10 @@ public class FaceDetectionImage : MonoBehaviour
 
         // convert the OpenCVSharp Mat of canny image to Texture2D
         // the texture will be displayed automatically
-        MatToTexture(videoSourceImage);
+        //MatToTexture(videoSourceImage);
+
+        hair.Pretraitement();
+        MatToTexture(hair.Matrix2_grabcut);
 
 
         Debug.Log("Couleur de la peau au niveau du front");
@@ -187,10 +192,6 @@ public class FaceDetectionImage : MonoBehaviour
         Debug.Log(couleurPeauBasOeilGauche.Item0);
         Debug.Log(couleurPeauBasOeilGauche.Item1);
         Debug.Log(couleurPeauBasOeilGauche.Item2);
-        Debug.Log("Couleur des cheveux");
-        Debug.Log(couleurCheveux.Item0);
-        Debug.Log(couleurCheveux.Item1);
-        Debug.Log(couleurCheveux.Item2);
     }
 
 
@@ -217,18 +218,21 @@ public class FaceDetectionImage : MonoBehaviour
 
 
         //MatToTexture();
-        Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
-        var lineColor = Scalar.FromRgb(0, 0, 0);
-        Cv2.Line(videoSourceImage, (int)landmarks.LeftEyeBrowLeft.Item0, (int)landmarks.LeftEyeBrowLeft.Item1, (int)landmarks.LeftEyeBrowMiddle.Item0, (int)landmarks.LeftEyeBrowMiddle.Item1, lineColor);
-        Cv2.Line(videoSourceImage, (int)landmarks.LeftEyeBrowMiddle.Item0, (int)landmarks.LeftEyeBrowMiddle.Item1, (int)landmarks.LeftEyeBrowRight.Item0, (int)landmarks.LeftEyeBrowRight.Item1, lineColor);
 
-        Cv2.Line(videoSourceImage, (int)landmarks.RightEyeBrowRight.Item0, (int)landmarks.RightEyeBrowRight.Item1, (int)landmarks.RightEyeBrowMiddle.Item0, (int)landmarks.RightEyeBrowMiddle.Item1, lineColor);
-        Cv2.Line(videoSourceImage, (int)landmarks.RightEyeBrowMiddle.Item0, (int)landmarks.RightEyeBrowMiddle.Item1, (int)landmarks.RightEyeBrowRight.Item0, (int)landmarks.RightEyeBrowRight.Item1, lineColor);
-        Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
-        MatToTexture(videoSourceImage);
+        //// Partie dessin des sourcils
+        //Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
+        //var lineColor = Scalar.FromRgb(0, 0, 0);
+        //Cv2.Line(videoSourceImage, (int)landmarks.LeftEyeBrowLeft.Item0, (int)landmarks.LeftEyeBrowLeft.Item1, (int)landmarks.LeftEyeBrowMiddle.Item0, (int)landmarks.LeftEyeBrowMiddle.Item1, lineColor);
+        //Cv2.Line(videoSourceImage, (int)landmarks.LeftEyeBrowMiddle.Item0, (int)landmarks.LeftEyeBrowMiddle.Item1, (int)landmarks.LeftEyeBrowRight.Item0, (int)landmarks.LeftEyeBrowRight.Item1, lineColor);
+
+        //Cv2.Line(videoSourceImage, (int)landmarks.RightEyeBrowRight.Item0, (int)landmarks.RightEyeBrowRight.Item1, (int)landmarks.RightEyeBrowMiddle.Item0, (int)landmarks.RightEyeBrowMiddle.Item1, lineColor);
+        //Cv2.Line(videoSourceImage, (int)landmarks.RightEyeBrowMiddle.Item0, (int)landmarks.RightEyeBrowMiddle.Item1, (int)landmarks.RightEyeBrowRight.Item0, (int)landmarks.RightEyeBrowRight.Item1, lineColor);
+        //Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
+        //MatToTexture(videoSourceImage);
 
 
         //UpdateWindow(videoSourceImage);
+
     }
 
 
