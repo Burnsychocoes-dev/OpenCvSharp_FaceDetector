@@ -28,10 +28,16 @@ public class HairDetection : MonoBehaviour {
     //yHairTop représente le plus haut point de la tête
     private int yHairTop =-1;
     private int yHairMax;
-    private int hairLength;
+    private int hairHeight;
 
     private FaceDetectionImage faceDetectionImage;
     private LandmarksRetriever landMarksRetriever;
+
+    private Mat matrix2_grabcut;
+    public Mat Matrix2_grabcut
+    {
+        get { return matrix2_grabcut; }
+    }
 
     //Il me faut l'accès à l'image, ainsi que les coordonnées des joues et du front + les landmarks des coins des yeux et du menton
     // Use this for initialization
@@ -76,12 +82,34 @@ public class HairDetection : MonoBehaviour {
         //On décide
         Debug.Log("Guessing Hair Length");
         GuessHairLength();
+
+        Debug.Log("Guessing Hair Height");
+        GuessHairHeight();
     }
 
-    void Pretraitement()
+    public void Pretraitement()
     {
         Debug.Log("Pretreat");
         //Augmentation du contraste ou non
+        Debug.Log("GrabCutting");
+        GrabCut();
+    }
+
+    void GrabCut()
+    {
+        Debug.Log("GrabCut");
+        Mat result = faceDetectionImage.VideoSourceImage;
+        Mat bgModel = new Mat(); //background model
+        Mat fgModel = new Mat(); //foreground model
+
+        //draw a rectangle 
+        OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(1, 1, faceDetectionImage.VideoSourceImage.Cols - 1, faceDetectionImage.VideoSourceImage.Rows - 1);
+        Cv2.GrabCut(faceDetectionImage.VideoSourceImage, result, rectangle, bgModel, fgModel, 10, GrabCutModes.InitWithRect);
+        Cv2.Compare(result, new Scalar(3, 3, 3), result,CmpTypes.EQ);
+        matrix2_grabcut = new Mat(faceDetectionImage.VideoSourceImage.Size(),MatType.CV_8UC3, new Scalar(255, 255, 255));
+        faceDetectionImage.VideoSourceImage.CopyTo(matrix2_grabcut, result);
+        
+
     }
 
     void GetSkinColor()
@@ -98,8 +126,8 @@ public class HairDetection : MonoBehaviour {
             {
                 float coordX = j;
                 float coordY = faceDetectionImage.ImHeight - i;
-                Vec3b vec = faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth];
-
+                //Vec3b vec = faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth];
+                Vec3b vec = matrix2_grabcut.At<Vec3b>(i * faceDetectionImage.ImWidth, j);
                 //>>>Récupérations d'échantillons de couleur du front
                 if (coordX > faceDetectionImage.RectFront.X && coordX < faceDetectionImage.RectFront.X + faceDetectionImage.RectFront.Width &&
                     coordY > faceDetectionImage.RectFront.Y && coordY < faceDetectionImage.RectFront.Y + faceDetectionImage.RectFront.Height && youCanPick == 0 && skinColorCounter < colorSampleListSize/2)
@@ -171,7 +199,8 @@ public class HairDetection : MonoBehaviour {
         int j = faceDetectionImage.RectFront.X+faceDetectionImage.RectFront.Width/2;
         for(var i = faceDetectionImage.RectFront.Y; i>0; i--)
         {
-            Vec3b vec = faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth];
+            //Vec3b vec = faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth];
+            Vec3b vec = matrix2_grabcut.At<Vec3b>(i * faceDetectionImage.ImWidth, j);
             Color32 color = new Color32
             {
                 r = vec.Item2,
@@ -223,7 +252,8 @@ public class HairDetection : MonoBehaviour {
             //Pour ne pas prendre des pixels en dehors de la tête
             for (var j = faceDetectionImage.Face.X+faceDetectionImage.Face.Width/4; j < faceDetectionImage.Face.X + 3*faceDetectionImage.Face.Width / 4; j++)
             {
-                Vec3b vec = faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth];
+                //Vec3b vec = faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth];
+                Vec3b vec = matrix2_grabcut.At<Vec3b>(i * faceDetectionImage.ImWidth, j);
                 Color32 color = new Color32
                 {
                     r = vec.Item2,
@@ -267,7 +297,8 @@ public class HairDetection : MonoBehaviour {
         //On part de yRoot
         for (var i = yHairRoot; i > 0; i--)
         {
-            Vec3b vec = faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth];
+            //Vec3b vec = faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth];
+            Vec3b vec = matrix2_grabcut.At<Vec3b>(i * faceDetectionImage.ImWidth, j);
             Color32 color = new Color32
             {
                 r = vec.Item2,
@@ -317,7 +348,8 @@ public class HairDetection : MonoBehaviour {
         {
             for (var j = 0; j < faceDetectionImage.ImWidth; j++)
             {
-                Vec3b vec = faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth];
+                //Vec3b vec = faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth];
+                Vec3b vec = matrix2_grabcut.At<Vec3b>(i * faceDetectionImage.ImWidth, j);
                 Color32 color = new Color32
                 {
                     r = vec.Item2,
@@ -329,12 +361,19 @@ public class HairDetection : MonoBehaviour {
                 //Si c'est de la peau, on enlève
                 if (EuclidianDistance(sample.Item1, sample.Item2, skinColorYCbCrExpectancy) < skinColorCbCrThreshold)
                 {
-                    faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth] = new Vec3b
+                    //faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth] = new Vec3b
+                    //{
+                    //    Item0 = 255,
+                    //    Item1 = 255,
+                    //    Item2 = 255
+                    //};
+
+                    matrix2_grabcut.Set<Vec3b>(i * faceDetectionImage.ImWidth + j, new Vec3b
                     {
                         Item0 = 255,
                         Item1 = 255,
                         Item2 = 255
-                    };
+                    });
                 }
             }
         }
@@ -351,7 +390,8 @@ public class HairDetection : MonoBehaviour {
         {
             for (var j = 0; j < faceDetectionImage.ImWidth; j++)
             {
-                Vec3b vec = faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth];
+                //Vec3b vec = faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth];
+                Vec3b vec = matrix2_grabcut.At<Vec3b>(i * faceDetectionImage.ImWidth, j);
                 Color32 color = new Color32
                 {
                     r = vec.Item2,
@@ -363,12 +403,18 @@ public class HairDetection : MonoBehaviour {
                 //Si ce n'est pas des cheveux
                 if (EuclidianDistance(sample.Item1, sample.Item2, hairColorYCbCrExpectancy) > hairColorCbCrThreshold)
                 {
-                    faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth] = new Vec3b
+                    //faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth] = new Vec3b
+                    //{
+                    //    Item0 = 255,
+                    //    Item1 = 255,
+                    //    Item2 = 255
+                    //};
+                    matrix2_grabcut.Set<Vec3b>(i * faceDetectionImage.ImWidth + j,new Vec3b
                     {
                         Item0 = 255,
                         Item1 = 255,
                         Item2 = 255
-                    };
+                    });
                 }
             }
         }
@@ -385,12 +431,19 @@ public class HairDetection : MonoBehaviour {
             for (var j = (int)(landMarksRetriever.LeftEyeBrowLeft.Item0); j < landMarksRetriever.RightEyeBrowRight.Item0; j++)
             {
                 //On met en blanc tout ce qu'il y a dedans
-                faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth] = new Vec3b
+                //faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth] = new Vec3b
+                //{
+                //    Item0 = 255,
+                //    Item1 = 255,
+                //    Item2 = 255
+                //};
+
+                matrix2_grabcut.Set<Vec3b>(i * faceDetectionImage.ImWidth + j, new Vec3b
                 {
                     Item0 = 255,
                     Item1 = 255,
                     Item2 = 255
-                };
+                });
             }
         }
     }
@@ -412,7 +465,8 @@ public class HairDetection : MonoBehaviour {
             {
 
                 //On va balayer l'image vers le bas à la recherche de cheveux -> condition = on trouve au moins 4 pixels correspondant à des cheveux pour une ligne (ou bien on met une autre condition)s
-                Vec3b vec = faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth];
+                //Vec3b vec = faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth];
+                Vec3b vec = matrix2_grabcut.At<Vec3b>(i * faceDetectionImage.ImWidth, j);
                 Color32 color = new Color32
                 {
                     r = vec.Item2,
@@ -486,6 +540,26 @@ public class HairDetection : MonoBehaviour {
             return;
         }
         
+    }
+
+    void GuessHairHeight()
+    {
+        Debug.Log("Guess Hair Height");
+        hairHeight = yHairRoot - yHairTop;
+        if (hairHeight >= faceDetectionImage.Face.Height / 3)
+        {
+            Debug.Log("Cette personne a les cheveux épais !");
+            return;
+        }else if(hairHeight <= faceDetectionImage.Face.Height / 6)
+        {
+            Debug.Log("Cette personne a les cheveux non épais !");
+            return;
+        }
+        else
+        {
+            Debug.Log("Cette personne a les cheveux moyen épais !");
+            return;
+        }
     }
 
     //met à jour l'espérance à partir d'un tableau d'échantillons

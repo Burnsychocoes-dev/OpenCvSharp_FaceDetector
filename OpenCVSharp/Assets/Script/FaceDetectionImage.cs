@@ -91,6 +91,10 @@ public class FaceDetectionImage : MonoBehaviour
 
     // OpenCVSharp parameters
     private Mat videoSourceImage;
+    public Mat VideoSourceImage
+    {
+        get { return videoSourceImage; }
+    }
     private Mat cannyImage;
     private Texture2D processedTexture;
     private Vec3b[] videoSourceImageData;
