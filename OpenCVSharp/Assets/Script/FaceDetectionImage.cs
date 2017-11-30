@@ -169,7 +169,7 @@ public class FaceDetectionImage : MonoBehaviour
         //DrawTheLineSeparatingHairAndSkin();
 
         //update the opencv window of source video
-        UpdateWindow(videoSourceImage);
+        //UpdateWindow(videoSourceImage);
 
         //CalculateHairColor();
 
@@ -179,6 +179,8 @@ public class FaceDetectionImage : MonoBehaviour
 
         hair.Pretraitement();
         MatToTexture(videoSourceImage);
+
+        UpdateWindow(videoSourceImage);
 
 
         Debug.Log("Couleur de la peau au niveau du front");

@@ -95,20 +95,21 @@ public class HairDetection : MonoBehaviour {
         GrabCut();
     }
 
-    void GrabCut()
+    public void GrabCut()
     {
         Debug.Log("GrabCut");
-        Mat result = new Mat(faceDetectionImage.VideoSourceImage.Size(), faceDetectionImage.VideoSourceImage.Type());
+        faceDetectionImage = GetComponent<FaceDetectionImage>();
+        Mat result1 = new Mat(faceDetectionImage.VideoSourceImage.Size(), faceDetectionImage.VideoSourceImage.Type());
         Mat bgModel = new Mat(); //background model
         Mat fgModel = new Mat(); //foreground model
 
         //draw a rectangle 
         //OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(1, 1, faceDetectionImage.VideoSourceImage.Cols - 1, faceDetectionImage.VideoSourceImage.Rows - 1);
         OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(faceDetectionImage.Face.X - 100, faceDetectionImage.Face.Y - 100, faceDetectionImage.Face.Width + 200, faceDetectionImage.Face.Height + 200);
-        Cv2.GrabCut(faceDetectionImage.VideoSourceImage, result, rectangle, bgModel, fgModel, 10, GrabCutModes.InitWithRect);
-        Cv2.Compare(result, new Scalar(3, 3, 3), result,CmpTypes.EQ);
+        Cv2.GrabCut(faceDetectionImage.VideoSourceImage, result1, rectangle, bgModel, fgModel, 10, GrabCutModes.InitWithRect);
+        Cv2.Compare(result1, new Scalar(3, 3, 3), result1, CmpTypes.EQ);
         matrix2_grabcut = new Mat(faceDetectionImage.ImHeight, faceDetectionImage.ImWidth, MatType.CV_8UC3, new Scalar(255, 255, 255));
-        faceDetectionImage.VideoSourceImage.CopyTo(matrix2_grabcut, result);
+        faceDetectionImage.VideoSourceImage.CopyTo(matrix2_grabcut, result1);
 
         matrix2_grabcut.CopyTo(faceDetectionImage.VideoSourceImage);
         
