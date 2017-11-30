@@ -59,6 +59,7 @@ public class FaceDetectionImage : MonoBehaviour
     OpenCvSharp.Rect rectEyeRight;
     OpenCvSharp.Rect face;
     OpenCvSharp.Rect rectCheveux;
+    OpenCvSharp.Rect rectMouth;
 
     // Video size
     private const int imWidth = 1280;
@@ -91,6 +92,12 @@ public class FaceDetectionImage : MonoBehaviour
     private float margeErreurCouleurPeau = 20f;
     private float maxCoordY = 0f;
     static bool isFind = false;
+    private float lipHeight;
+    public float LipHeight
+    {
+        get { return lipHeight; }
+        set { lipHeight = value; }
+    }
 
     HairDetection hair;
 
@@ -124,12 +131,12 @@ public class FaceDetectionImage : MonoBehaviour
 
         CalculateSkinColor();
 
-        DrawTheLineSeparatingHairAndSkin();
+        //DrawTheLineSeparatingHairAndSkin();
 
         // update the opencv window of source video
-        UpdateWindow(videoSourceImage);
+        //UpdateWindow(videoSourceImage);
 
-        CalculateHairColor();
+        //CalculateHairColor();
 
         // convert the OpenCVSharp Mat of canny image to Texture2D
         // the texture will be displayed automatically
@@ -491,6 +498,8 @@ public class FaceDetectionImage : MonoBehaviour
         face_cascade.Load(Application.dataPath + "/Plugins/Classifiers/haarcascade_frontalface_default.xml");
         var eye_cascade = new CascadeClassifier();
         eye_cascade.Load(Application.dataPath + "/Plugins/Classifiers/haarcascade_eye_tree_eyeglasses.xml");
+        var mouth_cascade = new CascadeClassifier();
+        mouth_cascade.Load(Application.dataPath + "/Plugins/Classifiers/haarcascade_mcs_mouth.xml");
         //Debug.Log(" ");
 
         var faces = face_cascade.DetectMultiScale(
@@ -514,6 +523,8 @@ public class FaceDetectionImage : MonoBehaviour
         //var rnd = new System.Random();
 
         var face_count = 0;
+        var mouth_count = 0;
+        var eye_count = 0;
         foreach (var faceRect in faces)
         {
             var detectedFaceImage = new Mat(_image, faceRect);
@@ -525,7 +536,7 @@ public class FaceDetectionImage : MonoBehaviour
             Cv2.Rectangle(_image, faceRect, facec_rectangle_color, 3);
 
 
-            rectFront = new OpenCvSharp.Rect(faceRect.X + faceRect.Width/2, faceRect.Y + 50, 25, 25);
+            rectFront = new OpenCvSharp.Rect(faceRect.X + faceRect.Width/2 - 50, faceRect.Y + 50, 100, 50);
             //Cv2.Rectangle(_image, rectFront, global_rectangle_color, 3);
 
 
@@ -541,7 +552,7 @@ public class FaceDetectionImage : MonoBehaviour
                 minSize: new Size(50, 50)
             );
 
-            var eye_count = 0;
+            
             foreach (var eyeRect in eyes)
             {
                 var detectedEyeImage = new Mat(_image, eyeRect);
@@ -549,7 +560,7 @@ public class FaceDetectionImage : MonoBehaviour
                 //Cv2.WaitKey(1); // do events
 
                 var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
-                Cv2.Rectangle(_image, eyeRect, eye_rectangle_color, 3);
+                //Cv2.Rectangle(_image, eyeRect, eye_rectangle_color, 3);
 
                 if(eye_count == 1)
                 {
@@ -571,6 +582,36 @@ public class FaceDetectionImage : MonoBehaviour
 
                 eye_count++;
             }
+
+
+            var mouth = mouth_cascade.DetectMultiScale(
+              image: grayImage,
+              scaleFactor: 1.3,
+              minNeighbors: 5,
+              flags: HaarDetectionType.DoRoughSearch | HaarDetectionType.ScaleImage,
+              minSize: new Size(50, 50)
+            );
+            foreach (var m in mouth)
+            {
+                var detectedEarImage = new Mat(_image, m);
+                //Cv2.ImShow(string.Format("Face {0}", eye_count), detectedEyeImage);
+                //Cv2.WaitKey(1); // do events
+
+                if(m.Y > eyes[0].Y && Mathf.Abs(m.Y - eyes[0].Y) > 100)
+                {
+                    //Debug.Log("mouth height :");
+                    //Debug.Log(m.Height);
+                    var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
+                    Cv2.Rectangle(_image, m, eye_rectangle_color, 3);
+                    lipHeight = m.Height;
+                }
+
+                var detectedEyeGrayImage = new Mat();
+                Cv2.CvtColor(detectedEarImage, detectedEyeGrayImage, ColorConversionCodes.BGRA2GRAY);
+
+                mouth_count++;
+            }
+
             face_count++;
         }
     }

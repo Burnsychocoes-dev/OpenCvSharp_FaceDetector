@@ -140,7 +140,7 @@ public class FaceDetection : MonoBehaviour
                     frameCount++;
                     if (frameCount == maxCount)
                     {
-                        SceneManager.LoadScene("Analyse_photo");
+                        SceneManager.LoadScene("ProcessImageAnalyse");
                     }
                 }
             }
@@ -251,13 +251,13 @@ public class FaceDetection : MonoBehaviour
         var face_cascade = new CascadeClassifier();
         face_cascade.Load(Application.dataPath + "/Plugins/Classifiers/haarcascade_frontalface_default.xml");
         var eye_cascade = new CascadeClassifier();
-        eye_cascade.Load(Application.dataPath + "/Plugins/Classifiers/haarcascade_eye.xml");
-        var right_ear_cascade = new CascadeClassifier();
-        right_ear_cascade.Load(Application.dataPath + "/Plugins/Classifiers/haarcascade_mcs_leftear.xml");
-        var left_ear_cascade = new CascadeClassifier();
-        left_ear_cascade.Load(Application.dataPath + "/Plugins/Classifiers/haarcascade_mcs_rightear.xml");
-        var mouth_cascade = new CascadeClassifier();
-        mouth_cascade.Load(Application.dataPath + "/Plugins/Classifiers/haarcascade_mcs_mouth.xml");
+        eye_cascade.Load(Application.dataPath + "/Plugins/Classifiers/haarcascade_eye_tree_eyeglasses.xml");
+        //var right_ear_cascade = new CascadeClassifier();
+        //right_ear_cascade.Load(Application.dataPath + "/Plugins/Classifiers/haarcascade_mcs_leftear.xml");
+        //var left_ear_cascade = new CascadeClassifier();
+        //left_ear_cascade.Load(Application.dataPath + "/Plugins/Classifiers/haarcascade_mcs_rightear.xml");
+        //var mouth_cascade = new CascadeClassifier();
+        //mouth_cascade.Load(Application.dataPath + "/Plugins/Classifiers/haarcascade_mcs_mouth.xml");
         //Debug.Log(" ");
 
         var faces = face_cascade.DetectMultiScale(
@@ -282,8 +282,8 @@ public class FaceDetection : MonoBehaviour
 
         var face_count = 0;
         var eye_count = 0;
-        var ear_count = 0;
-        var mouth_count = 0;
+        //var ear_count = 0;
+        //var mouth_count = 0;
         foreach (var faceRect in faces)
         {
             var detectedFaceImage = new Mat(_image, faceRect);
@@ -322,76 +322,76 @@ public class FaceDetection : MonoBehaviour
             }
 
 
-            var left_ear = left_ear_cascade.DetectMultiScale(
-                image: grayImage,
-                scaleFactor: 1.3,
-                minNeighbors: 5,
-                flags: HaarDetectionType.DoRoughSearch | HaarDetectionType.ScaleImage,
-                minSize: new Size(50, 50)
-            );
-            foreach (var ear in left_ear)
-            {
-                var detectedEarImage = new Mat(_image, ear);
-                //Cv2.ImShow(string.Format("Face {0}", eye_count), detectedEyeImage);
-                //Cv2.WaitKey(1); // do events
+            //var left_ear = left_ear_cascade.DetectMultiScale(
+            //    image: grayImage,
+            //    scaleFactor: 1.3,
+            //    minNeighbors: 5,
+            //    flags: HaarDetectionType.DoRoughSearch | HaarDetectionType.ScaleImage,
+            //    minSize: new Size(50, 50)
+            //);
+            //foreach (var ear in left_ear)
+            //{
+            //    var detectedEarImage = new Mat(_image, ear);
+            //    //Cv2.ImShow(string.Format("Face {0}", eye_count), detectedEyeImage);
+            //    //Cv2.WaitKey(1); // do events
 
-                var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
-                Cv2.Rectangle(_image, ear, eye_rectangle_color, 3);
-
-
-                var detectedEyeGrayImage = new Mat();
-                Cv2.CvtColor(detectedEarImage, detectedEyeGrayImage, ColorConversionCodes.BGRA2GRAY);
-
-                ear_count++;
-            }
+            //    var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
+            //    Cv2.Rectangle(_image, ear, eye_rectangle_color, 3);
 
 
-             var right_ear = right_ear_cascade.DetectMultiScale(
-                image: grayImage,
-                scaleFactor: 1.3,
-                minNeighbors: 5,
-                flags: HaarDetectionType.DoRoughSearch | HaarDetectionType.ScaleImage,
-                minSize: new Size(50, 50)
-            );
-            foreach (var ear in right_ear)
-            {
-                var detectedEarImage = new Mat(_image, ear);
-                //Cv2.ImShow(string.Format("Face {0}", eye_count), detectedEyeImage);
-                //Cv2.WaitKey(1); // do events
+            //    var detectedEyeGrayImage = new Mat();
+            //    Cv2.CvtColor(detectedEarImage, detectedEyeGrayImage, ColorConversionCodes.BGRA2GRAY);
 
-                var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
-                Cv2.Rectangle(_image, ear, eye_rectangle_color, 3);
+            //    ear_count++;
+            //}
 
 
-                var detectedEyeGrayImage = new Mat();
-                Cv2.CvtColor(detectedEarImage, detectedEyeGrayImage, ColorConversionCodes.BGRA2GRAY);
+            // var right_ear = right_ear_cascade.DetectMultiScale(
+            //    image: grayImage,
+            //    scaleFactor: 1.3,
+            //    minNeighbors: 5,
+            //    flags: HaarDetectionType.DoRoughSearch | HaarDetectionType.ScaleImage,
+            //    minSize: new Size(50, 50)
+            //);
+            //foreach (var ear in right_ear)
+            //{
+            //    var detectedEarImage = new Mat(_image, ear);
+            //    //Cv2.ImShow(string.Format("Face {0}", eye_count), detectedEyeImage);
+            //    //Cv2.WaitKey(1); // do events
 
-                ear_count++;
-            }
-
-
-             var mouth = mouth_cascade.DetectMultiScale(
-                image: grayImage,
-                scaleFactor: 1.3,
-                minNeighbors: 5,
-                flags: HaarDetectionType.DoRoughSearch | HaarDetectionType.ScaleImage,
-                minSize: new Size(50, 50)
-            );
-            foreach (var m in mouth)
-            {
-                var detectedEarImage = new Mat(_image, m);
-                //Cv2.ImShow(string.Format("Face {0}", eye_count), detectedEyeImage);
-                //Cv2.WaitKey(1); // do events
-
-                var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
-                Cv2.Rectangle(_image, m, eye_rectangle_color, 3);
+            //    var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
+            //    Cv2.Rectangle(_image, ear, eye_rectangle_color, 3);
 
 
-                var detectedEyeGrayImage = new Mat();
-                Cv2.CvtColor(detectedEarImage, detectedEyeGrayImage, ColorConversionCodes.BGRA2GRAY);
+            //    var detectedEyeGrayImage = new Mat();
+            //    Cv2.CvtColor(detectedEarImage, detectedEyeGrayImage, ColorConversionCodes.BGRA2GRAY);
 
-                mouth_count++;
-            }
+            //    ear_count++;
+            //}
+
+
+            // var mouth = mouth_cascade.DetectMultiScale(
+            //    image: grayImage,
+            //    scaleFactor: 1.3,
+            //    minNeighbors: 5,
+            //    flags: HaarDetectionType.DoRoughSearch | HaarDetectionType.ScaleImage,
+            //    minSize: new Size(50, 50)
+            //);
+            //foreach (var m in mouth)
+            //{
+            //    var detectedEarImage = new Mat(_image, m);
+            //    //Cv2.ImShow(string.Format("Face {0}", eye_count), detectedEyeImage);
+            //    //Cv2.WaitKey(1); // do events
+
+            //    var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
+            //    Cv2.Rectangle(_image, m, eye_rectangle_color, 3);
+
+
+            //    var detectedEyeGrayImage = new Mat();
+            //    Cv2.CvtColor(detectedEarImage, detectedEyeGrayImage, ColorConversionCodes.BGRA2GRAY);
+
+            //    mouth_count++;
+            //}
             face_count++;
         }
         //Debug.Log(face_count);

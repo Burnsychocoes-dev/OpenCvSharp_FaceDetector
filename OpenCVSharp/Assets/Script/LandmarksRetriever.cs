@@ -51,6 +51,15 @@ public class LandmarksRetriever : MonoBehaviour {
     private double topLipHeight;
     private double buttomLipHeight;
 
+    // Information utile pour hair detection
+    private Vec2d leftEyeCorner;
+    private Vec2d rightEyeCorner;
+    private Vec2d chin;
+
+    private FaceDetectionImage faceAnalyse;
+
+    private bool updateLip = false;
+
 
     public static LandmarksRetriever Instance {
         get;
@@ -73,6 +82,8 @@ public class LandmarksRetriever : MonoBehaviour {
     }
 
     void Start() {
+        faceAnalyse = GetComponent<FaceDetectionImage>();
+
         RetrieveLandmarks();
 
         // Récupération des infos sur le visages
@@ -84,8 +95,9 @@ public class LandmarksRetriever : MonoBehaviour {
         }
         else
         {
-            Debug.Log("C'est une femmme");
+            Debug.Log("C'est une femme");
         }
+
 
         distanceBetweenLipAndChin = Math.Abs((double)landmarks["lipLineMiddleY"] - (double)landmarks["chinTipY"]);
         Debug.Log("distance between lip and chin :");
@@ -178,29 +190,77 @@ public class LandmarksRetriever : MonoBehaviour {
         Debug.Log(lipWidth);
 
 
-        try
+        // Récuperation des infos utiles pour la hair detection
+        leftEyeCorner.Item0 = (double)landmarks["leftEyeCornerLeftX"];
+        leftEyeCorner.Item1 = (double)landmarks["leftEyeCornerLeftY"];
+        Debug.Log("left eye corner position :");
+        Debug.Log(leftEyeCorner.Item0);
+        Debug.Log(leftEyeCorner.Item1);
+
+        rightEyeCorner.Item0 = (double)landmarks["rightEyeCornerRightX"];
+        rightEyeCorner.Item1 = (double)landmarks["rightEyeCornerRightY"];
+        Debug.Log("right eye corner position :");
+        Debug.Log(rightEyeCorner.Item0);
+        Debug.Log(rightEyeCorner.Item1);
+
+        chin.Item0 = (double)landmarks["chinTipX"];
+        chin.Item1 = (double)landmarks["chinTipY"];
+        Debug.Log("chin tip position :");
+        Debug.Log(chin.Item0);
+        Debug.Log(chin.Item1);
+
+    }
+
+    void Update()
+    {
+      if(faceAnalyse.LipHeight != 0 && !updateLip)
         {
+            updateLip = true;
+            Debug.Log("lip height :");
+            Debug.Log(faceAnalyse.LipHeight);
+            try
+            {
 
-            //Pass the filepath and filename to the StreamWriter Constructor
-            StreamWriter sw = new StreamWriter("Assets/Test.txt");
+                //Pass the filepath and filename to the StreamWriter Constructor
+                StreamWriter sw = new StreamWriter("Assets/Test.txt");
 
-            //Write a line of text
-            sw.WriteLine("Hello World!!");
+                sw.WriteLine("Start of analyse");
 
-            //Write a second line of text
-            sw.WriteLine("From the StreamWriter class");
+                sw.WriteLine(gender);
 
-            //Close the file
-            sw.Close();
+                sw.WriteLine(leftEyeWidth);
+
+                sw.WriteLine(rightEyeWidth);
+
+                sw.WriteLine(distanceBetweenNoseTopAndEyes);
+
+                sw.WriteLine(distanceBetweenNoseTipAndLip);
+
+                sw.WriteLine(noseHeight);
+
+                sw.WriteLine(noseWidth);
+
+                sw.WriteLine(nostrilThickness);
+
+                sw.WriteLine(lipWidth);
+
+                sw.WriteLine(faceAnalyse.LipHeight);
+
+                sw.WriteLine("End of analyse");
+
+                //Close the file
+                sw.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: " + e.Message);
+            }
+            finally
+            {
+                Console.WriteLine("Executing finally block.");
+            }
         }
-        catch (Exception e)
-        {
-            Console.WriteLine("Exception: " + e.Message);
-        }
-        finally
-        {
-            Console.WriteLine("Executing finally block.");
-        }
+            
     }
 
     public string PostRequest(NameValueCollection parameters) {
@@ -246,9 +306,11 @@ public class LandmarksRetriever : MonoBehaviour {
 
     public void RetrieveLandmarks() {
         string jsonResponse = PostRequest(new NameValueCollection() {
-                { "api_key", "30e4a976e664b960fe9be4223061168d" },
+                { "api_key", "3f45aaba7a0ac2708fc55a30e11c2b5f" },
                 { "selector", "SETPOSE" }
             });
+
+        Debug.Log(jsonResponse);
         
         landmarks = JsonMapper.ToObject(jsonResponse)["images"][0]["faces"][0];
 
