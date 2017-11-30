@@ -29,11 +29,19 @@ public class LandmarksRetriever : MonoBehaviour {
     private double leftEyeWidth;
     private double rightEyeWidth;
     private Vec2d leftEyeBrowLeft;
+    public Vec2d LeftEyeBrowLeft
+    {
+        get { return leftEyeBrowLeft; }
+    }
     private Vec2d leftEyeBrowMiddle;
     private Vec2d leftEyeBrowRight;
     private Vec2d rightEyeBrowLeft;
     private Vec2d rightEyeBrowMiddle;
     private Vec2d rightEyeBrowRight;
+    public Vec2d RightEyeBrowRight
+    {
+        get { return rightEyeBrowRight; }
+    }
     private double distanceBetweenNoseTopAndEyes;
 
     // Information sur le nez
@@ -55,6 +63,16 @@ public class LandmarksRetriever : MonoBehaviour {
     private Vec2d leftEyeCorner;
     private Vec2d rightEyeCorner;
     private Vec2d chin;
+    public Vec2d Chin
+    {
+        get { return chin; }
+    }
+
+    private Vec2d nose;
+    public Vec2d Nose
+    {
+        get { return nose; }
+    }
 
     private FaceDetectionImage faceAnalyse;
 
