@@ -125,8 +125,12 @@ public class FaceDetectionImage : MonoBehaviour
 
     HairDetection hair;
 
+    LandmarksRetriever landmarks;
+
     void Start()
     {
+        landmarks = GetComponent<LandmarksRetriever>();
+
         image = FindObjectOfType<Image>();
         imageTexture = (Texture2D) image.mainTexture;
         
@@ -164,7 +168,7 @@ public class FaceDetectionImage : MonoBehaviour
 
         // convert the OpenCVSharp Mat of canny image to Texture2D
         // the texture will be displayed automatically
-        MatToTexture();
+        MatToTexture(videoSourceImage);
 
 
         Debug.Log("Couleur de la peau au niveau du front");
@@ -209,6 +213,18 @@ public class FaceDetectionImage : MonoBehaviour
 
 
         //MatToTexture();
+        Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
+        var lineColor = Scalar.FromRgb(0, 0, 0);
+        Cv2.Line(videoSourceImage, (int)landmarks.LeftEyeBrowLeft.Item0, (int)landmarks.LeftEyeBrowLeft.Item1, (int)landmarks.LeftEyeBrowMiddle.Item0, (int)landmarks.LeftEyeBrowMiddle.Item1, lineColor);
+        Cv2.Line(videoSourceImage, (int)landmarks.LeftEyeBrowMiddle.Item0, (int)landmarks.LeftEyeBrowMiddle.Item1, (int)landmarks.LeftEyeBrowRight.Item0, (int)landmarks.LeftEyeBrowRight.Item1, lineColor);
+
+        Cv2.Line(videoSourceImage, (int)landmarks.RightEyeBrowRight.Item0, (int)landmarks.RightEyeBrowRight.Item1, (int)landmarks.RightEyeBrowMiddle.Item0, (int)landmarks.RightEyeBrowMiddle.Item1, lineColor);
+        Cv2.Line(videoSourceImage, (int)landmarks.RightEyeBrowMiddle.Item0, (int)landmarks.RightEyeBrowMiddle.Item1, (int)landmarks.RightEyeBrowRight.Item0, (int)landmarks.RightEyeBrowRight.Item1, lineColor);
+        Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
+        MatToTexture(videoSourceImage);
+
+
+        //UpdateWindow(videoSourceImage);
     }
 
 
@@ -243,14 +259,14 @@ public class FaceDetectionImage : MonoBehaviour
 
 
     // Convert OpenCVSharp Mat object to Unity Texture2D object
-    void MatToTexture()
+    void MatToTexture(Mat _image)
     {
         // cannyImageData is byte array, because canny image is grayscale
 
-        cannyImage.GetArray(0, 0, cannyImageData);
+        //cannyImage.GetArray(0, 0, cannyImageData);
 
         //cannyImage.GetArray(0, 0, cannyImageData);
-        videoSourceImage.GetArray(0, 0, videoSourceImageData);
+        _image.GetArray(0, 0, videoSourceImageData);
 
         // create Color32 array that can be assigned to Texture2D directly
         Color32[] c = new Color32[imHeight * imWidth];
@@ -266,64 +282,64 @@ public class FaceDetectionImage : MonoBehaviour
 
                 Vec3b vec = videoSourceImageData[j + i * imWidth];
 
-                if (coordX > rectFront.X && coordX < rectFront.X + rectFront.Width &&
-                    coordY > rectFront.Y && coordY < rectFront.Y + rectFront.Height)
-                {
-                    var color32 = new Color32
-                    {
-                        r = 255,
-                        g = 255,
-                        b = 255,
+                //if (coordX > rectFront.X && coordX < rectFront.X + rectFront.Width &&
+                //    coordY > rectFront.Y && coordY < rectFront.Y + rectFront.Height)
+                //{
+                //    var color32 = new Color32
+                //    {
+                //        r = 255,
+                //        g = 255,
+                //        b = 255,
 
 
-                        a = 0
-                    };
-                    c[j + i * imWidth] = color32;
-                }
-                else if (coordX > rectEyeLeft.X && coordX < rectEyeLeft.X + rectEyeLeft.Width &&
-                    coordY > rectEyeLeft.Y && coordY < rectEyeLeft.Y + rectEyeLeft.Height)
-                {
-                    var color32 = new Color32
-                    {
-                        r = 255,
-                        g = 255,
-                        b = 255,
+                //        a = 0
+                //    };
+                //    c[j + i * imWidth] = color32;
+                //}
+                //else if (coordX > rectEyeLeft.X && coordX < rectEyeLeft.X + rectEyeLeft.Width &&
+                //    coordY > rectEyeLeft.Y && coordY < rectEyeLeft.Y + rectEyeLeft.Height)
+                //{
+                //    var color32 = new Color32
+                //    {
+                //        r = 255,
+                //        g = 255,
+                //        b = 255,
 
 
-                        a = 0
-                    };
-                    c[j + i * imWidth] = color32;
-                }
-                else if (coordX > rectEyeRight.X && coordX < rectEyeRight.X + rectEyeRight.Width &&
-                    coordY > rectEyeRight.Y && coordY < rectEyeRight.Y + rectEyeRight.Height)
-                {
-                    var color32 = new Color32
-                    {
-                        r = 255,
-                        g = 255,
-                        b = 255,
+                //        a = 0
+                //    };
+                //    c[j + i * imWidth] = color32;
+                //}
+                //else if (coordX > rectEyeRight.X && coordX < rectEyeRight.X + rectEyeRight.Width &&
+                //    coordY > rectEyeRight.Y && coordY < rectEyeRight.Y + rectEyeRight.Height)
+                //{
+                //    var color32 = new Color32
+                //    {
+                //        r = 255,
+                //        g = 255,
+                //        b = 255,
 
 
-                        a = 0
-                    };
-                    c[j + i * imWidth] = color32;
-                }
-                else if (coordX > rectCheveux.X && coordX < rectCheveux.X + rectCheveux.Width &&
-                     coordY > rectCheveux.Y && coordY < rectCheveux.Y + rectCheveux.Height)
-                {
-                    var color32 = new Color32
-                    {
-                        r = 255,
-                        g = 255,
-                        b = 255,
+                //        a = 0
+                //    };
+                //    c[j + i * imWidth] = color32;
+                //}
+                //else if (coordX > rectCheveux.X && coordX < rectCheveux.X + rectCheveux.Width &&
+                //     coordY > rectCheveux.Y && coordY < rectCheveux.Y + rectCheveux.Height)
+                //{
+                //    var color32 = new Color32
+                //    {
+                //        r = 255,
+                //        g = 255,
+                //        b = 255,
 
 
-                        a = 0
-                    };
-                    c[j + i * imWidth] = color32;
-                }
-                else
-                {
+                //        a = 0
+                //    };
+                //    c[j + i * imWidth] = color32;
+                //}
+                //else
+                //{
                     var color32 = new Color32
                     {
                         r = vec.Item2,
@@ -334,7 +350,7 @@ public class FaceDetectionImage : MonoBehaviour
                         a = 0
                     };
                     c[j + i * imWidth] = color32;
-                }
+                //}
             }
         });
 
@@ -461,6 +477,8 @@ public class FaceDetectionImage : MonoBehaviour
     }
 
 
+
+
     void DrawTheLineSeparatingHairAndSkin()
     {
         Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
@@ -557,7 +575,7 @@ public class FaceDetectionImage : MonoBehaviour
 
             var facec_rectangle_color = Scalar.FromRgb(255, 0, 0);
             face = faceRect;
-            Cv2.Rectangle(_image, faceRect, facec_rectangle_color, 3);
+            //Cv2.Rectangle(_image, faceRect, facec_rectangle_color, 3);
 
 
             rectFront = new OpenCvSharp.Rect(faceRect.X + faceRect.Width/2 - 50, faceRect.Y + 50, 100, 50);
@@ -605,6 +623,8 @@ public class FaceDetectionImage : MonoBehaviour
                 Cv2.CvtColor(detectedEyeImage, detectedEyeGrayImage, ColorConversionCodes.BGRA2GRAY);
 
                 eye_count++;
+
+        
             }
 
 
@@ -626,7 +646,7 @@ public class FaceDetectionImage : MonoBehaviour
                     //Debug.Log("mouth height :");
                     //Debug.Log(m.Height);
                     var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
-                    Cv2.Rectangle(_image, m, eye_rectangle_color, 3);
+                    //Cv2.Rectangle(_image, m, eye_rectangle_color, 3);
                     lipHeight = (float)m.Height / (float)face.Height;
                 }
 

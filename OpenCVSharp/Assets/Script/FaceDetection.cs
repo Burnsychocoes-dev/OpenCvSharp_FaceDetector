@@ -87,6 +87,8 @@ public class FaceDetection : MonoBehaviour
             // Play the video source
             _webcamTexture.Play();
 
+            
+
             // initialize video / image with given size
             videoSourceImage = new Mat(imHeight, imWidth, MatType.CV_8UC3);
             videoSourceImageData = new Vec3b[imHeight * imWidth];
@@ -98,6 +100,7 @@ public class FaceDetection : MonoBehaviour
 
             // assign the processedTexture to the meshrenderer for display
             ProcessedTextureRenderer.material.mainTexture = processedTexture;
+            //videoSourceImage.At<Vec3b>(y, x);
 
         }
 
@@ -197,10 +200,11 @@ public class FaceDetection : MonoBehaviour
     {
         // cannyImageData is byte array, because canny image is grayscale
 
-        cannyImage.GetArray(0, 0, cannyImageData);
+        //cannyImage.GetArray(0, 0, cannyImageData);
 
         //cannyImage.GetArray(0, 0, cannyImageData);
         videoSourceImage.GetArray(0, 0, videoSourceImageData);
+        
 
         // create Color32 array that can be assigned to Texture2D directly
         Color32[] c = new Color32[imHeight * imWidth];
@@ -236,6 +240,7 @@ public class FaceDetection : MonoBehaviour
         // to update the texture, OpenGL manner
         processedTexture.Apply();
     }
+
 
 
 

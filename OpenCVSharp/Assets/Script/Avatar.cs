@@ -4,6 +4,29 @@ using UnityEngine;
 
 public class Avatar : MonoBehaviour {
 
+    enum Taille
+    {
+        Big,
+        Middle,
+        little
+    }
+
+    struct Eye
+    {
+        Taille width;
+    }
+
+    struct Nose
+    {
+        Taille width;
+        Taille height;
+    }
+
+    struct Mouth
+    {
+        Taille height;
+    }
+
 	// Use this for initialization
 	void Start () {
 		
