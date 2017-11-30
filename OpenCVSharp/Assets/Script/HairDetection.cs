@@ -58,15 +58,18 @@ public class HairDetection : MonoBehaviour {
         //Grace à ces infos, on peut déterminer où sont les cheveux
         Debug.Log("Finding Hair YRoots");
         FindHairRoots();
-        //Une fois qu'on a les cheveux du haut, on récupère les infos sur les cheveux (YCbCr)
-        Debug.Log("Getting Hair Color");
-        GetHairColor();
         //On va chercher la partie supérieure des cheveux
         Debug.Log("Finding Hair YTop");
         FindHairTop();
+        //Une fois qu'on a les cheveux du haut, on récupère les infos sur les cheveux (YCbCr)
+        Debug.Log("Getting Hair Color");
+        GetHairColor();        
         //On va clear la partie peau, on peut tout enlever à la place si on veut
         Debug.Log("Clearing Skin");
         ClearSkin();
+        //On va clear tout ce qui n'est pas cheveu
+        Debug.Log("Clearing Non Hair");
+        ClearNonHair();
         //On va chercher le dernier Y où on apperçoit des cheveux
         Debug.Log("Finding Hair YMax");
         FindHairYMax();
@@ -338,6 +341,37 @@ public class HairDetection : MonoBehaviour {
 
 
 
+    }
+
+    void ClearNonHair()
+    {
+        Debug.Log("Clear Non Hair");
+        //Si on clear juste le skin
+        for (var i = 0; i < faceDetectionImage.ImHeight; i++)
+        {
+            for (var j = 0; j < faceDetectionImage.ImWidth; j++)
+            {
+                Vec3b vec = faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth];
+                Color32 color = new Color32
+                {
+                    r = vec.Item2,
+                    g = vec.Item1,
+                    b = vec.Item0
+                };
+
+                Vec3f sample = FromRGBToYCbCr(color);
+                //Si ce n'est pas des cheveux
+                if (EuclidianDistance(sample.Item1, sample.Item2, hairColorYCbCrExpectancy) > hairColorCbCrThreshold)
+                {
+                    faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth] = new Vec3b
+                    {
+                        Item0 = 255,
+                        Item1 = 255,
+                        Item2 = 255
+                    };
+                }
+            }
+        }
     }
 
     void ClearFace()
