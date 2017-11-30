@@ -8,6 +8,7 @@ using LitJson;
 using OpenCvSharp;
 
 public class LandmarksRetriever : MonoBehaviour {
+    private HairDetection hairDetection;
 
     [SerializeField]
     private string apiEndpoint;
@@ -117,6 +118,7 @@ public class LandmarksRetriever : MonoBehaviour {
 
     void Start() {
         faceAnalyse = GetComponent<FaceDetectionImage>();
+        hairDetection = GetComponent<HairDetection>();
 
         RetrieveLandmarks();
 
