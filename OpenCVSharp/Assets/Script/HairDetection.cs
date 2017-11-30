@@ -111,7 +111,7 @@ public class HairDetection : MonoBehaviour {
         yExpectancy /= tab.Length;
         cbExpectancy /= tab.Length;
         crExpectancy /= tab.Length;
-
+        // a changer pour les cheveux
         skinColorYCbCrExpectancy = new Vec3f
         {
             //Y

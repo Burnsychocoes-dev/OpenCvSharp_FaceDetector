@@ -85,6 +85,9 @@ public class FaceDetectionImage : MonoBehaviour
     [SerializeField]
     private float margeErreurCouleurPeau = 20f;
     private float maxCoordY = 0f;
+    static bool isFind = false;
+
+    HairDetection hair;
 
     void Start()
     {
@@ -328,6 +331,8 @@ public class FaceDetectionImage : MonoBehaviour
         {
             for (var j = 0; j < imWidth; j++)
             {
+                // Ne jamais mettre de debug ici !!!
+
                 float coordX = j;
                 float coordY = imHeight - i;
 
@@ -423,7 +428,7 @@ public class FaceDetectionImage : MonoBehaviour
     void DrawTheLineSeparatingHairAndSkin()
     {
         Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
-        bool isFind = false;
+
         // parallel for loop
         Parallel.For(0, imHeight, i =>
         {
@@ -442,7 +447,7 @@ public class FaceDetectionImage : MonoBehaviour
                     {
                         if(!isFind)
                         {
-                            //Debug.Log("jai reussi !");
+                            Debug.Log("jai reussi !");
                             if(coordY > maxCoordY)
                             {
                                 maxCoordY = coordY;
