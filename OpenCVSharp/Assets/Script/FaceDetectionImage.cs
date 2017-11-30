@@ -185,6 +185,7 @@ public class FaceDetectionImage : MonoBehaviour
         // the texture will be displayed automatically
         //MatToTexture(videoSourceImage);
 
+        hair.Init();
         hair.Pretraitement();
         MatToTexture(videoSourceImage);
 
