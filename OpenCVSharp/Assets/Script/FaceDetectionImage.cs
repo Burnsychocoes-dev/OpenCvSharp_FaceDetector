@@ -55,14 +55,37 @@ public class FaceDetectionImage : MonoBehaviour
     // Variables des rectangles de decoupe
     float rectShapeHeight = 50;
     OpenCvSharp.Rect rectFront;
+    public OpenCvSharp.Rect RectFront
+    {
+        get { return rectFront; }
+    }
     OpenCvSharp.Rect rectEyeLeft;
+    public OpenCvSharp.Rect RectEyeLeft
+    {
+        get { return rectEyeLeft; }
+    }
     OpenCvSharp.Rect rectEyeRight;
+    public OpenCvSharp.Rect RectEyeRight
+    {
+        get { return rectEyeRight; }
+    }
     OpenCvSharp.Rect face;
+    public OpenCvSharp.Rect Face
+    {
+        get { return face; }
+    }
     OpenCvSharp.Rect rectCheveux;
 
     // Video size
     private const int imWidth = 1280;
+    public int ImWidth{
+        get { return imWidth; }
+    }
     private const int imHeight = 720;
+    public int ImHeight
+    {
+        get { return imHeight; }
+    }
     private int imFrameRate;
 
     // OpenCVSharp parameters
@@ -72,7 +95,8 @@ public class FaceDetectionImage : MonoBehaviour
     private Vec3b[] videoSourceImageData;
     public Vec3b[] VideoSourceImageData
     {
-        get { return videoSourceImageData; }        
+        get { return videoSourceImageData; }
+        set { videoSourceImageData = value; }
 
     }
     private byte[] cannyImageData;
