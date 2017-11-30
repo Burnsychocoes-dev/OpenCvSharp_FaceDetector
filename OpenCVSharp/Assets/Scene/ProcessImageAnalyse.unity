@@ -259,7 +259,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 188485116}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 369.5, y: 202, z: 0}
+  m_LocalPosition: {x: 369.5, y: 211, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1708058438}
@@ -428,6 +428,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1387142007}
   - component: {fileID: 1387142008}
+  - component: {fileID: 1387142009}
   m_Layer: 0
   m_Name: Video Processer
   m_TagString: Untagged
@@ -462,6 +463,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxCount: 3
   ProcessedTextureRenderer: {fileID: 1323197309}
+  margeErreurCouleurPeau: 5
+--- !u!114 &1387142009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1387142006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddb1a2f78ac42264d9ed1d2f3976e33c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  apiEndpoint: http://23.21.173.192/v2/detect
+  imagePath: Assets/photo.png
 --- !u!1 &1708058437
 GameObject:
   m_ObjectHideFlags: 0
@@ -486,7 +501,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1708058437}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1252.5, y: 1, z: -135}
+  m_LocalPosition: {x: -1252.5, y: 10, z: -135}
   m_LocalScale: {x: 2.8172355, y: 1.4657007, z: 1}
   m_Children: []
   m_Father: {fileID: 188485120}

@@ -201,6 +201,7 @@ GameObject:
   m_Component:
   - component: {fileID: 159437546}
   - component: {fileID: 159437545}
+  - component: {fileID: 159437547}
   m_Layer: 0
   m_Name: LandmarksRetriever
   m_TagString: Untagged
@@ -234,6 +235,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &159437547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 159437544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89e8e47bfef897c49a84f7db5f16f991, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxCount: 3
+  ProcessedTextureRenderer: {fileID: 0}
+  margeErreurCouleurPeau: 20
 --- !u!1 &1030746335
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,7 +461,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1637081662}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 303, y: 170.5, z: 0}
+  m_LocalPosition: {x: 369.5, y: 211, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1149427255}
