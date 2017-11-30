@@ -27,12 +27,14 @@ public class HairDetection : MonoBehaviour {
     private int yHairRoot;
     private int yHairTop;
     private int yMaxHair;
+    private FaceDetectionImage faceDetectionImage;
 
     //Il me faut l'accès à l'image, ainsi que les coordonnées des joues et du front + les landmarks des coins des yeux et du menton
     // Use this for initialization
     void Start () {
         skinColorSampleYCbCr = new Vec3f[colorSampleListSize];
         hairColorSampleYCbCr = new Vec3f[colorSampleListSize];
+        faceDetectionImage = GetComponent<FaceDetectionImage>();
 	}
 	
 	// Update is called once per frame

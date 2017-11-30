@@ -70,6 +70,11 @@ public class FaceDetectionImage : MonoBehaviour
     private Mat cannyImage;
     private Texture2D processedTexture;
     private Vec3b[] videoSourceImageData;
+    public Vec3b[] VideoSourceImageData
+    {
+        get { return videoSourceImageData; }        
+
+    }
     private byte[] cannyImageData;
 
     // Frame rate parameter
