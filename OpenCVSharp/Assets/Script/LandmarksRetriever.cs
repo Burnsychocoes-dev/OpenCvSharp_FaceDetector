@@ -243,6 +243,11 @@ public class LandmarksRetriever : MonoBehaviour {
         Debug.Log(chin.Item0);
         Debug.Log(chin.Item1);
 
+        nose.Item0 = (double)landmarks["noseTipX"];
+        nose.Item1 = (double)landmarks["noseTipY"];
+        Debug.Log("nose tip position :");
+        Debug.Log(nose.Item0);
+        Debug.Log(nose.Item1);
     }
 
     void Update()
