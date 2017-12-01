@@ -191,8 +191,13 @@ public class FaceDetectionImage : MonoBehaviour
 
         //UpdateWindow(videoSourceImage);
         Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
+
         hair.GetSkinColor();
-        hair.ClearSkin();
+        
+        hair.FindHairRoots();
+
+        //hair.ClearSkin();
+
         Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
 
         MatToTexture(videoSourceImage);
