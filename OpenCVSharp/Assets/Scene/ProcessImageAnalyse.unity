@@ -187,12 +187,12 @@ Prefab:
     - target: {fileID: 224695094438748768, guid: c2e738f388c8b4c47ad86a41bfd6e96c,
         type: 2}
       propertyPath: m_LocalPosition.x
-      value: 365.5
+      value: 225.5
       objectReference: {fileID: 0}
     - target: {fileID: 224695094438748768, guid: c2e738f388c8b4c47ad86a41bfd6e96c,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 203
+      value: 208
       objectReference: {fileID: 0}
     - target: {fileID: 224695094438748768, guid: c2e738f388c8b4c47ad86a41bfd6e96c,
         type: 2}
@@ -292,6 +292,4146 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 23533915486234252, guid: 87db39d5eee7763469cc46623828caeb,
     type: 2}
   m_PrefabInternal: {fileID: 1083990589}
+--- !u!21 &383061041
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Head_LOD0
+  m_Shader: {fileID: 4800000, guid: b5f9959f7b6042c4eac31c2b58eb6cc2, type: 3}
+  m_ShaderKeywords: _ALPHATEST_ON _DETAIL_MULX2 _NORMALMAP _SPECGLOSSMAP
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2450
+  stringTagMap:
+    RenderType: TransparentCutout
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AlphaTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 79d5b81e1262e0247bdea478a100d89c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 2800000, guid: 89c07fed318da92499fc9b8290cf3efc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: e3e8dca20e28f1b4c8803557246d9c3f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Overlay:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 2800000, guid: dbd4051570980ea4a9c7c41f6d35e0ef, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _BumpScale: 1
+    - _CullMode: 2
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _EmissionScaleUI: 0
+    - _Glossiness: 0.5
+    - _Mode: 1
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _PlaneReflectionBumpClamp: 0.05
+    - _PlaneReflectionBumpScale: 0.4
+    - _SmoothnessInAlbedo: 0
+    - _SmoothnessTweak1: 1
+    - _SmoothnessTweak2: 0
+    - _SrcBlend: 1
+    - _UVSec: 0
+    - _ZWrite: 1
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
+    - _OverlayColor: {r: 0, g: 0, b: 0, a: 0}
+    - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+    - _SpecularMapColorTweak: {r: 1, g: 1, b: 1, a: 1}
+--- !u!1001 &478229828
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.size
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 400188, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 400188, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.67
+      objectReference: {fileID: 0}
+    - target: {fileID: 400188, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5.49
+      objectReference: {fileID: 0}
+    - target: {fileID: 400188, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400188, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400188, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400188, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400188, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 1525837859}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 383061041}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 1935813096}
+    - target: {fileID: 400188, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400188, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400010, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: meshType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[1]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[2]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[3]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[4]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[5]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[6]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[7]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[8]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[9]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[10]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[11]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[12]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[13]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[14]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[15]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[16]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[17]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[18]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[19]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[20]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[21]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[22]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[23]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[24]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[25]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[26]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[27]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[28]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[29]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[30]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[31]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[32]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[33]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[34]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[35]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[36]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[37]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[38]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[39]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[40]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[41]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[42]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[43]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[44]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[45]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[46]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[47]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[48]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[49]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[50]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[51]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[52]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[53]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[54]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[55]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[56]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[57]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[58]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[59]
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: fd057c956d7529e4eac402957038c900, type: 3}
+  m_IsPrefabParent: 0
+--- !u!1 &478229829 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100188, guid: fd057c956d7529e4eac402957038c900, type: 3}
+  m_PrefabInternal: {fileID: 478229828}
+--- !u!114 &478229830
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 478229829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -876711503, guid: 2188feb5cf201e848a09932d706b7c3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originalMaterialReferences:
+  - {fileID: 2100000, guid: f1220e56df0b6c74382d04211ba9429a, type: 2}
+  - {fileID: 2100000, guid: debf957e55df0ae4eb5a7d44156c91df, type: 2}
+  - {fileID: 2100000, guid: 633bc1225d89bed48afe339c03b272ff, type: 2}
+  - {fileID: 2100000, guid: 5ee586ccef11abb4d8378b9554aabc51, type: 2}
+  - {fileID: 2100000, guid: 97f7082c497928549ac22bc275036b16, type: 2}
+  - {fileID: 2100000, guid: f1220e56df0b6c74382d04211ba9429a, type: 2}
+  - {fileID: 2100000, guid: b72f5140f04f703489dd362e382a7a7b, type: 2}
+  - {fileID: 2100000, guid: dccf48a6fb7c1f640a2b911e26631afe, type: 2}
+  - {fileID: 2100000, guid: f1220e56df0b6c74382d04211ba9429a, type: 2}
+  - {fileID: 2100000, guid: c6c941d9900b06c409762860a0ecf36b, type: 2}
+  - {fileID: 2100000, guid: 473f1146a07874a4e82451e1be1908d3, type: 2}
+  - {fileID: 2100000, guid: f1220e56df0b6c74382d04211ba9429a, type: 2}
+  textureMode: 1
+--- !u!114 &478229831
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 478229829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1019200135, guid: 2188feb5cf201e848a09932d706b7c3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  morphs:
+  - name: CBM10YearOld
+    localName: CBM10YearOld
+    displayName: 10YearOld
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: CBM5YearOld
+    localName: CBM5YearOld
+    displayName: 5YearOld
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: CBMAdult
+    localName: CBMAdult
+    displayName: Adult
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: Aged_Posture
+    localName: Aged_Posture
+    displayName: Aged_Posture
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: CBMAgedBody1
+    localName: CBMAgedBody1
+    displayName: AgedBody1
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: CBMAgedBody2
+    localName: CBMAgedBody2
+    displayName: AgedBody2
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: CHMAgedHead1
+    localName: CHMAgedHead1
+    displayName: AgedHead1
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: CHMAgedHead2
+    localName: CHMAgedHead2
+    displayName: AgedHead2
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: CHMAgedHead3
+    localName: CHMAgedHead3
+    displayName: AgedHead3
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: CHMAgedHead4
+    localName: CHMAgedHead4
+    displayName: AgedHead4
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: CHMAgedHead5
+    localName: CHMAgedHead5
+    displayName: AgedHead5
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLArmsLength
+    localName: SCLArmsLength
+    displayName: ArmsLength
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLArmsLength_NEGATIVE_
+    localName: SCLArmsLength_NEGATIVE_
+    displayName: ArmsLength_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: Basic_Weight_1
+    localName: Basic_Weight_1
+    displayName: Basic_Weight_1
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: FBMBodybuilderDetails
+    localName: FBMBodybuilderDetails
+    displayName: BodybuilderDetails
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: FBMBodybuilderSize
+    localName: FBMBodybuilderSize
+    displayName: BodybuilderSize
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: FBMBodySize
+    localName: FBMBodySize
+    displayName: BodySize
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: FBMBodyTone
+    localName: FBMBodyTone
+    displayName: BodyTone
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMBreastsCleavage
+    localName: PBMBreastsCleavage
+    displayName: BreastsCleavage
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMBreastsDiameter
+    localName: PBMBreastsDiameter
+    displayName: BreastsDiameter
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMBreastsDownwardSlope
+    localName: PBMBreastsDownwardSlope
+    displayName: BreastsDownwardSlope
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMBreastsHeavy
+    localName: PBMBreastsHeavy
+    displayName: BreastsHeavy
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMBreastsNaturalL
+    localName: PBMBreastsNaturalL
+    displayName: BreastsNaturalL
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMBreastsNaturalR
+    localName: PBMBreastsNaturalR
+    displayName: BreastsNaturalR
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMBreastsPerkSide
+    localName: PBMBreastsPerkSide
+    displayName: BreastsPerkSide
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMBreastsShape03
+    localName: PBMBreastsShape03
+    displayName: BreastsShape03
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMBreastsShape04
+    localName: PBMBreastsShape04
+    displayName: BreastsShape04
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMBreastsShape05
+    localName: PBMBreastsShape05
+    displayName: BreastsShape05
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMBreastsShape08
+    localName: PBMBreastsShape08
+    displayName: BreastsShape08
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMBreastsSize
+    localName: PBMBreastsSize
+    displayName: BreastsSize
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMBreastsSmall
+    localName: PBMBreastsSmall
+    displayName: BreastsSmall
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMBreastsUnderCurve
+    localName: PBMBreastsUnderCurve
+    displayName: BreastsUnderCurve
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: Bulbous_1
+    localName: Bulbous_1
+    displayName: Bulbous_1
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: Bulbous_2
+    localName: Bulbous_2
+    displayName: Bulbous_2
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMCalvesSize
+    localName: PBMCalvesSize
+    displayName: CalvesSize
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMCalvesSize_NEGATIVE_
+    localName: PBMCalvesSize_NEGATIVE_
+    displayName: CalvesSize_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMCheeksDepth
+    localName: PHMCheeksDepth
+    displayName: CheeksDepth
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMCheeksDimpleCreaseHDL
+    localName: PHMCheeksDimpleCreaseHDL
+    displayName: CheeksDimpleCreaseHDL
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMCheeksDimpleCreaseHDR
+    localName: PHMCheeksDimpleCreaseHDR
+    displayName: CheeksDimpleCreaseHDR
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMCheeksSink
+    localName: PHMCheeksSink
+    displayName: CheeksSink
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLChestDepth
+    localName: SCLChestDepth
+    displayName: ChestDepth
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLChestDepth_NEGATIVE_
+    localName: SCLChestDepth_NEGATIVE_
+    displayName: ChestDepth_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLChestWidth
+    localName: SCLChestWidth
+    displayName: ChestWidth
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLChestWidth_NEGATIVE_
+    localName: SCLChestWidth_NEGATIVE_
+    displayName: ChestWidth_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMChinCleftHD
+    localName: PHMChinCleftHD
+    displayName: ChinCleftHD
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMChinWidth
+    localName: PHMChinWidth
+    displayName: ChinWidth
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMChinWidth_NEGATIVE_
+    localName: PHMChinWidth_NEGATIVE_
+    displayName: ChinWidth_NEGATIVE_
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: FBMCoralBody
+    localName: FBMCoralBody
+    displayName: CoralBody
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: FHMCoralHead
+    localName: FHMCoralHead
+    displayName: CoralHead
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_EarAlienA
+    localName: G2F_EarAlienA
+    displayName: EarAlienA
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_EarCatBack
+    localName: G2F_EarCatBack
+    displayName: EarCatBack
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_EarChimp
+    localName: G2F_EarChimp
+    displayName: EarChimp
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_EarDeerBack
+    localName: G2F_EarDeerBack
+    displayName: EarDeerBack
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_EarElfMid
+    localName: G2F_EarElfMid
+    displayName: EarElfMid
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_EarElfShort
+    localName: G2F_EarElfShort
+    displayName: EarElfShort
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_EarGremlin
+    localName: G2F_EarGremlin
+    displayName: EarGremlin
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEarlobesAttached
+    localName: PHMEarlobesAttached
+    displayName: EarlobesAttached
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEarlobesLength
+    localName: PHMEarlobesLength
+    displayName: EarlobesLength
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_EarMouseBack
+    localName: G2F_EarMouseBack
+    displayName: EarMouseBack
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEarsDepth
+    localName: PHMEarsDepth
+    displayName: EarsDepth
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEarsDepth_NEGATIVE_
+    localName: PHMEarsDepth_NEGATIVE_
+    displayName: EarsDepth_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEarsElf
+    localName: PHMEarsElf
+    displayName: EarsElf
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEarsElfLong
+    localName: PHMEarsElfLong
+    displayName: EarsElfLong
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_EarsGone
+    localName: G2F_EarsGone
+    displayName: EarsGone
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEarsHeight
+    localName: PHMEarsHeight
+    displayName: EarsHeight
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEarsHeight_NEGATIVE_
+    localName: PHMEarsHeight_NEGATIVE_
+    displayName: EarsHeight_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLAfraid
+    localName: eCTRLAfraid
+    displayName: eCTRLAfraid
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLAngry
+    localName: eCTRLAngry
+    displayName: eCTRLAngry
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLBrowInnerUp_DownL
+    localName: eCTRLBrowInnerUp_DownL
+    displayName: eCTRLBrowInnerUp_DownL
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLBrowInnerUp_DownL_NEGATIVE_
+    localName: eCTRLBrowInnerUp_DownL_NEGATIVE_
+    displayName: eCTRLBrowInnerUp_DownL_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLBrowInnerUp_DownR
+    localName: eCTRLBrowInnerUp_DownR
+    displayName: eCTRLBrowInnerUp_DownR
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLBrowInnerUp_DownR_NEGATIVE_
+    localName: eCTRLBrowInnerUp_DownR_NEGATIVE_
+    displayName: eCTRLBrowInnerUp_DownR_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLBrowUp_DownL
+    localName: eCTRLBrowUp_DownL
+    displayName: eCTRLBrowUp_DownL
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLBrowUp_DownL_NEGATIVE_
+    localName: eCTRLBrowUp_DownL_NEGATIVE_
+    displayName: eCTRLBrowUp_DownL_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLBrowUp_DownR
+    localName: eCTRLBrowUp_DownR
+    displayName: eCTRLBrowUp_DownR
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLBrowUp_DownR_NEGATIVE_
+    localName: eCTRLBrowUp_DownR_NEGATIVE_
+    displayName: eCTRLBrowUp_DownR_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLCheeksBalloon
+    localName: eCTRLCheeksBalloon
+    displayName: eCTRLCheeksBalloon
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLCheeksBalloonPucker
+    localName: eCTRLCheeksBalloonPucker
+    displayName: eCTRLCheeksBalloonPucker
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLConfused
+    localName: eCTRLConfused
+    displayName: eCTRLConfused
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLContempt
+    localName: eCTRLContempt
+    displayName: eCTRLContempt
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLDisgust
+    localName: eCTRLDisgust
+    displayName: eCTRLDisgust
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLExcitement
+    localName: eCTRLExcitement
+    displayName: eCTRLExcitement
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLEyelidsLowerUpDown
+    localName: eCTRLEyelidsLowerUpDown
+    displayName: eCTRLEyelidsLowerUpDown
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLEyelidsLowerUpDownL
+    localName: eCTRLEyelidsLowerUpDownL
+    displayName: eCTRLEyelidsLowerUpDownL
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLEyelidsLowerUpDownL_NEGATIVE_
+    localName: eCTRLEyelidsLowerUpDownL_NEGATIVE_
+    displayName: eCTRLEyelidsLowerUpDownL_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLEyelidsLowerUpDownR
+    localName: eCTRLEyelidsLowerUpDownR
+    displayName: eCTRLEyelidsLowerUpDownR
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLEyelidsLowerUpDownR_NEGATIVE_
+    localName: eCTRLEyelidsLowerUpDownR_NEGATIVE_
+    displayName: eCTRLEyelidsLowerUpDownR_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLEyelidsUpperDownUp
+    localName: eCTRLEyelidsUpperDownUp
+    displayName: eCTRLEyelidsUpperDownUp
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLEyelidsUpperDownUpL
+    localName: eCTRLEyelidsUpperDownUpL
+    displayName: eCTRLEyelidsUpperDownUpL
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLEyelidsUpperDownUpL_NEGATIVE_
+    localName: eCTRLEyelidsUpperDownUpL_NEGATIVE_
+    displayName: eCTRLEyelidsUpperDownUpL_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLEyelidsUpperDownUpR
+    localName: eCTRLEyelidsUpperDownUpR
+    displayName: eCTRLEyelidsUpperDownUpR
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLEyelidsUpperDownUpR_NEGATIVE_
+    localName: eCTRLEyelidsUpperDownUpR_NEGATIVE_
+    displayName: eCTRLEyelidsUpperDownUpR_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLEyesClosed
+    localName: eCTRLEyesClosed
+    displayName: eCTRLEyesClosed
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLEyesClosedL
+    localName: eCTRLEyesClosedL
+    displayName: eCTRLEyesClosedL
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLEyesClosedR
+    localName: eCTRLEyesClosedR
+    displayName: eCTRLEyesClosedR
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLEyesSquint
+    localName: eCTRLEyesSquint
+    displayName: eCTRLEyesSquint
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLEyesSquintL
+    localName: eCTRLEyesSquintL
+    displayName: eCTRLEyesSquintL
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLEyesSquintR
+    localName: eCTRLEyesSquintR
+    displayName: eCTRLEyesSquintR
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLFear
+    localName: eCTRLFear
+    displayName: eCTRLFear
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLFlirting
+    localName: eCTRLFlirting
+    displayName: eCTRLFlirting
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLFrown
+    localName: eCTRLFrown
+    displayName: eCTRLFrown
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLGlare
+    localName: eCTRLGlare
+    displayName: eCTRLGlare
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLHappy
+    localName: eCTRLHappy
+    displayName: eCTRLHappy
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLJawOut_In
+    localName: eCTRLJawOut_In
+    displayName: eCTRLJawOut_In
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLJawOut_In_NEGATIVE_
+    localName: eCTRLJawOut_In_NEGATIVE_
+    displayName: eCTRLJawOut_In_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLLipBottomIn_OutL
+    localName: eCTRLLipBottomIn_OutL
+    displayName: eCTRLLipBottomIn_OutL
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLLipBottomIn_OutL_NEGATIVE_
+    localName: eCTRLLipBottomIn_OutL_NEGATIVE_
+    displayName: eCTRLLipBottomIn_OutL_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLLipBottomIn_OutR
+    localName: eCTRLLipBottomIn_OutR
+    displayName: eCTRLLipBottomIn_OutR
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLLipBottomIn_OutR_NEGATIVE_
+    localName: eCTRLLipBottomIn_OutR_NEGATIVE_
+    displayName: eCTRLLipBottomIn_OutR_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLLipsPart
+    localName: eCTRLLipsPart
+    displayName: eCTRLLipsPart
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLLipsPartCenter
+    localName: eCTRLLipsPartCenter
+    displayName: eCTRLLipsPartCenter
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLLipsPucker
+    localName: eCTRLLipsPucker
+    displayName: eCTRLLipsPucker
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLLipsPuckerWide
+    localName: eCTRLLipsPuckerWide
+    displayName: eCTRLLipsPuckerWide
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLLipTopUp_DownL
+    localName: eCTRLLipTopUp_DownL
+    displayName: eCTRLLipTopUp_DownL
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLLipTopUp_DownR
+    localName: eCTRLLipTopUp_DownR
+    displayName: eCTRLLipTopUp_DownR
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLMouthCornerUp_Down
+    localName: eCTRLMouthCornerUp_Down
+    displayName: eCTRLMouthCornerUp_Down
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLMouthCornerUp_Down_NEGATIVE_
+    localName: eCTRLMouthCornerUp_Down_NEGATIVE_
+    displayName: eCTRLMouthCornerUp_Down_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLMouthFrown
+    localName: eCTRLMouthFrown
+    displayName: eCTRLMouthFrown
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLMouthNarrowL
+    localName: eCTRLMouthNarrowL
+    displayName: eCTRLMouthNarrowL
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLMouthNarrowR
+    localName: eCTRLMouthNarrowR
+    displayName: eCTRLMouthNarrowR
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLMouthOpen
+    localName: eCTRLMouthOpen
+    displayName: eCTRLMouthOpen
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLMouthOpenWide
+    localName: eCTRLMouthOpenWide
+    displayName: eCTRLMouthOpenWide
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLMouthSmile
+    localName: eCTRLMouthSmile
+    displayName: eCTRLMouthSmile
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLMouthSmileOpen
+    localName: eCTRLMouthSmileOpen
+    displayName: eCTRLMouthSmileOpen
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLMouthSmileSimple
+    localName: eCTRLMouthSmileSimple
+    displayName: eCTRLMouthSmileSimple
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLMouthSmileSimpleL
+    localName: eCTRLMouthSmileSimpleL
+    displayName: eCTRLMouthSmileSimpleL
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLMouthSmileSimpleR
+    localName: eCTRLMouthSmileSimpleR
+    displayName: eCTRLMouthSmileSimpleR
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLPain
+    localName: eCTRLPain
+    displayName: eCTRLPain
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLSad
+    localName: eCTRLSad
+    displayName: eCTRLSad
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLScream
+    localName: eCTRLScream
+    displayName: eCTRLScream
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLShock
+    localName: eCTRLShock
+    displayName: eCTRLShock
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLSnarl
+    localName: eCTRLSnarl
+    displayName: eCTRLSnarl
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLSurprised
+    localName: eCTRLSurprised
+    displayName: eCTRLSurprised
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLvAA
+    localName: eCTRLvAA
+    displayName: eCTRLvAA
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLvEE
+    localName: eCTRLvEE
+    displayName: eCTRLvEE
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLvEH
+    localName: eCTRLvEH
+    displayName: eCTRLvEH
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLvER
+    localName: eCTRLvER
+    displayName: eCTRLvER
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLvF
+    localName: eCTRLvF
+    displayName: eCTRLvF
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLvIH
+    localName: eCTRLvIH
+    displayName: eCTRLvIH
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLvIY
+    localName: eCTRLvIY
+    displayName: eCTRLvIY
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLvK
+    localName: eCTRLvK
+    displayName: eCTRLvK
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLvL
+    localName: eCTRLvL
+    displayName: eCTRLvL
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLvM
+    localName: eCTRLvM
+    displayName: eCTRLvM
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLvOW
+    localName: eCTRLvOW
+    displayName: eCTRLvOW
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLvS
+    localName: eCTRLvS
+    displayName: eCTRLvS
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLvSH
+    localName: eCTRLvSH
+    displayName: eCTRLvSH
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLvT
+    localName: eCTRLvT
+    displayName: eCTRLvT
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLvTH
+    localName: eCTRLvTH
+    displayName: eCTRLvTH
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLvUW
+    localName: eCTRLvUW
+    displayName: eCTRLvUW
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: eCTRLvW
+    localName: eCTRLvW
+    displayName: eCTRLvW
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_ElfElfln
+    localName: G2F_ElfElfln
+    displayName: ElfElfln
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: FBMEmaciated
+    localName: FBMEmaciated
+    displayName: Emaciated
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: Eye_Sag_Top
+    localName: Eye_Sag_Top
+    displayName: Eye_Sag_Top
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyelashesHideLayer1
+    localName: PHMEyelashesHideLayer1
+    displayName: EyelashesHideLayer1
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyelashesHideLayer2
+    localName: PHMEyelashesHideLayer2
+    displayName: EyelashesHideLayer2
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyelashesLength
+    localName: PHMEyelashesLength
+    displayName: EyelashesLength
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: Eyelid_Size
+    localName: Eyelid_Size
+    displayName: Eyelid_Size
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyelidsFoldDown
+    localName: PHMEyelidsFoldDown
+    displayName: EyelidsFoldDown
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyesAlmondInner
+    localName: PHMEyesAlmondInner
+    displayName: EyesAlmondInner
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyesAlmondOuter
+    localName: PHMEyesAlmondOuter
+    displayName: EyesAlmondOuter
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyesAngledInner
+    localName: PHMEyesAngledInner
+    displayName: EyesAngledInner
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyesAngledInner_NEGATIVE_
+    localName: PHMEyesAngledInner_NEGATIVE_
+    displayName: EyesAngledInner_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyesAngledOuter
+    localName: PHMEyesAngledOuter
+    displayName: EyesAngledOuter
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyesAngledOuter_NEGATIVE_
+    localName: PHMEyesAngledOuter_NEGATIVE_
+    displayName: EyesAngledOuter_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyesHeight
+    localName: PHMEyesHeight
+    displayName: EyesHeight
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyesHeight_NEGATIVE_
+    localName: PHMEyesHeight_NEGATIVE_
+    displayName: EyesHeight_NEGATIVE_
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyesIrisSize
+    localName: PHMEyesIrisSize
+    displayName: EyesIrisSize
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyesIrisSize_NEGATIVE_
+    localName: PHMEyesIrisSize_NEGATIVE_
+    displayName: EyesIrisSize_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyesPuffyLower
+    localName: PHMEyesPuffyLower
+    displayName: EyesPuffyLower
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyesPupilsDilate
+    localName: PHMEyesPupilsDilate
+    displayName: EyesPupilsDilate
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyesPupilsDilate_NEGATIVE_
+    localName: PHMEyesPupilsDilate_NEGATIVE_
+    displayName: EyesPupilsDilate_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyesPupilsSlit
+    localName: PHMEyesPupilsSlit
+    displayName: EyesPupilsSlit
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyesPupilsSlit_NEGATIVE_
+    localName: PHMEyesPupilsSlit_NEGATIVE_
+    displayName: EyesPupilsSlit_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyesSize
+    localName: PHMEyesSize
+    displayName: EyesSize
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyesSize_NEGATIVE_
+    localName: PHMEyesSize_NEGATIVE_
+    displayName: EyesSize_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyesWidth
+    localName: PHMEyesWidth
+    displayName: EyesWidth
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMEyesWidth_NEGATIVE_
+    localName: PHMEyesWidth_NEGATIVE_
+    displayName: EyesWidth_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMFaceCenterDepth
+    localName: PHMFaceCenterDepth
+    displayName: FaceCenterDepth
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMFaceFlat
+    localName: PHMFaceFlat
+    displayName: FaceFlat
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMFaceFlat_NEGATIVE_
+    localName: PHMFaceFlat_NEGATIVE_
+    displayName: FaceFlat_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMFaceHeart
+    localName: PHMFaceHeart
+    displayName: FaceHeart
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMFaceHeart_NEGATIVE_
+    localName: PHMFaceHeart_NEGATIVE_
+    displayName: FaceHeart_NEGATIVE_
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMFaceRound
+    localName: PHMFaceRound
+    displayName: FaceRound
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMFaceRound_NEGATIVE_
+    localName: PHMFaceRound_NEGATIVE_
+    displayName: FaceRound_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMFaceSquare
+    localName: PHMFaceSquare
+    displayName: FaceSquare
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMFaceSquare_NEGATIVE_
+    localName: PHMFaceSquare_NEGATIVE_
+    displayName: FaceSquare_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMFaceYoung
+    localName: PHMFaceYoung
+    displayName: FaceYoung
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMFaceYoung_NEGATIVE_
+    localName: PHMFaceYoung_NEGATIVE_
+    displayName: FaceYoung_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_FBMAndrogynous
+    localName: G2F_FBMAndrogynous
+    displayName: FBMAndrogynous
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_FBMZombie
+    localName: G2F_FBMZombie
+    displayName: FBMZombie
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_FHMAlienGrey2
+    localName: G2F_FHMAlienGrey2
+    displayName: FHMAlienGrey2
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_FHMAlienGreySmooth2
+    localName: G2F_FHMAlienGreySmooth2
+    displayName: FHMAlienGreySmooth2
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_FHMAlienHumanoid2
+    localName: G2F_FHMAlienHumanoid2
+    displayName: FHMAlienHumanoid2
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_FHMDemon2
+    localName: G2F_FHMDemon2
+    displayName: FHMDemon2
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_FHMHobgoblin2
+    localName: G2F_FHMHobgoblin2
+    displayName: FHMHobgoblin2
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLFingersLength
+    localName: SCLFingersLength
+    displayName: FingersLength
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLFingersLength_NEGATIVE_
+    localName: SCLFingersLength_NEGATIVE_
+    displayName: FingersLength_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLFingersLengthL
+    localName: SCLFingersLengthL
+    displayName: FingersLengthL
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLFingersLengthL_NEGATIVE_
+    localName: SCLFingersLengthL_NEGATIVE_
+    displayName: FingersLengthL_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLFingersLengthR
+    localName: SCLFingersLengthR
+    displayName: FingersLengthR
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLFingersLengthR_NEGATIVE_
+    localName: SCLFingersLengthR_NEGATIVE_
+    displayName: FingersLengthR_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLFingersWidth
+    localName: SCLFingersWidth
+    displayName: FingersWidth
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLFingersWidth_NEGATIVE_
+    localName: SCLFingersWidth_NEGATIVE_
+    displayName: FingersWidth_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLFingersWidthL
+    localName: SCLFingersWidthL
+    displayName: FingersWidthL
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLFingersWidthL_NEGATIVE_
+    localName: SCLFingersWidthL_NEGATIVE_
+    displayName: FingersWidthL_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLFingersWidthR
+    localName: SCLFingersWidthR
+    displayName: FingersWidthR
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLFingersWidthR_NEGATIVE_
+    localName: SCLFingersWidthR_NEGATIVE_
+    displayName: FingersWidthR_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: FBMFitnessDetails
+    localName: FBMFitnessDetails
+    displayName: FitnessDetails
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: FBMFitnessSize
+    localName: FBMFitnessSize
+    displayName: FitnessSize
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMForearmsSize
+    localName: PBMForearmsSize
+    displayName: ForearmsSize
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMForearmsSize_NEGATIVE_
+    localName: PBMForearmsSize_NEGATIVE_
+    displayName: ForearmsSize_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMGlutesSize
+    localName: PBMGlutesSize
+    displayName: GlutesSize
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMGlutesSize_NEGATIVE_
+    localName: PBMGlutesSize_NEGATIVE_
+    displayName: GlutesSize_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: FBMGogoBody
+    localName: FBMGogoBody
+    displayName: GogoBody
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: FHMGogoHead
+    localName: FHMGogoHead
+    displayName: GogoHead
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: FBMHeavy
+    localName: FBMHeavy
+    displayName: Heavy
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: FBMHeight
+    localName: FBMHeight
+    displayName: Height
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: FBMHeight_NEGATIVE_
+    localName: FBMHeight_NEGATIVE_
+    displayName: Height_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMJawAngle
+    localName: PHMJawAngle
+    displayName: JawAngle
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMJawAngle_NEGATIVE_
+    localName: PHMJawAngle_NEGATIVE_
+    displayName: JawAngle_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMJawCornerWidth
+    localName: PHMJawCornerWidth
+    displayName: JawCornerWidth
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMJawCornerWidth_NEGATIVE_
+    localName: PHMJawCornerWidth_NEGATIVE_
+    displayName: JawCornerWidth_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMJawCurve
+    localName: PHMJawCurve
+    displayName: JawCurve
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMJawCurve_NEGATIVE_
+    localName: PHMJawCurve_NEGATIVE_
+    displayName: JawCurve_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMJawHeight
+    localName: PHMJawHeight
+    displayName: JawHeight
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMJawHeight_NEGATIVE_
+    localName: PHMJawHeight_NEGATIVE_
+    displayName: JawHeight_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMJawlineDepth
+    localName: PHMJawlineDepth
+    displayName: JawlineDepth
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMJawLineDepth_NEGATIVE_
+    localName: PHMJawLineDepth_NEGATIVE_
+    displayName: JawLineDepth_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMLacrimalsPinch
+    localName: PHMLacrimalsPinch
+    displayName: LacrimalsPinch
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: CTRLCheekbonesSize
+    localName: CTRLCheekbonesSize
+    displayName: LCheekbonesSize
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: CTRLCrowsFeetHD
+    localName: CTRLCrowsFeetHD
+    displayName: LCrowsFeetHD
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMLegsLength
+    localName: PBMLegsLength
+    displayName: LegsLength
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMLegsLength_NEGATIVE_
+    localName: PBMLegsLength_NEGATIVE_
+    displayName: LegsLength_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMLipLowerSize
+    localName: PHMLipLowerSize
+    displayName: LipLowerSize
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMLipLowerSize_NEGATIVE_
+    localName: PHMLipLowerSize_NEGATIVE_
+    displayName: LipLowerSize_NEGATIVE_
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMLipsHeart
+    localName: PHMLipsHeart
+    displayName: LipsHeart
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMLipsHeart_NEGATIVE_
+    localName: PHMLipsHeart_NEGATIVE_
+    displayName: LipsHeart_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMLipsSquare
+    localName: PHMLipsSquare
+    displayName: LipsSquare
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMLipsSquare_NEGATIVE_
+    localName: PHMLipsSquare_NEGATIVE_
+    displayName: LipsSquare_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMLipUpperSize
+    localName: PHMLipUpperSize
+    displayName: LipUpperSize
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMLipUpperSize_NEGATIVE_
+    localName: PHMLipUpperSize_NEGATIVE_
+    displayName: LipUpperSize_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMLoveHandles
+    localName: PBMLoveHandles
+    displayName: LoveHandles
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_MolarsGone
+    localName: G2F_MolarsGone
+    displayName: MolarsGone
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: Mouth_Sag
+    localName: Mouth_Sag
+    displayName: Mouth_Sag
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMMouthCurves
+    localName: PHMMouthCurves
+    displayName: MouthCurves
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMMouthCurves_NEGATIVE_
+    localName: PHMMouthCurves_NEGATIVE_
+    displayName: MouthCurves_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMMouthHeight
+    localName: PHMMouthHeight
+    displayName: MouthHeight
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMMouthWidth
+    localName: PHMMouthWidth
+    displayName: MouthWidth
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMMouthWidth_NEGATIVE_
+    localName: PHMMouthWidth_NEGATIVE_
+    displayName: MouthWidth_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMNailsLength
+    localName: PBMNailsLength
+    displayName: NailsLength
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: Neck_Weight
+    localName: Neck_Weight
+    displayName: Neck_Weight
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLNeckLength
+    localName: SCLNeckLength
+    displayName: NeckLength
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLNeckLength_NEGATIVE_
+    localName: SCLNeckLength_NEGATIVE_
+    displayName: NeckLength_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMNeckSize
+    localName: PBMNeckSize
+    displayName: NeckSize
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: NEGATIVE
+    localName: NEGATIVE
+    displayName: NEGATIVE
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: Nose_Age
+    localName: Nose_Age
+    displayName: Nose_Age
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNoseBridgeDepth
+    localName: PHMNoseBridgeDepth
+    displayName: NoseBridgeDepth
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNoseBridgeDepth_NEGATIVE_
+    localName: PHMNoseBridgeDepth_NEGATIVE_
+    displayName: NoseBridgeDepth_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNoseBridgeSlope
+    localName: PHMNoseBridgeSlope
+    displayName: NoseBridgeSlope
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNoseBump
+    localName: PHMNoseBump
+    displayName: NoseBump
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNoseBump_NEGATIVE_
+    localName: PHMNoseBump_NEGATIVE_
+    displayName: NoseBump_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNoseDepth
+    localName: PHMNoseDepth
+    displayName: NoseDepth
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNoseDepth_NEGATIVE_
+    localName: PHMNoseDepth_NEGATIVE_
+    displayName: NoseDepth_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNoseHeight
+    localName: PHMNoseHeight
+    displayName: NoseHeight
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNosePinch
+    localName: PHMNosePinch
+    displayName: NosePinch
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNosePinch_NEGATIVE_
+    localName: PHMNosePinch_NEGATIVE_
+    displayName: NosePinch_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNoseRidgeWidth
+    localName: PHMNoseRidgeWidth
+    displayName: NoseRidgeWidth
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNoseRidgeWidth_NEGATIVE_
+    localName: PHMNoseRidgeWidth_NEGATIVE_
+    displayName: NoseRidgeWidth_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNoseSize
+    localName: PHMNoseSize
+    displayName: NoseSize
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNoseSize_NEGATIVE_
+    localName: PHMNoseSize_NEGATIVE_
+    displayName: NoseSize_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNoseTipHeight
+    localName: PHMNoseTipHeight
+    displayName: NoseTipHeight
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNoseTipHeight_NEGATIVE_
+    localName: PHMNoseTipHeight_NEGATIVE_
+    displayName: NoseTipHeight_NEGATIVE_
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNoseTipRound
+    localName: PHMNoseTipRound
+    displayName: NoseTipRound
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNoseTipRound_NEGATIVE_
+    localName: PHMNoseTipRound_NEGATIVE_
+    displayName: NoseTipRound_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNoseWidth
+    localName: PHMNoseWidth
+    displayName: NoseWidth
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNoseWidth_NEGATIVE_
+    localName: PHMNoseWidth_NEGATIVE_
+    displayName: NoseWidth_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNostrilWingSize
+    localName: PHMNostrilWingSize
+    displayName: NostrilWingSize
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNostrilWingSize_NEGATIVE_
+    localName: PHMNostrilWingSize_NEGATIVE_
+    displayName: NostrilWingSize_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNostrilWingWidth
+    localName: PHMNostrilWingWidth
+    displayName: NostrilWingWidth
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMNostrilWingWidth_NEGATIVE_
+    localName: PHMNostrilWingWidth_NEGATIVE_
+    displayName: NostrilWingWidth_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: CBMOlderTeen
+    localName: CBMOlderTeen
+    displayName: OlderTeen
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLPalmScale
+    localName: SCLPalmScale
+    displayName: PalmScale
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLPalmScale_NEGATIVE_
+    localName: SCLPalmScale_NEGATIVE_
+    displayName: PalmScale_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLPalmScaleL
+    localName: SCLPalmScaleL
+    displayName: PalmScaleL
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLPalmScaleL_NEGATIVE_
+    localName: SCLPalmScaleL_NEGATIVE_
+    displayName: PalmScaleL_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLPalmScaleR
+    localName: SCLPalmScaleR
+    displayName: PalmScaleR
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLPalmScaleR_NEGATIVE_
+    localName: SCLPalmScaleR_NEGATIVE_
+    displayName: PalmScaleR_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PBMBelly2
+    localName: G2F_PBMBelly2
+    displayName: PBMBelly2
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PBMClawedFeet
+    localName: G2F_PBMClawedFeet
+    displayName: PBMClawedFeet
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PBMClawedHands
+    localName: G2F_PBMClawedHands
+    displayName: PBMClawedHands
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PBMElongatedFeet
+    localName: G2F_PBMElongatedFeet
+    displayName: PBMElongatedFeet
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PBMElongatedHands
+    localName: G2F_PBMElongatedHands
+    displayName: PBMElongatedHands
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PBMExo_re
+    localName: G2F_PBMExo_re
+    displayName: PBMExo_re
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PBMFaerie_re
+    localName: G2F_PBMFaerie_re
+    displayName: PBMFaerie_re
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PBMFingernailsClaw
+    localName: G2F_PBMFingernailsClaw
+    displayName: PBMFingernailsClaw
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PBMFroglikeFeet
+    localName: G2F_PBMFroglikeFeet
+    displayName: PBMFroglikeFeet
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PBMFroglikeHands
+    localName: G2F_PBMFroglikeHands
+    displayName: PBMFroglikeHands
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PBMGoblin_re
+    localName: G2F_PBMGoblin_re
+    displayName: PBMGoblin_re
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PBMHag_re
+    localName: G2F_PBMHag_re
+    displayName: PBMHag_re
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PBMHandsWitch
+    localName: G2F_PBMHandsWitch
+    displayName: PBMHandsWitch
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PBMHunchback2
+    localName: G2F_PBMHunchback2
+    displayName: PBMHunchback2
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PBMToenailsClaw
+    localName: G2F_PBMToenailsClaw
+    displayName: PBMToenailsClaw
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: pCTRLBreastsFlatten
+    localName: pCTRLBreastsFlatten
+    displayName: pCTRLBreastsFlatten
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: pCTRLBreastsHangForward
+    localName: pCTRLBreastsHangForward
+    displayName: pCTRLBreastsHangForward
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: FBMPearFigure
+    localName: FBMPearFigure
+    displayName: PearFigure
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMAmphibiousAlien
+    localName: G2F_PHMAmphibiousAlien
+    displayName: PHMAmphibiousAlien
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMAquaticAlien
+    localName: G2F_PHMAquaticAlien
+    displayName: PHMAquaticAlien
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMBat
+    localName: G2F_PHMBat
+    displayName: PHMBat
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMCatGirl
+    localName: G2F_PHMCatGirl
+    displayName: PHMCatGirl
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMChimp
+    localName: G2F_PHMChimp
+    displayName: PHMChimp
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMEarBat
+    localName: G2F_PHMEarBat
+    displayName: PHMEarBat
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMEarCat
+    localName: G2F_PHMEarCat
+    displayName: PHMEarCat
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMEarDeer
+    localName: G2F_PHMEarDeer
+    displayName: PHMEarDeer
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMEarFin
+    localName: G2F_PHMEarFin
+    displayName: PHMEarFin
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMEarMouse
+    localName: G2F_PHMEarMouse
+    displayName: PHMEarMouse
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMEarPanther
+    localName: G2F_PHMEarPanther
+    displayName: PHMEarPanther
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMEarsPig
+    localName: G2F_PHMEarsPig
+    displayName: PHMEarsPig
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMEarsRabbit
+    localName: G2F_PHMEarsRabbit
+    displayName: PHMEarsRabbit
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMExo_re
+    localName: G2F_PHMExo_re
+    displayName: PHMExo_re
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMEyesCat
+    localName: G2F_PHMEyesCat
+    displayName: PHMEyesCat
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMFaerie
+    localName: G2F_PHMFaerie
+    displayName: PHMFaerie
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMGoblin_re
+    localName: G2F_PHMGoblin_re
+    displayName: PHMGoblin_re
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMHag
+    localName: G2F_PHMHag
+    displayName: PHMHag
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMHag_re
+    localName: G2F_PHMHag_re
+    displayName: PHMHag_re
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMHammerHeadAlien
+    localName: G2F_PHMHammerHeadAlien
+    displayName: PHMHammerHeadAlien
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMHellFiend
+    localName: G2F_PHMHellFiend
+    displayName: PHMHellFiend
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMlHornFrontHigh
+    localName: G2F_PHMlHornFrontHigh
+    displayName: PHMlHornFrontHigh
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMlHornFrontLarge
+    localName: G2F_PHMlHornFrontLarge
+    displayName: PHMlHornFrontLarge
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMlHornFrontSmall
+    localName: G2F_PHMlHornFrontSmall
+    displayName: PHMlHornFrontSmall
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMlHornSide
+    localName: G2F_PHMlHornSide
+    displayName: PHMlHornSide
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMLion
+    localName: G2F_PHMLion
+    displayName: PHMLion
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMNoseCat
+    localName: G2F_PHMNoseCat
+    displayName: PHMNoseCat
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMNoseFaerie
+    localName: G2F_PHMNoseFaerie
+    displayName: PHMNoseFaerie
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMNoseHag
+    localName: G2F_PHMNoseHag
+    displayName: PHMNoseHag
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMNosePig
+    localName: G2F_PHMNosePig
+    displayName: PHMNosePig
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMNoseZombie
+    localName: G2F_PHMNoseZombie
+    displayName: PHMNoseZombie
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMOrc
+    localName: G2F_PHMOrc
+    displayName: PHMOrc
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMPlatedAlien
+    localName: G2F_PHMPlatedAlien
+    displayName: PHMPlatedAlien
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMrHornFrontHigh
+    localName: G2F_PHMrHornFrontHigh
+    displayName: PHMrHornFrontHigh
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMrHornFrontLarge
+    localName: G2F_PHMrHornFrontLarge
+    displayName: PHMrHornFrontLarge
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMrHornFrontSmall
+    localName: G2F_PHMrHornFrontSmall
+    displayName: PHMrHornFrontSmall
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMrHornSide
+    localName: G2F_PHMrHornSide
+    displayName: PHMrHornSide
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMScalpCrest2
+    localName: G2F_PHMScalpCrest2
+    displayName: PHMScalpCrest2
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMSkeletalVampire
+    localName: G2F_PHMSkeletalVampire
+    displayName: PHMSkeletalVampire
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMSmoothAlien
+    localName: G2F_PHMSmoothAlien
+    displayName: PHMSmoothAlien
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMTeethBeastNarrowBottom
+    localName: G2F_PHMTeethBeastNarrowBottom
+    displayName: PHMTeethBeastNarrowBottom
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMTeethBeastNarrowTop
+    localName: G2F_PHMTeethBeastNarrowTop
+    displayName: PHMTeethBeastNarrowTop
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMTeethSharpLongBottom
+    localName: G2F_PHMTeethSharpLongBottom
+    displayName: PHMTeethSharpLongBottom
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMTeethSharpLongTop
+    localName: G2F_PHMTeethSharpLongTop
+    displayName: PHMTeethSharpLongTop
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_PHMZombie
+    localName: G2F_PHMZombie
+    displayName: PHMZombie
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: pPBMlBreastsFlatten
+    localName: pPBMlBreastsFlatten
+    displayName: pPBMlBreastsFlatten
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: pPBMlBreastsHangForward
+    localName: pPBMlBreastsHangForward
+    displayName: pPBMlBreastsHangForward
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: pPBMrBreastsFlatten
+    localName: pPBMrBreastsFlatten
+    displayName: pPBMrBreastsFlatten
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: pPBMrBreastsHangForward
+    localName: pPBMrBreastsHangForward
+    displayName: pPBMrBreastsHangForward
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMPregnant
+    localName: PBMPregnant
+    displayName: Pregnant
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLPropagatingChest
+    localName: SCLPropagatingChest
+    displayName: PropagatingChest
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLPropagatingChest_NEGATIVE_
+    localName: SCLPropagatingChest_NEGATIVE_
+    displayName: PropagatingChest_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLPropagatingFoot
+    localName: SCLPropagatingFoot
+    displayName: PropagatingFoot
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLPropagatingFoot_NEGATIVE_
+    localName: SCLPropagatingFoot_NEGATIVE_
+    displayName: PropagatingFoot_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLPropagatingFootL
+    localName: SCLPropagatingFootL
+    displayName: PropagatingFootL
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLPropagatingFootL_NEGATIVE_
+    localName: SCLPropagatingFootL_NEGATIVE_
+    displayName: PropagatingFootL_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLPropagatingFootR
+    localName: SCLPropagatingFootR
+    displayName: PropagatingFootR
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLPropagatingFootR_NEGATIVE_
+    localName: SCLPropagatingFootR_NEGATIVE_
+    displayName: PropagatingFootR_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLPropagatingHand
+    localName: SCLPropagatingHand
+    displayName: PropagatingHand
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLPropagatingHand_NEGATIVE_
+    localName: SCLPropagatingHand_NEGATIVE_
+    displayName: PropagatingHand_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLPropagatingHandL
+    localName: SCLPropagatingHandL
+    displayName: PropagatingHandL
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLPropagatingHandL_NEGATIVE_
+    localName: SCLPropagatingHandL_NEGATIVE_
+    displayName: PropagatingHandL_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLPropagatingHandR
+    localName: SCLPropagatingHandR
+    displayName: PropagatingHandR
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLPropagatingHandR_NEGATIVE_
+    localName: SCLPropagatingHandR_NEGATIVE_
+    displayName: PropagatingHandR_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLPropagatingHead
+    localName: SCLPropagatingHead
+    displayName: PropagatingHead
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLPropagatingHead_NEGATIVE_
+    localName: SCLPropagatingHead_NEGATIVE_
+    displayName: PropagatingHead_NEGATIVE_
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMRibcageSize
+    localName: PBMRibcageSize
+    displayName: RibcageSize
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMRibcageSize_NEGATIVE_
+    localName: PBMRibcageSize_NEGATIVE_
+    displayName: RibcageSize_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLShldrsScale
+    localName: SCLShldrsScale
+    displayName: ShldrsScale
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLShldrsScale_NEGATIVE_
+    localName: SCLShldrsScale_NEGATIVE_
+    displayName: ShldrsScale_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLShldrsWidth
+    localName: SCLShldrsWidth
+    displayName: ShldrsWidth
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLShldrsWidth_NEGATIVE_
+    localName: SCLShldrsWidth_NEGATIVE_
+    displayName: ShldrsWidth_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: Shoulder_Drop
+    localName: Shoulder_Drop
+    displayName: Shoulder_Drop
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMSternumDepth
+    localName: PBMSternumDepth
+    displayName: SternumDepth
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMSternumDepth_NEGATIVE_
+    localName: PBMSternumDepth_NEGATIVE_
+    displayName: SternumDepth_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMStomachLowerDepth
+    localName: PBMStomachLowerDepth
+    displayName: StomachLowerDepth
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: Teeth_Hide
+    localName: Teeth_Hide
+    displayName: Teeth_Hide
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_TeethBeastBottom
+    localName: G2F_TeethBeastBottom
+    displayName: TeethBeastBottom
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_TeethCanineSharpBottom
+    localName: G2F_TeethCanineSharpBottom
+    displayName: TeethCanineSharpBottom
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_TeethCanineSharpTop
+    localName: G2F_TeethCanineSharpTop
+    displayName: TeethCanineSharpTop
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_TeethChip
+    localName: G2F_TeethChip
+    displayName: TeethChip
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_TeethExCrooked
+    localName: G2F_TeethExCrooked
+    displayName: TeethExCrooked
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_TeethFangBottom
+    localName: G2F_TeethFangBottom
+    displayName: TeethFangBottom
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_TeethFangTop
+    localName: G2F_TeethFangTop
+    displayName: TeethFangTop
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_TeethMessy
+    localName: G2F_TeethMessy
+    displayName: TeethMessy
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_TeethNosferatu
+    localName: G2F_TeethNosferatu
+    displayName: TeethNosferatu
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_TeethSharpBottom
+    localName: G2F_TeethSharpBottom
+    displayName: TeethSharpBottom
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_TeethSharpTop
+    localName: G2F_TeethSharpTop
+    displayName: TeethSharpTop
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_TeethSlant
+    localName: G2F_TeethSlant
+    displayName: TeethSlant
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_TeethVampireBottom
+    localName: G2F_TeethVampireBottom
+    displayName: TeethVampireBottom
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_TeethVampireTop
+    localName: G2F_TeethVampireTop
+    displayName: TeethVampireTop
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PHMTemplesNarrow
+    localName: PHMTemplesNarrow
+    displayName: TemplesNarrow
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMThighsSize
+    localName: PBMThighsSize
+    displayName: ThighsSize
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMThighsSize_NEGATIVE_
+    localName: PBMThighsSize_NEGATIVE_
+    displayName: ThighsSize_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: FBMThin
+    localName: FBMThin
+    displayName: Thin
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: Thin_Lips
+    localName: Thin_Lips
+    displayName: Thin_Lips
+    value: 0
+    attached: 1
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_TongueFork
+    localName: G2F_TongueFork
+    displayName: TongueFork
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: G2F_TongueForkShort
+    localName: G2F_TongueForkShort
+    displayName: TongueForkShort
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLTorsoLength
+    localName: SCLTorsoLength
+    displayName: TorsoLength
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: SCLTorsoLength_NEGATIVE_
+    localName: SCLTorsoLength_NEGATIVE_
+    displayName: TorsoLength_NEGATIVE_
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: PBMWaistWidth
+    localName: PBMWaistWidth
+    displayName: WaistWidth
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: CBMYoungTeen
+    localName: CBMYoungTeen
+    displayName: YoungTeen
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: Youth_Head_Proportion
+    localName: Youth_Head_Proportion
+    displayName: Youth_Head_Proportion
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: Youth_Morph
+    localName: Youth_Morph
+    displayName: Youth_Morph
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: Youth_Posture
+    localName: Youth_Posture
+    displayName: Youth_Posture
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  - name: Youth_Weight
+    localName: Youth_Weight
+    displayName: Youth_Weight
+    value: 0
+    attached: 0
+    hasJCT: 0
+    hasNegative: 0
+    morphTypeGroups: []
+    jcts: []
+  rootObject: {fileID: 478229829}
 --- !u!1 &573760696
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,6 +4554,32 @@ Prefab:
     - {fileID: 114755034082173976, guid: 87db39d5eee7763469cc46623828caeb, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 87db39d5eee7763469cc46623828caeb, type: 2}
   m_IsPrefabParent: 0
+--- !u!21 &1525837859
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: EyeAndLash
+  m_Shader: {fileID: 4800000, guid: d545c46e658620143abf0bf746b90a19, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: e3e8dca20e28f1b4c8803557246d9c3f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Spread: 64
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1880660641
 GameObject:
   m_ObjectHideFlags: 0
@@ -489,6 +4655,95 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9507d524d64a05342bf8049a43fd5939, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!21 &1935813096
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Body_LOD0
+  m_Shader: {fileID: 4800000, guid: b5f9959f7b6042c4eac31c2b58eb6cc2, type: 3}
+  m_ShaderKeywords: _ALPHATEST_ON _DETAIL_MULX2 _NORMALMAP _SPECGLOSSMAP
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2450
+  stringTagMap:
+    RenderType: TransparentCutout
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AlphaTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 1b6a5331f07f2fb4191576e1d41954c6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 2800000, guid: f2a10192a6ce2b740be5c2e6f2ca51d9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 3053f0efd1c372049bfb14f75f016a58, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Overlay:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 2800000, guid: 3b8db3578a11eb848a88c48c165828b7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _BumpScale: 1
+    - _CullMode: 2
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _EmissionScaleUI: 0
+    - _Glossiness: 0.5
+    - _Mode: 1
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _PlaneReflectionBumpClamp: 0.05
+    - _PlaneReflectionBumpScale: 0.4
+    - _SmoothnessInAlbedo: 0
+    - _SmoothnessTweak1: 1
+    - _SmoothnessTweak2: 0
+    - _SrcBlend: 1
+    - _UVSec: 0
+    - _ZWrite: 1
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
+    - _OverlayColor: {r: 0, g: 0, b: 0, a: 0}
+    - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+    - _SpecularMapColorTweak: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &2028610503
 GameObject:
   m_ObjectHideFlags: 0
