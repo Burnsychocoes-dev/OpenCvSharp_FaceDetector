@@ -19,8 +19,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4923147643553254}
-  - component: {fileID: 114462641556931228}
   - component: {fileID: 114223808791007766}
+  - component: {fileID: 114462641556931228}
+  - component: {fileID: 114880761941444862}
   m_Layer: 0
   m_Name: LandmarksRetriever
   m_TagString: Untagged
@@ -68,3 +69,14 @@ MonoBehaviour:
   maxCount: 3
   ProcessedTextureRenderer: {fileID: 0}
   margeErreurCouleurPeau: 20
+--- !u!114 &114880761941444862
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1814249226324084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9507d524d64a05342bf8049a43fd5939, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
