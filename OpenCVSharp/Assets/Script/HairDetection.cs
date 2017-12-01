@@ -98,7 +98,7 @@ public class HairDetection : MonoBehaviour {
     void GrabCut()
     {
         Debug.Log("GrabCut");
-        Mat result = faceDetectionImage.VideoSourceImage;
+        Mat result = new Mat(faceDetectionImage.VideoSourceImage.Size(), faceDetectionImage.VideoSourceImage.Type());
         Mat bgModel = new Mat(); //background model
         Mat fgModel = new Mat(); //foreground model
 
