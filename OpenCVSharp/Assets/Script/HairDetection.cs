@@ -69,7 +69,7 @@ public class HairDetection : MonoBehaviour {
         FindHairRoots();
         //On va chercher la partie supérieure des cheveux
         Debug.Log("Finding Hair YTop");
-        FindHairTop();
+        //FindHairTop();
         //Une fois qu'on a les cheveux du haut, on récupère les infos sur les cheveux (YCbCr)
         Debug.Log("Getting Hair Color");
         GetHairColor();        
@@ -115,9 +115,7 @@ public class HairDetection : MonoBehaviour {
         matrix2_grabcut = new Mat(faceDetectionImage.ImHeight, faceDetectionImage.ImWidth, MatType.CV_8UC3, new Scalar(255, 255, 255));
         faceDetectionImage.VideoSourceImage.CopyTo(matrix2_grabcut, result);
 
-        matrix2_grabcut.CopyTo(faceDetectionImage.VideoSourceImage);
-        
-
+        matrix2_grabcut.CopyTo(faceDetectionImage.VideoSourceImage);      
     }
 
     public void GetSkinColor()
@@ -218,40 +216,71 @@ public class HairDetection : MonoBehaviour {
 
     }
 
-    void FindHairRoots()
+    public void FindHairRoots()
     {
         Debug.Log("Find Hair Roots");
+        
+        int nbOfPixelBlancThreshold = 4;
+        int pixelBlancCounter = 0;
+        int lastPixelBlancY = -1;
+
         //On part du haut du front
         int j = faceDetectionImage.RectFront.X+faceDetectionImage.RectFront.Width/2;
+
         for(var i = faceDetectionImage.RectFront.Y; i>0; i--)
         {
+
+
             //Vec3b vec = faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth];
-            Vec3b vec = faceDetectionImage.VideoSourceImage.At<Vec3b>(i * faceDetectionImage.ImWidth, j);
+            Vec3b vec = faceDetectionImage.VideoSourceImage.At<Vec3b>(i , j);
             Color32 color = new Color32
             {
                 r = vec.Item2,
                 g = vec.Item1,
                 b = vec.Item0
             };
-            //Si on est sur un pixel blanc, on s'arrête
+            
             if (color.r == 255 && color.g == 255 && color.b == 255)
             {
-                //on est arrivé au haut du crane
-                yHairTop = i;
-                Debug.Log("No Hair roots found, Top found at y : ");
-                Debug.Log(yHairTop);
-                return;
+                if (pixelBlancCounter == nbOfPixelBlancThreshold)
+                {
+                    //on est arrivé au haut du crane
+                    yHairTop = i + nbOfPixelBlancThreshold;
+                    Debug.Log("Hair top found, y : ");
+                    Debug.Log(yHairTop);
+                    return;
+                } else if (lastPixelBlancY != i+1)
+                {
+                    pixelBlancCounter = 1;
+                    lastPixelBlancY = i;
+                } else
+                {
+                    lastPixelBlancY = i;
+                    pixelBlancCounter++;
+                }
+                
+                
+            } else
+            {
+                pixelBlancCounter = 0;
+                lastPixelBlancY = -1;
             }
 
             Vec3f sample = FromRGBToYCbCr(color);
             //Tant qu'on ne trouve pas les cheveux (condition à redéfinir précisement), on remonte vers le haut (donc on varie le y)
-            if (EuclidianDistance(sample.Item1,sample.Item2,skinColorYCbCrExpectancy)> skinColorCbCrThreshold)
+            if (EuclidianDistance(sample.Item1,sample.Item2,skinColorYCbCrExpectancy)> skinColorCbCrThreshold && yHairRoot==-1)
             {
                 yHairRoot = i;
                 Debug.Log("Hair roots found, y : ");
                 Debug.Log(yHairRoot);
-                return;
             }
+
+            faceDetectionImage.VideoSourceImage.Set<Vec3b>(i, j, new Vec3b
+            {
+                Item0 = 255,
+                Item1 = 0,
+                Item2 = 0
+            });
             //Dés qu'on valide la condition, on s'arrête et on set le yHairRoot
         }
 
@@ -308,7 +337,7 @@ public class HairDetection : MonoBehaviour {
         Debug.Log(hairColorCbCrThreshold);
     }
 
-    void FindHairTop()
+   /* void FindHairTop()
     {
         Debug.Log("Find Hair Top");
         if (yHairTop != -1)
@@ -364,7 +393,7 @@ public class HairDetection : MonoBehaviour {
             }
         }
         
-    }
+    }*/
 
     public void ClearSkin()
     {
