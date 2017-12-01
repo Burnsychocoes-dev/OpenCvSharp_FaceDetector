@@ -169,9 +169,9 @@ public class FaceDetectionImage : MonoBehaviour
         ProcessImage(videoSourceImage);
 
         // update the opencv window of source video
-        UpdateWindow(videoSourceImage);
+        //UpdateWindow(videoSourceImage);
 
-        CalculateSkinColor();
+        //CalculateSkinColor();
 
 
         //DrawTheLineSeparatingHairAndSkin();
@@ -187,12 +187,17 @@ public class FaceDetectionImage : MonoBehaviour
 
         hair.Init();
         hair.Pretraitement();
+
+
+        //UpdateWindow(videoSourceImage);
+        Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
+        hair.GetSkinColor();
+        hair.ClearSkin();
+        Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
+
         MatToTexture(videoSourceImage);
 
-        UpdateWindow(videoSourceImage);
-
-
-        Debug.Log("Couleur de la peau au niveau du front");
+        /*Debug.Log("Couleur de la peau au niveau du front");
         Debug.Log(couleurPeauFront.Item0);
         Debug.Log(couleurPeauFront.Item1);
         Debug.Log(couleurPeauFront.Item2);
@@ -203,7 +208,7 @@ public class FaceDetectionImage : MonoBehaviour
         Debug.Log("Couleur de la peau au niveau de l'oeil gauche");
         Debug.Log(couleurPeauBasOeilGauche.Item0);
         Debug.Log(couleurPeauBasOeilGauche.Item1);
-        Debug.Log(couleurPeauBasOeilGauche.Item2);
+        Debug.Log(couleurPeauBasOeilGauche.Item2);*/
     }
 
 
@@ -678,6 +683,7 @@ public class FaceDetectionImage : MonoBehaviour
 
             face_count++;
         }
+        Cv2.Flip(_image, _image, FlipMode.X);
     }
 
 
