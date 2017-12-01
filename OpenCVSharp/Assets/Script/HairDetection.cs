@@ -654,4 +654,18 @@ public class HairDetection : MonoBehaviour {
 
         return vec3;
     }
+
+    Color32 FromYCbCrToRGB(Vec3f YCbCr)
+    {
+        var rgb = new Color32
+        {
+            //r
+            r = (Byte)(YCbCr.Item0 + 1.402f * (YCbCr.Item2 - 128)),
+            //g
+            g = (Byte)(YCbCr.Item0 - 0.34414f * (YCbCr.Item1 - 128) - 0.71414f * (YCbCr.Item2 - 128)),
+            //b
+            b = (Byte)(YCbCr.Item0 + 1.772f * (YCbCr.Item1 - 128))
+        };
+        return rgb;
+    }
 }
