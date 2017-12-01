@@ -27,8 +27,15 @@ public class Avatar : MonoBehaviour {
         Taille height;
     }
 
+    struct Hair
+    {
+        Taille height;
+        Taille length;
+    }
+
 	// Use this for initialization
-	void Start () {
+	public void Create ()
+    {
 		
 	}
 	

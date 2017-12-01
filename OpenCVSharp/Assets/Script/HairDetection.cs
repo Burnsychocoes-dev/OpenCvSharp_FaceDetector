@@ -115,9 +115,7 @@ public class HairDetection : MonoBehaviour {
         matrix2_grabcut = new Mat(faceDetectionImage.ImHeight, faceDetectionImage.ImWidth, MatType.CV_8UC3, new Scalar(255, 255, 255));
         faceDetectionImage.VideoSourceImage.CopyTo(matrix2_grabcut, result);
 
-        matrix2_grabcut.CopyTo(faceDetectionImage.VideoSourceImage);
-        
-
+        matrix2_grabcut.CopyTo(faceDetectionImage.VideoSourceImage);      
     }
 
     public void GetSkinColor()
