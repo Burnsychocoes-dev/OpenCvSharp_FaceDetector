@@ -45,43 +45,57 @@ public class Avatar : MonoBehaviour {
 
     public struct Eye
     {
-        Taille width;
+        public float distanceMiddleSourcilCenterEye;
+        public float eyeWidth;
+        public float distanceBetweenNoseTopAndEyes;
+        public Taille width;
     }
 
     public struct Nose
     {
-        Taille width;
-        Taille height;
+        public float noseHeight;
+        public float noseWidth;
+        public float nostrilThickness;
+        public Taille width;
+        public Taille height;
     }
 
     public struct Mouth
     {
-        Taille height;
+        public float distanceBetweenCenterLipAndButtomLip;
+        public float distanceBetweenCenterLipAndTopLip;
+        public float distanceBetweenChinAndMouth;
+        public float distanceBetweenNoseTipAndMouth;
+        public float MouthWidth;
+        public Taille width;
     }
 
     public struct Hair
     {
-        bool isHairless;
-        Taille height;
-        Taille length;
+        public bool isHairless;
+        public Taille height;
+        public Taille length;
     }
 
-    public struct Person
+    public struct Personnage
     {
-        Gender gender;
-        SkinColor skinColor;
-        Color exactSkinColor;
-        Eye eye;
-        Nose nose;
-        Mouth mouth;
-        Hair hair;
+        public Gender gender;
+        public SkinColor skinColor;
+        public Color exactSkinColor;
+        public Eye eye;
+        public Nose nose;
+        public Mouth mouth;
+        public Hair hair;
     }
 
-    private Person perso;
-    public Person Perso
+    private Personnage perso;
+    public Personnage Perso
     {
         get { return perso; }
     }
+
+    FaceDetectionImage face;
+    LandmarksRetriever landmarks;
 
     void Start()
     {
@@ -97,9 +111,68 @@ public class Avatar : MonoBehaviour {
 		
 	}
 
-    // Use this for initialization
-    public void Create()
+    // Use this for init the personnage 
+    public void SetPerso()
     {
+        // Partie gender
+        if (landmarks.gender == "M")
+            perso.gender = Gender.Male;
+        else
+            perso.gender = Gender.Femelle;
+
+
+        // Partie skin color
+        perso.exactSkinColor = new Color((float)face.CouleurPeauFront.Item0 / 255, (float)face.CouleurPeauFront.Item1 / 255, (float)face.CouleurPeauFront.Item2 / 255);
+        if (face.CouleurPeauFront.Item0 > 170)
+            perso.skinColor = SkinColor.Black;
+        else
+            perso.skinColor = SkinColor.White;
+
+
+        // Partie eye
+        perso.eye.distanceBetweenNoseTopAndEyes = (float)landmarks.distanceBetweenNoseTopAndEyes;
+        perso.eye.distanceMiddleSourcilCenterEye = Mathf.Abs((float)landmarks.RightEyeBrowMiddle.Item1 - (float)landmarks.rightEyeCenter.Item1);
+        perso.eye.eyeWidth = (float)landmarks.rightEyeWidth;
+        if (perso.eye.eyeWidth <= 0.22f)
+            perso.eye.width = Taille.little;
+        else if (perso.eye.eyeWidth > 0.22 && perso.eye.eyeWidth <= 0.24)
+            perso.eye.width = Taille.Middle;
+        else
+            perso.eye.width = Taille.Big;
+
+
+        // Partie nose
+        perso.nose.noseHeight = (float)landmarks.noseHeight;
+        perso.nose.noseWidth = (float)landmarks.noseWidth;
+        perso.nose.nostrilThickness = (float)landmarks.nostrilThickness;
+        if (perso.nose.noseHeight <= 0.25)
+            perso.nose.height = Taille.little;
+        else if (perso.nose.noseHeight > 0.25 && perso.nose.noseHeight <= 0.30)
+            perso.nose.height = Taille.Middle;
+        else
+            perso.nose.height = Taille.Big;
+        if (perso.nose.noseWidth <= 0.27)
+            perso.nose.width = Taille.little;
+        else if (perso.nose.noseWidth > 0.27 && perso.nose.noseWidth <= 0.31)
+            perso.nose.width = Taille.Middle;
+        else
+            perso.nose.width = Taille.Big;
+
+
+        // Partie mouth
+        perso.mouth.distanceBetweenChinAndMouth = (float)landmarks.distanceBetweenLipAndChin;
+        perso.mouth.distanceBetweenNoseTipAndMouth = (float)landmarks.distanceBetweenNoseTipAndLip;
+        perso.mouth.distanceBetweenCenterLipAndButtomLip = (float)landmarks.buttomLipHeight;
+        perso.mouth.distanceBetweenCenterLipAndTopLip = (float)landmarks.topLipHeight;
+        perso.mouth.MouthWidth = (float)landmarks.lipWidth;
+        if (perso.mouth.MouthWidth <= 0.40)
+            perso.mouth.width = Taille.little;
+        else if (perso.mouth.MouthWidth > 0.40 && perso.mouth.MouthWidth <= 0.42)
+            perso.mouth.width = Taille.Middle;
+        else
+            perso.mouth.width = Taille.Big;
+
+
 
     }
 

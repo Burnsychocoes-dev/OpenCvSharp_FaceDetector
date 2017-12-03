@@ -19,16 +19,16 @@ public class LandmarksRetriever : MonoBehaviour {
 	public JsonData landmarks;
 
     // Information sur le visage
-    private string gender;
-    private double faceHeight;
-    private double faceWidth;
-    private double distanceBetweenLipAndChin;
+    public string gender;
+    public double faceHeight;
+    public double faceWidth;
+    public double distanceBetweenLipAndChin;
 
     // Information sur les yeux
-    private Vec2d leftEyeCenter;
-    private Vec2d rightEyeCenter;
-    private double leftEyeWidth;
-    private double rightEyeWidth;
+    public Vec2d leftEyeCenter;
+    public Vec2d rightEyeCenter;
+    public double leftEyeWidth;
+    public double rightEyeWidth;
     private Vec2d leftEyeBrowLeft;
     public Vec2d LeftEyeBrowLeft
     {
@@ -59,22 +59,22 @@ public class LandmarksRetriever : MonoBehaviour {
     {
         get { return rightEyeBrowRight; }
     }
-    private double distanceBetweenNoseTopAndEyes;
+    public double distanceBetweenNoseTopAndEyes;
 
     // Information sur le nez
-    private double distanceBetweenNoseTipAndLip;
-    private double noseHeight;
-    private double noseWidth;
-    private double nostrilThickness;
+    public double distanceBetweenNoseTipAndLip;
+    public double noseHeight;
+    public double noseWidth;
+    public double nostrilThickness;
     
     // Information sur les oreilles
-    private double distanceBetweenRightEarTragusAndNoseTip;
-    private double distanceBetweenLeftEarTragusAndNoseTip;
+    public double distanceBetweenRightEarTragusAndNoseTip;
+    public double distanceBetweenLeftEarTragusAndNoseTip;
 
     // Information sur la lèvre
-    private double lipWidth;
-    private double topLipHeight;
-    private double buttomLipHeight;
+    public double lipWidth;
+    public double topLipHeight;
+    public double buttomLipHeight;
 
     // Information utile pour hair detection
     private Vec2d leftEyeCorner;

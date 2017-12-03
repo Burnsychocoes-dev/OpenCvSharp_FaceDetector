@@ -119,6 +119,10 @@ public class FaceDetectionImage : MonoBehaviour
     private Vec3f couleurPeauBasOeilGauche;
     private Vec3f couleurPeauBasOeilDroit;
     private Vec3f couleurPeauFront;
+    public Vec3f CouleurPeauFront
+    {
+        get { return couleurPeauFront; }
+    }
     private Vec3f couleurCheveux;
     [SerializeField]
     private float margeErreurCouleurPeau = 20f;
