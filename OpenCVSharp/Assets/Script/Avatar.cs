@@ -107,10 +107,20 @@ public class Avatar : MonoBehaviour {
     public void ChangeNose(float noseHeight, float noseWidth, float nostrilThickness)
     {
         // En fonction de noseHeight
+        /*
+         * petit : 0.23 < noseHeight < 0.25 -> 33 < neg < 100
+         * moyen : 0.25 < noseHeight < 0.3 -> if < 0.29 0 < neg < 33 else 0 < pos < 33
+         * grand : 0.3 < noseHeight < 0.33 -> 33 < pos < 100
+         */
         avatarManager.SetBlendshapeValue("PHMNoseHeight", 100);
         avatarManager.SetBlendshapeValue("PHMNoseHeight_NEGATIVE_", 100);
 
         // En fonction de noseWidth
+        /*
+         * petit : 0.24 < noseWidth < 0.27 -> 33 < neg < 100
+         * moyen : 0.27 < noseWidth < 0.31 -> if < 0.29 0 < neg < 33 else 0 < pos < 33
+         * grand : 0.31 < noseWidth < 0.34 -> 33 < pos < 100
+         */
         avatarManager.SetBlendshapeValue("PHMNoseWidth", 100);
         avatarManager.SetBlendshapeValue("PHMNoseWidth_NEGATIVE_", 100);
 
@@ -134,6 +144,18 @@ public class Avatar : MonoBehaviour {
         avatarManager.SetBlendshapeValue("PHMMouthHeight_NEGATIVE_", 100);
 
         // En fonction de MouthWidth
+        /*
+         * Version grossière : 
+         * Tout est comparé à facewidth ex : 40% de facewidth
+         *   petit : 0.35 <mouthwidth < 0.4 -> mouthWidth,0 ; mouthwidth_negative -> 33 < x < 100
+         *   ex : float valueToSet = PercentageConvertorNeg(mouthwidth, 0.35, 0.4, 33, 100);
+         *   moyen : 0.4 < mouthwidth < 0.42 -> mouthWidth 0 < x < 33 ou mouthwidth_neg -> 0 < x < 33
+         *   ex : if mouthWidth < 0.41 -> valueToSet = PercentageConvertorNeg(mouthwidth, 0.4, 0.41, 0, 33);
+         *          else if > 0.41 && < 0.42 -> valueToSet = PercentageConvertor(mouthwidth, 0.41, 0.42, 0, 33);
+         *   grand : 0.42< mouthwidth < 0.46 -> mouthwidth 33 < x < 100 
+         *   ex : valueToSet = PercentageConvertor(mouthwidth, 0.42, 0.46, 33, 100);
+         *   autre valeur : A AFFICHER POUR DEBUGUER
+         */
         avatarManager.SetBlendshapeValue("PHMMouthWidth", 100);
         avatarManager.SetBlendshapeValue("PHMMouthWidth_NEGATIVE_", 100);
     }
@@ -145,10 +167,15 @@ public class Avatar : MonoBehaviour {
         avatarManager.SetBlendshapeValue("PHMEyesHeight_NEGATIVE_", 100);
 
         // En fonction de eyeWidth
+        /*
+         * petit : 0.18 < eyeWidth < 0.22 -> 33 < neg < 100
+         * moyen : 0.22 < eyeWidth < 0.24 -> if < 0.21 -> 0 < neg < 33 else 0 < pos < 33
+         * grand : 0.24 < eyeWidth < 0.26 -> 33 < pos < 100
+         */
         avatarManager.SetBlendshapeValue("PHMEyesSize", 100);
         avatarManager.SetBlendshapeValue("PHMEyesHeight_NEGATIVE_", 100);
 
-        // En fonction de distanceBetweenNoseTopAndEyes
+        // En fonction de distanceBetweenNoseTopAndEyes        
         avatarManager.SetBlendshapeValue("PHMEyesWidth", 100);
         avatarManager.SetBlendshapeValue("PHMEyesWidth_NEGATIVE_", 100);
     }
@@ -206,4 +233,25 @@ public class Avatar : MonoBehaviour {
         }
     }
 
+    public float PercentageConvertor(float vToConvert, float srcIntervalMin, float srcIntervalMax, float destIntervalMin, float destIntervalMax)
+    {
+        float dSrc = srcIntervalMax - srcIntervalMin;
+        float dDest = destIntervalMax - destIntervalMin;
+        float d = vToConvert - srcIntervalMin;
+        //On commence par chercher la proportion de d par rapport à dSrc
+        float prop = d / dSrc;
+        //On cherche l'équivalent par rapport à dDest
+        float propEqDDest = prop * dDest;
+        //Une fois qu'on a l'équivalent, il suffit de l'ajouter à destIntervalMin pour obtenir notre valeur souhaitée
+        float destD = destIntervalMin + propEqDDest;
+        return destD;
+
+    }
+
+    //pour le destInterval Min, on met le Min mathématique, et pas le min sémantique, ex : mouth_wide_neg, entre 33 et 100, on met 33
+    public float PercentageConvertorNeg(float vToConvert, float srcIntervalMin, float srcIntervalMax, float destIntervalMin, float destIntervalMax)
+    {
+        float destD = - PercentageConvertor(vToConvert, srcIntervalMin, srcIntervalMax, -destIntervalMax, -destIntervalMin);
+        return destD;
+    }
 }
