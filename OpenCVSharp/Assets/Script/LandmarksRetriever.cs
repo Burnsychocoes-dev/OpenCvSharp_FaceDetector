@@ -103,6 +103,8 @@ public class LandmarksRetriever : MonoBehaviour {
 
     private static HttpWebRequest client;
 
+    private bool isCallDone = false;
+
     private void Awake() {
         if (Instance != null) {
             Debug.LogError("There is multiple instance of singleton LandmarksRetriever");
@@ -116,207 +118,212 @@ public class LandmarksRetriever : MonoBehaviour {
         Instance = this;
     }
 
-    void Start() {
-        faceAnalyse = GetComponent<FaceDetectionImage>();
-        hairDetection = GetComponent<HairDetection>();
-
-        RetrieveLandmarks();
-
-        // Récupération des infos sur le visages
-        gender = (string)landmarks["attributes"]["gender"]["type"];
-        Debug.Log(gender);
-        if (gender == "M")
+    public void Init() {
+        if(!isCallDone)
         {
-            Debug.Log("c'est un homme");
+            isCallDone = true;
+            faceAnalyse = GetComponent<FaceDetectionImage>();
+            hairDetection = GetComponent<HairDetection>();
+
+            RetrieveLandmarks();
+
+            // Récupération des infos sur le visages
+            gender = (string)landmarks["attributes"]["gender"]["type"];
+            Debug.Log(gender);
+            if (gender == "M")
+            {
+                Debug.Log("c'est un homme");
+            }
+            else
+            {
+                Debug.Log("C'est une femme");
+            }
+
+            faceHeight = faceAnalyse.Face.Height;
+            Debug.Log("face height :");
+            Debug.Log(faceHeight);
+
+            //if((int)landmarks["rightEarTragusX"] != -1 && (int)landmarks["leftEarTragusX"] != -1)
+            //{
+            //faceWidth = Math.Abs((double)landmarks["rightEarTragusX"] - (double)landmarks["leftEarTragusX"]);
+            //Debug.Log("face width :");
+            //Debug.Log(faceWidth);
+            //}
+            //else
+            //{
+            faceWidth = faceAnalyse.Face.Width - 100;
+            Debug.Log("face width :");
+            Debug.Log(faceWidth);
+            //}
+
+            distanceBetweenLipAndChin = Math.Abs((double)landmarks["lipLineMiddleY"] - (double)landmarks["chinTipY"]) / faceHeight;
+            Debug.Log("distance between lip and chin :");
+            Debug.Log(distanceBetweenLipAndChin);
+
+
+            // Récuperation des infos sur les yeux
+            leftEyeCenter.Item0 = (double)landmarks["leftEyeCenterX"];
+            leftEyeCenter.Item1 = (double)landmarks["leftEyeCenterY"];
+            Debug.Log("left eye center position :");
+            Debug.Log(leftEyeCenter.Item0);
+            Debug.Log(leftEyeCenter.Item1);
+
+            rightEyeCenter.Item0 = (double)landmarks["rightEyeCenterX"];
+            rightEyeCenter.Item1 = (double)landmarks["rightEyeCenterY"];
+            Debug.Log("right eye center position :");
+            Debug.Log(rightEyeCenter.Item0);
+            Debug.Log(rightEyeCenter.Item1);
+
+            leftEyeWidth = Math.Abs((double)landmarks["leftEyeCornerLeftX"] - (double)landmarks["leftEyeCornerRightX"]) / faceWidth;
+            Debug.Log("left eye width :");
+            Debug.Log(leftEyeWidth);
+
+            rightEyeWidth = Math.Abs((double)landmarks["rightEyeCornerLeftX"] - (double)landmarks["rightEyeCornerRightX"]) / faceWidth;
+            Debug.Log("right eye width :");
+            Debug.Log(rightEyeWidth);
+
+            leftEyeBrowLeft.Item0 = (double)landmarks["leftEyeBrowLeftX"];
+            leftEyeBrowLeft.Item1 = (double)landmarks["leftEyeBrowLeftY"];
+            Debug.Log("left eye brow left position :");
+            Debug.Log(leftEyeBrowLeft.Item0);
+            Debug.Log(leftEyeBrowLeft.Item1);
+
+            leftEyeBrowMiddle.Item0 = (double)landmarks["leftEyeBrowMiddleX"];
+            leftEyeBrowMiddle.Item1 = (double)landmarks["leftEyeBrowMiddleY"];
+            Debug.Log("left eye brow middle position :");
+            Debug.Log(leftEyeBrowMiddle.Item0);
+            Debug.Log(leftEyeBrowMiddle.Item1);
+
+            leftEyeBrowRight.Item0 = (double)landmarks["leftEyeBrowRightX"];
+            leftEyeBrowRight.Item1 = (double)landmarks["leftEyeBrowRightY"];
+            Debug.Log("left eye brow right position :");
+            Debug.Log(leftEyeBrowRight.Item0);
+            Debug.Log(leftEyeBrowRight.Item1);
+
+            rightEyeBrowLeft.Item0 = (double)landmarks["rightEyeBrowLeftX"];
+            rightEyeBrowLeft.Item1 = (double)landmarks["rightEyeBrowLeftY"];
+            Debug.Log("right eye brow left position :");
+            Debug.Log(rightEyeBrowLeft.Item0);
+            Debug.Log(rightEyeBrowLeft.Item1);
+
+            rightEyeBrowMiddle.Item0 = (double)landmarks["rightEyeBrowMiddleX"];
+            rightEyeBrowMiddle.Item1 = (double)landmarks["rightEyeBrowMiddleY"];
+            Debug.Log("right eye brow middle position :");
+            Debug.Log(rightEyeBrowMiddle.Item0);
+            Debug.Log(rightEyeBrowMiddle.Item1);
+
+            rightEyeBrowRight.Item0 = (double)landmarks["rightEyeBrowRightX"];
+            rightEyeBrowRight.Item1 = (double)landmarks["rightEyeBrowRightY"];
+            Debug.Log("right eye brow right position :");
+            Debug.Log(rightEyeBrowRight.Item0);
+            Debug.Log(rightEyeBrowRight.Item1);
+
+            distanceBetweenNoseTopAndEyes = Math.Abs((double)landmarks["noseBtwEyesX"] - (double)landmarks["rightEyeCornerLeftX"]) / faceWidth;
+            Debug.Log("distance between nose and eyes :");
+            Debug.Log(distanceBetweenNoseTopAndEyes);
+
+
+            // Récuperation des infos sur le nez
+            distanceBetweenNoseTipAndLip = Math.Abs((double)landmarks["noseTipY"] - (double)landmarks["lipLineMiddleY"]) / faceHeight;
+            Debug.Log("distance between nose tip and lip :");
+            Debug.Log(distanceBetweenNoseTipAndLip);
+
+            noseHeight = Math.Abs((double)landmarks["noseTipY"] - (double)landmarks["noseBtwEyesY"]) / faceHeight;
+            Debug.Log("nose height :");
+            Debug.Log(noseHeight);
+
+            noseWidth = Math.Abs((double)landmarks["nostrilLeftSideX"] - (double)landmarks["nostrilRightSideX"]) / faceWidth;
+            Debug.Log("nose width :");
+            Debug.Log(noseWidth);
+
+            nostrilThickness = Math.Abs((double)landmarks["nostrilRightHoleBottomX"] - (double)landmarks["nostrilRightSideX"]) / faceWidth;
+            Debug.Log("nostril thickness :");
+            Debug.Log(nostrilThickness);
+
+
+            // Récuperation des infos sur la bouche
+            lipWidth = Math.Abs((double)landmarks["lipCornerLeftX"] - (double)landmarks["lipCornerRightX"]) / faceWidth;
+            Debug.Log("lip width :");
+            Debug.Log(lipWidth);
+
+
+            // Récuperation des infos utiles pour la hair detection
+            leftEyeCorner.Item0 = (double)landmarks["leftEyeCornerLeftX"];
+            leftEyeCorner.Item1 = (double)landmarks["leftEyeCornerLeftY"];
+            Debug.Log("left eye corner position :");
+            Debug.Log(leftEyeCorner.Item0);
+            Debug.Log(leftEyeCorner.Item1);
+
+            rightEyeCorner.Item0 = (double)landmarks["rightEyeCornerRightX"];
+            rightEyeCorner.Item1 = (double)landmarks["rightEyeCornerRightY"];
+            Debug.Log("right eye corner position :");
+            Debug.Log(rightEyeCorner.Item0);
+            Debug.Log(rightEyeCorner.Item1);
+
+            chin.Item0 = (double)landmarks["chinTipX"];
+            chin.Item1 = (double)landmarks["chinTipY"];
+            Debug.Log("chin tip position :");
+            Debug.Log(chin.Item0);
+            Debug.Log(chin.Item1);
+
+            nose.Item0 = (double)landmarks["noseTipX"];
+            nose.Item1 = (double)landmarks["noseTipY"];
+            Debug.Log("nose tip position :");
+            Debug.Log(nose.Item0);
+            Debug.Log(nose.Item1);
         }
-        else
-        {
-            Debug.Log("C'est une femme");
-        }
-
-        faceHeight = faceAnalyse.Face.Height;
-        Debug.Log("face height :");
-        Debug.Log(faceHeight);
-
-        //if((int)landmarks["rightEarTragusX"] != -1 && (int)landmarks["leftEarTragusX"] != -1)
-        //{
-        //faceWidth = Math.Abs((double)landmarks["rightEarTragusX"] - (double)landmarks["leftEarTragusX"]);
-        //Debug.Log("face width :");
-        //Debug.Log(faceWidth);
-        //}
-        //else
-        //{
-        faceWidth = faceAnalyse.Face.Width - 100;
-        Debug.Log("face width :");
-        Debug.Log(faceWidth);
-        //}
-
-        distanceBetweenLipAndChin = Math.Abs((double)landmarks["lipLineMiddleY"] - (double)landmarks["chinTipY"]) / faceHeight;
-        Debug.Log("distance between lip and chin :");
-        Debug.Log(distanceBetweenLipAndChin);
-
-
-        // Récuperation des infos sur les yeux
-        leftEyeCenter.Item0 = (double)landmarks["leftEyeCenterX"];
-        leftEyeCenter.Item1 = (double)landmarks["leftEyeCenterY"];
-        Debug.Log("left eye center position :");
-        Debug.Log(leftEyeCenter.Item0);
-        Debug.Log(leftEyeCenter.Item1);
-
-        rightEyeCenter.Item0 = (double)landmarks["rightEyeCenterX"];
-        rightEyeCenter.Item1 = (double)landmarks["rightEyeCenterY"];
-        Debug.Log("right eye center position :");
-        Debug.Log(rightEyeCenter.Item0);
-        Debug.Log(rightEyeCenter.Item1);
-
-        leftEyeWidth = Math.Abs((double)landmarks["leftEyeCornerLeftX"] - (double)landmarks["leftEyeCornerRightX"]) / faceWidth;
-        Debug.Log("left eye width :");
-        Debug.Log(leftEyeWidth);
-
-        rightEyeWidth = Math.Abs((double)landmarks["rightEyeCornerLeftX"] - (double)landmarks["rightEyeCornerRightX"]) / faceWidth;
-        Debug.Log("right eye width :");
-        Debug.Log(rightEyeWidth);
-
-        leftEyeBrowLeft.Item0 = (double)landmarks["leftEyeBrowLeftX"];
-        leftEyeBrowLeft.Item1 = (double)landmarks["leftEyeBrowLeftY"];
-        Debug.Log("left eye brow left position :");
-        Debug.Log(leftEyeBrowLeft.Item0);
-        Debug.Log(leftEyeBrowLeft.Item1);
-
-        leftEyeBrowMiddle.Item0 = (double)landmarks["leftEyeBrowMiddleX"];
-        leftEyeBrowMiddle.Item1 = (double)landmarks["leftEyeBrowMiddleY"];
-        Debug.Log("left eye brow middle position :");
-        Debug.Log(leftEyeBrowMiddle.Item0);
-        Debug.Log(leftEyeBrowMiddle.Item1);
-
-        leftEyeBrowRight.Item0 = (double)landmarks["leftEyeBrowRightX"];
-        leftEyeBrowRight.Item1 = (double)landmarks["leftEyeBrowRightY"];
-        Debug.Log("left eye brow right position :");
-        Debug.Log(leftEyeBrowRight.Item0);
-        Debug.Log(leftEyeBrowRight.Item1);
-
-        rightEyeBrowLeft.Item0 = (double)landmarks["rightEyeBrowLeftX"];
-        rightEyeBrowLeft.Item1 = (double)landmarks["rightEyeBrowLeftY"];
-        Debug.Log("right eye brow left position :");
-        Debug.Log(rightEyeBrowLeft.Item0);
-        Debug.Log(rightEyeBrowLeft.Item1);
-
-        rightEyeBrowMiddle.Item0 = (double)landmarks["rightEyeBrowMiddleX"];
-        rightEyeBrowMiddle.Item1 = (double)landmarks["rightEyeBrowMiddleY"];
-        Debug.Log("right eye brow middle position :");
-        Debug.Log(rightEyeBrowMiddle.Item0);
-        Debug.Log(rightEyeBrowMiddle.Item1);
-
-        rightEyeBrowRight.Item0 = (double)landmarks["rightEyeBrowRightX"];
-        rightEyeBrowRight.Item1 = (double)landmarks["rightEyeBrowRightY"];
-        Debug.Log("right eye brow right position :");
-        Debug.Log(rightEyeBrowRight.Item0);
-        Debug.Log(rightEyeBrowRight.Item1);
-
-        distanceBetweenNoseTopAndEyes = Math.Abs((double)landmarks["noseBtwEyesX"] - (double)landmarks["rightEyeCornerLeftX"]) / faceWidth;
-        Debug.Log("distance between nose and eyes :");
-        Debug.Log(distanceBetweenNoseTopAndEyes);
-
-
-        // Récuperation des infos sur le nez
-        distanceBetweenNoseTipAndLip = Math.Abs((double)landmarks["noseTipY"] - (double)landmarks["lipLineMiddleY"]) / faceHeight;
-        Debug.Log("distance between nose tip and lip :");
-        Debug.Log(distanceBetweenNoseTipAndLip);
-
-        noseHeight = Math.Abs((double)landmarks["noseTipY"] - (double)landmarks["noseBtwEyesY"]) / faceHeight;
-        Debug.Log("nose height :");
-        Debug.Log(noseHeight);
-
-        noseWidth = Math.Abs((double)landmarks["nostrilLeftSideX"] - (double)landmarks["nostrilRightSideX"]) / faceWidth;
-        Debug.Log("nose width :");
-        Debug.Log(noseWidth);
-
-        nostrilThickness = Math.Abs((double)landmarks["nostrilRightHoleBottomX"] - (double)landmarks["nostrilRightSideX"]) / faceWidth;
-        Debug.Log("nostril thickness :");
-        Debug.Log(nostrilThickness);
-
-
-        // Récuperation des infos sur la bouche
-        lipWidth = Math.Abs((double)landmarks["lipCornerLeftX"] - (double)landmarks["lipCornerRightX"]) / faceWidth;
-        Debug.Log("lip width :");
-        Debug.Log(lipWidth);
-
-
-        // Récuperation des infos utiles pour la hair detection
-        leftEyeCorner.Item0 = (double)landmarks["leftEyeCornerLeftX"];
-        leftEyeCorner.Item1 = (double)landmarks["leftEyeCornerLeftY"];
-        Debug.Log("left eye corner position :");
-        Debug.Log(leftEyeCorner.Item0);
-        Debug.Log(leftEyeCorner.Item1);
-
-        rightEyeCorner.Item0 = (double)landmarks["rightEyeCornerRightX"];
-        rightEyeCorner.Item1 = (double)landmarks["rightEyeCornerRightY"];
-        Debug.Log("right eye corner position :");
-        Debug.Log(rightEyeCorner.Item0);
-        Debug.Log(rightEyeCorner.Item1);
-
-        chin.Item0 = (double)landmarks["chinTipX"];
-        chin.Item1 = (double)landmarks["chinTipY"];
-        Debug.Log("chin tip position :");
-        Debug.Log(chin.Item0);
-        Debug.Log(chin.Item1);
-
-        nose.Item0 = (double)landmarks["noseTipX"];
-        nose.Item1 = (double)landmarks["noseTipY"];
-        Debug.Log("nose tip position :");
-        Debug.Log(nose.Item0);
-        Debug.Log(nose.Item1);
+        
     }
 
     void Update()
     {
-      if(faceAnalyse.LipHeight != 0 && !updateLip)
-        {
-            updateLip = true;
-            Debug.Log("lip height :");
-            Debug.Log(faceAnalyse.LipHeight);
-            try
-            {
+      //if(faceAnalyse.LipHeight != 0 && !updateLip)
+      //  {
+      //      updateLip = true;
+      //      Debug.Log("lip height :");
+      //      Debug.Log(faceAnalyse.LipHeight);
+      //      try
+      //      {
 
-                //Pass the filepath and filename to the StreamWriter Constructor
-                StreamWriter sw = new StreamWriter("Assets/Test.txt");
+      //          //Pass the filepath and filename to the StreamWriter Constructor
+      //          StreamWriter sw = new StreamWriter("Assets/Test.txt");
 
-                sw.WriteLine("Start of analyse");
+      //          sw.WriteLine("Start of analyse");
 
-                sw.WriteLine(gender);
+      //          sw.WriteLine(gender);
 
-                sw.WriteLine(leftEyeWidth);
+      //          sw.WriteLine(leftEyeWidth);
 
-                sw.WriteLine(rightEyeWidth);
+      //          sw.WriteLine(rightEyeWidth);
 
-                sw.WriteLine(distanceBetweenNoseTopAndEyes);
+      //          sw.WriteLine(distanceBetweenNoseTopAndEyes);
 
-                sw.WriteLine(distanceBetweenNoseTipAndLip);
+      //          sw.WriteLine(distanceBetweenNoseTipAndLip);
 
-                sw.WriteLine(noseHeight);
+      //          sw.WriteLine(noseHeight);
 
-                sw.WriteLine(noseWidth);
+      //          sw.WriteLine(noseWidth);
 
-                sw.WriteLine(nostrilThickness);
+      //          sw.WriteLine(nostrilThickness);
 
-                sw.WriteLine(lipWidth);
+      //          sw.WriteLine(lipWidth);
 
-                sw.WriteLine(faceAnalyse.LipHeight);
+      //          sw.WriteLine(faceAnalyse.LipHeight);
 
-                sw.WriteLine("End of analyse");
+      //          sw.WriteLine("End of analyse");
 
-                //Close the file
-                sw.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Exception: " + e.Message);
-            }
-            finally
-            {
-                Console.WriteLine("Executing finally block.");
-            }
-        }
+      //          //Close the file
+      //          sw.Close();
+      //      }
+      //      catch (Exception e)
+      //      {
+      //          Console.WriteLine("Exception: " + e.Message);
+      //      }
+      //      finally
+      //      {
+      //          Console.WriteLine("Executing finally block.");
+      //      }
+      //  }
             
     }
 
