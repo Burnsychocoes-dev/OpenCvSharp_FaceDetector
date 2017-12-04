@@ -66,7 +66,7 @@ public class Avatar : MonoBehaviour {
         public float distanceBetweenCenterLipAndTopLip;
         public float distanceBetweenChinAndMouth;
         public float distanceBetweenNoseTipAndMouth;
-        public float MouthWidth;
+        public float mouthWidth;
         public Taille width;
     }
 
@@ -100,9 +100,8 @@ public class Avatar : MonoBehaviour {
     void Start()
     {
         avatarManager = GetComponent<MORPH3D.M3DCharacterManager>();
-        avatarManager.SetBlendshapeValue("PHMEyesSize", 100);
-        ChangeSkinTexture(new Color(0.56f, 0.27f, 0.27f), true, false);
-        //Useless();
+        landmarks = GetComponent<LandmarksRetriever>();
+        face = GetComponent<FaceDetectionImage>();
     }
 
 
@@ -165,20 +164,18 @@ public class Avatar : MonoBehaviour {
         perso.mouth.distanceBetweenNoseTipAndMouth = (float)landmarks.distanceBetweenNoseTipAndLip;
         perso.mouth.distanceBetweenCenterLipAndButtomLip = (float)landmarks.buttomLipHeight;
         perso.mouth.distanceBetweenCenterLipAndTopLip = (float)landmarks.topLipHeight;
-        perso.mouth.MouthWidth = (float)landmarks.lipWidth;
-        if (perso.mouth.MouthWidth <= 0.40)
+        perso.mouth.mouthWidth = (float)landmarks.lipWidth;
+        if (perso.mouth.mouthWidth <= 0.40)
             perso.mouth.width = Taille.Little;
-        else if (perso.mouth.MouthWidth > 0.40 && perso.mouth.MouthWidth <= 0.42)
+        else if (perso.mouth.mouthWidth > 0.40 && perso.mouth.mouthWidth <= 0.42)
             perso.mouth.width = Taille.Middle;
         else
             perso.mouth.width = Taille.Big;
 
-
-
     }
 
 
-    public void ChangeNose(float noseHeight, float noseWidth, float nostrilThickness)
+    public void ChangeNose()
     {
         // En fonction de noseHeight
         /*
@@ -189,14 +186,14 @@ public class Avatar : MonoBehaviour {
         switch(perso.nose.height)
         {
             case Taille.Little:
-                float valeur_little = PercentageConvertor(perso.nose.noseHeight, 0.23f, 0.25f, 33, 100);
+                float valeur_little = PercentageConvertorNeg(perso.nose.noseHeight, 0.23f, 0.25f, 33, 100);
                 avatarManager.SetBlendshapeValue("PHMNoseHeight_NEGATIVE_", valeur_little);
                 break;
 
             case Taille.Middle:
                 if (perso.nose.noseHeight < 0.275)
                 {
-                    float valeur_middle = PercentageConvertor(perso.nose.noseHeight, 0.25f, 0.275f, 0, 33);
+                    float valeur_middle = PercentageConvertorNeg(perso.nose.noseHeight, 0.25f, 0.275f, 0, 33);
                     avatarManager.SetBlendshapeValue("PHMNoseHeight_NEGATIVE_", valeur_middle);
                 }
                 else
@@ -221,49 +218,48 @@ public class Avatar : MonoBehaviour {
         switch (perso.nose.width)
         {
             case Taille.Little:
-                float valeur_little = PercentageConvertor(perso.nose.noseWidth, 0.24f, 0.27f, 33, 100);
-                avatarManager.SetBlendshapeValue("PHMNoseHeight_NEGATIVE_", valeur_little);
+                float valeur_little = PercentageConvertorNeg(perso.nose.noseWidth, 0.24f, 0.27f, 33, 100);
+                avatarManager.SetBlendshapeValue("PHMNoseWidth_NEGATIVE_", valeur_little);
                 break;
 
             case Taille.Middle:
-                if (perso.nose.noseHeight < 0.29)
+                if (perso.nose.noseWidth < 0.29)
                 {
-                    float valeur_middle = PercentageConvertor(perso.nose.noseWidth, 0.27f, 0.29f, 0, 33);
-                    avatarManager.SetBlendshapeValue("PHMNoseHeight_NEGATIVE_", valeur_middle);
+                    float valeur_middle = PercentageConvertorNeg(perso.nose.noseWidth, 0.27f, 0.29f, 0, 33);
+                    avatarManager.SetBlendshapeValue("PHMNoseWidth_NEGATIVE_", valeur_middle);
                 }
                 else
                 {
                     float valeur_middle = PercentageConvertor(perso.nose.noseWidth, 0.29f, 0.31f, 0, 33);
-                    avatarManager.SetBlendshapeValue("PHMNoseHeight", valeur_middle);
+                    avatarManager.SetBlendshapeValue("PHMNoseWidth", valeur_middle);
                 }
                 break;
 
             case Taille.Big:
-                float valeur_big = PercentageConvertor(perso.nose.noseHeight, 0.31f, 0.34f, 33, 100);
-                avatarManager.SetBlendshapeValue("PHMNoseHeight", valeur_big);
+                float valeur_big = PercentageConvertor(perso.nose.noseWidth, 0.31f, 0.34f, 33, 100);
+                avatarManager.SetBlendshapeValue("PHMNoseWidth", valeur_big);
                 break;
         }
-        avatarManager.SetBlendshapeValue("PHMNoseWidth", 100);
-        avatarManager.SetBlendshapeValue("PHMNoseWidth_NEGATIVE_", 100);
+
 
         // En fonction de nostrilThickness
-        avatarManager.SetBlendshapeValue("PHMNostrilWingWidth", 100);
-        avatarManager.SetBlendshapeValue("PHMNostrilWingWidth_NEGATIVE_", 100);
+        //avatarManager.SetBlendshapeValue("PHMNostrilWingWidth", 100);
+        //avatarManager.SetBlendshapeValue("PHMNostrilWingWidth_NEGATIVE_", 100);
     }
 
-    public void ChangeMouth(float distanceBetweenCenterLipAndButtomLip, float distanceBetweenCenterLipAndTopLip, float distanceBetweenChinAndMouth, float distanceBetweenNoseTipAndMouth, float MouthWidth)
+    public void ChangeMouth()
     {
-        // En fonction de distanceBetweenCenterLipAndButtomLip
-        avatarManager.SetBlendshapeValue("PHMLipLowerSize", 100);
-        avatarManager.SetBlendshapeValue("PHMLipLowerSize_NEGATIVE_", 100);
+        //// En fonction de distanceBetweenCenterLipAndButtomLip
+        //avatarManager.SetBlendshapeValue("PHMLipLowerSize", 100);
+        //avatarManager.SetBlendshapeValue("PHMLipLowerSize_NEGATIVE_", 100);
 
-        // En fonction de distanceBetweenCenterLipAndTopLip
-        avatarManager.SetBlendshapeValue("PHMLipUpperSize", 100);
-        avatarManager.SetBlendshapeValue("PHMLipUpperSize_NEGATIVE_", 100);
+        //// En fonction de distanceBetweenCenterLipAndTopLip
+        //avatarManager.SetBlendshapeValue("PHMLipUpperSize", 100);
+        //avatarManager.SetBlendshapeValue("PHMLipUpperSize_NEGATIVE_", 100);
 
-        // En fonction de distanceBetweenChinAndMouth and distanceBetweenNoseTipAndMouth
-        avatarManager.SetBlendshapeValue("PHMMouthHeight", 100);
-        avatarManager.SetBlendshapeValue("PHMMouthHeight_NEGATIVE_", 100);
+        //// En fonction de distanceBetweenChinAndMouth and distanceBetweenNoseTipAndMouth
+        //avatarManager.SetBlendshapeValue("PHMMouthHeight", 100);
+        //avatarManager.SetBlendshapeValue("PHMMouthHeight_NEGATIVE_", 100);
 
         // En fonction de MouthWidth
         /*
@@ -278,15 +274,38 @@ public class Avatar : MonoBehaviour {
          *   ex : valueToSet = PercentageConvertor(mouthwidth, 0.42, 0.46, 33, 100);
          *   autre valeur : A AFFICHER POUR DEBUGUER
          */
-        avatarManager.SetBlendshapeValue("PHMMouthWidth", 100);
-        avatarManager.SetBlendshapeValue("PHMMouthWidth_NEGATIVE_", 100);
+        switch (perso.mouth.width)
+        {
+            case Taille.Little:
+                float valeur_little = PercentageConvertorNeg(perso.mouth.mouthWidth, 0.35f, 0.40f, 33, 100);
+                avatarManager.SetBlendshapeValue("PHMMouthWidth_NEGATIVE_", valeur_little);
+                break;
+
+            case Taille.Middle:
+                if (perso.mouth.mouthWidth < 0.41)
+                {
+                    float valeur_middle = PercentageConvertorNeg(perso.mouth.mouthWidth, 0.40f, 0.41f, 0, 33);
+                    avatarManager.SetBlendshapeValue("PHMMouthWidth_NEGATIVE_", valeur_middle);
+                }
+                else
+                {
+                    float valeur_middle = PercentageConvertor(perso.mouth.mouthWidth, 0.41f, 0.42f, 0, 33);
+                    avatarManager.SetBlendshapeValue("PHMMouthWidth", valeur_middle);
+                }
+                break;
+
+            case Taille.Big:
+                float valeur_big = PercentageConvertor(perso.mouth.mouthWidth, 0.42f, 0.46f, 33, 100);
+                avatarManager.SetBlendshapeValue("PHMMouthWidth", valeur_big);
+                break;
+        }
     }
 
-    public void ChangeEyes(float distanceMiddleSourcilCenterEye, float eyeWidth, float distanceBetweenNoseTopAndEyes)
+    public void ChangeEyes()
     {
-        // En fonction de distanceMiddleSourcilCenterEye
-        avatarManager.SetBlendshapeValue("PHMEyesHeight", 100);
-        avatarManager.SetBlendshapeValue("PHMEyesHeight_NEGATIVE_", 100);
+        //// En fonction de distanceMiddleSourcilCenterEye
+        //avatarManager.SetBlendshapeValue("PHMEyesHeight", 100);
+        //avatarManager.SetBlendshapeValue("PHMEyesHeight_NEGATIVE_", 100);
 
         // En fonction de eyeWidth
         /*
@@ -320,12 +339,11 @@ public class Avatar : MonoBehaviour {
                 avatarManager.SetBlendshapeValue("PHMEyesSize", valeur_big);
                 break;
         }
-        //avatarManager.SetBlendshapeValue("PHMEyesSize", 100);
-        //avatarManager.SetBlendshapeValue("PHMEyesHeight_NEGATIVE_", 100);
 
-        // En fonction de distanceBetweenNoseTopAndEyes        
-        avatarManager.SetBlendshapeValue("PHMEyesWidth", 100);
-        avatarManager.SetBlendshapeValue("PHMEyesWidth_NEGATIVE_", 100);
+
+        //// En fonction de distanceBetweenNoseTopAndEyes        
+        //avatarManager.SetBlendshapeValue("PHMEyesWidth", 100);
+        //avatarManager.SetBlendshapeValue("PHMEyesWidth_NEGATIVE_", 100);
     }
 
     public void ChangeSkinTexture(Color color, bool isMale, bool isWhite)
