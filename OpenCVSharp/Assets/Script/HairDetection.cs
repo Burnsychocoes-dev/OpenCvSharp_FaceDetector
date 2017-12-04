@@ -134,7 +134,7 @@ public class HairDetection : MonoBehaviour {
         int youCanPick = 0;
         //On va pick tous les 10 pixels
         int youCanPickEveryXPixels = 10;
-
+        System.Random rand = new System.Random();
 
 
         for (var i=0; i < faceDetectionImage.ImHeight; i++)
@@ -204,6 +204,11 @@ public class HairDetection : MonoBehaviour {
 
 
                 youCanPick = (youCanPick + 1) % youCanPickEveryXPixels;
+                if (youCanPick == 1)
+                {
+                    youCanPickEveryXPixels = rand.Next(5, 15);
+                }
+                
             }
         }
 
