@@ -29,6 +29,8 @@ public class HairDetection : MonoBehaviour {
     private int yHairTop =-1;
     private int yHairMax;
     private int hairHeight;
+    private int j_min=-1;
+    private int j_max=-1;
 
     private FaceDetectionImage faceDetectionImage;
     private LandmarksRetriever landMarksRetriever;
@@ -102,20 +104,25 @@ public class HairDetection : MonoBehaviour {
     {
         Debug.Log("GrabCut");
         //faceDetectionImage = GetComponent<FaceDetectionImage>();
-        Mat result = new Mat(faceDetectionImage.VideoSourceImage.Size(), faceDetectionImage.VideoSourceImage.Type());
+        //Mat result = new Mat(faceDetectionImage.VideoSourceImage.Size(), faceDetectionImage.VideoSourceImage.Type());
+        Mat result = new Mat(faceDetectionImage.VideoSourceImage.Size(), MatType.CV_8UC1);
+        
         //Mat result = faceDetectionImage.VideoSourceImage;
         Mat bgModel = new Mat(); //background model
         Mat fgModel = new Mat(); //foreground model
+        
 
         //draw a rectangle 
         //OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(1, 1, faceDetectionImage.VideoSourceImage.Cols - 1, faceDetectionImage.VideoSourceImage.Rows - 1);
         OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(faceDetectionImage.Face.X - 100, faceDetectionImage.Face.Y - 100, faceDetectionImage.Face.Width + 200, faceDetectionImage.Face.Height + 200);
+
         Cv2.GrabCut(faceDetectionImage.VideoSourceImage, result, rectangle, bgModel, fgModel, 10, GrabCutModes.InitWithRect);
         Cv2.Compare(result, new Scalar(3, 3, 3), result, CmpTypes.EQ);
         matrix2_grabcut = new Mat(faceDetectionImage.ImHeight, faceDetectionImage.ImWidth, MatType.CV_8UC3, new Scalar(255, 255, 255));
-        faceDetectionImage.VideoSourceImage.CopyTo(matrix2_grabcut, result);
 
-        matrix2_grabcut.CopyTo(faceDetectionImage.VideoSourceImage);      
+        faceDetectionImage.VideoSourceImage.CopyTo(matrix2_grabcut, result);
+        
+        matrix2_grabcut.CopyTo(faceDetectionImage.VideoSourceImage);
     }
 
     public void GetSkinColor()
@@ -222,12 +229,11 @@ public class HairDetection : MonoBehaviour {
         
         int nbOfPixelBlancThreshold = 4;
         int pixelBlancCounter = 0;
-        int lastPixelBlancY = -1;
 
         //On part du haut du front
         int j = faceDetectionImage.RectFront.X+faceDetectionImage.RectFront.Width/2;
 
-        for(var i = faceDetectionImage.RectFront.Y; i>0; i--)
+        for (var i = faceDetectionImage.RectFront.Y; i>0; i--)
         {
 
 
@@ -242,28 +248,15 @@ public class HairDetection : MonoBehaviour {
             
             if (color.r == 255 && color.g == 255 && color.b == 255)
             {
-                if (pixelBlancCounter == nbOfPixelBlancThreshold)
+                pixelBlancCounter++;
+                if (pixelBlancCounter >= nbOfPixelBlancThreshold)
                 {
-                    //on est arrivé au haut du crane
-                    yHairTop = i + nbOfPixelBlancThreshold;
-                    Debug.Log("Hair top found, y : ");
-                    Debug.Log(yHairTop);
-                    return;
-                } else if (lastPixelBlancY != i+1)
-                {
-                    pixelBlancCounter = 1;
-                    lastPixelBlancY = i;
-                } else
-                {
-                    lastPixelBlancY = i;
-                    pixelBlancCounter++;
+                    yHairTop = i;
+                    break;
                 }
-                
-                
             } else
             {
                 pixelBlancCounter = 0;
-                lastPixelBlancY = -1;
             }
 
             Vec3f sample = FromRGBToYCbCr(color);
@@ -282,6 +275,82 @@ public class HairDetection : MonoBehaviour {
                 Item2 = 0
             });
             //Dés qu'on valide la condition, on s'arrête et on set le yHairRoot
+        }
+
+    }
+
+
+    void findJminJmax()
+    {
+        int nbOfPixelNonSkinThreshold = 4;
+        int pixelNonSkinCounter = 0;
+
+        int i = faceDetectionImage.RectEyeLeft.Y + faceDetectionImage.RectEyeLeft.Height;
+        int j0 = faceDetectionImage.RectEyeLeft.X + faceDetectionImage.RectEyeLeft.Width;
+
+
+        //Calcul de j_max
+        for (var j = j0; j < faceDetectionImage.ImWidth; j++)
+        {
+
+            Vec3b vec = faceDetectionImage.VideoSourceImage.At<Vec3b>(i, j);
+            Color32 color = new Color32
+            {
+                r = vec.Item2,
+                g = vec.Item1,
+                b = vec.Item0
+            };
+
+            Vec3f sample = FromRGBToYCbCr(color);
+
+            if ((color.r == 255 && color.g == 255 && color.b == 255) || EuclidianDistance(sample.Item1, sample.Item2, skinColorYCbCrExpectancy) > skinColorCbCrThreshold)
+            {
+                pixelNonSkinCounter++;
+                if (pixelNonSkinCounter >= nbOfPixelNonSkinThreshold)
+                {
+                    j_max = j;
+                    break;
+                }
+            } else
+            {
+                pixelNonSkinCounter = 0;
+            }
+        }
+
+
+        //Calcul de j_min
+        nbOfPixelNonSkinThreshold = 4;
+        pixelNonSkinCounter = 0;
+
+        i = faceDetectionImage.RectEyeRight.Y + faceDetectionImage.RectEyeRight.Height;
+        j0 = faceDetectionImage.RectEyeRight.X;
+
+        for (var j = j0; j > 0; j--)
+        {
+
+            Vec3b vec = faceDetectionImage.VideoSourceImage.At<Vec3b>(i, j);
+            Color32 color = new Color32
+            {
+                r = vec.Item2,
+                g = vec.Item1,
+                b = vec.Item0
+            };
+
+            Vec3f sample = FromRGBToYCbCr(color);
+
+            if ((color.r == 255 && color.g == 255 && color.b == 255) || EuclidianDistance(sample.Item1, sample.Item2, skinColorYCbCrExpectancy) > skinColorCbCrThreshold)
+            {
+                pixelNonSkinCounter++;
+                if (pixelNonSkinCounter >= nbOfPixelNonSkinThreshold)
+                {
+                    j_min = j;
+                    break;
+                }
+            }
+            else
+            {
+                pixelNonSkinCounter = 0;
+            }
         }
 
     }
@@ -503,6 +572,91 @@ public class HairDetection : MonoBehaviour {
         }
     }
 
+    public void FindHairMax()
+    {
+        int nbOfPixelNonHairThreshold = 4;
+        int lineNonHairCounter = 0;
+
+        //Calcul de j_min et j_max
+        findJminJmax();
+
+        //Parcours de toutes les lignes à partir du carré des yeux pour déterminer la longueur des cheveux
+        for (var i = faceDetectionImage.RectEyeRight.Y; i < faceDetectionImage.ImHeight; i++)
+        {
+            bool gaucheValide = false;
+            bool droiteValide = false;
+
+            for (var j = 0; j < faceDetectionImage.ImWidth; j++)
+            {
+                if (!gaucheValide)
+                {
+                    if (j <= j_min)
+                    {
+                        //Verification de la nature du pixel (i,j)
+                        Vec3b vec = faceDetectionImage.VideoSourceImage.At<Vec3b>(i, j);
+                        Color32 color = new Color32
+                        {
+                            r = vec.Item2,
+                            g = vec.Item1,
+                            b = vec.Item0
+                        };
+
+                        Vec3f sample = FromRGBToYCbCr(color);
+                        if (EuclidianDistance(sample.Item1, sample.Item2, skinColorYCbCrExpectancy) > skinColorCbCrThreshold && !(color.r == 255 && color.g == 255 && color.b == 255))
+                        {
+                            gaucheValide = true;
+                        }
+
+
+                    } else
+                    {
+                        //aucun pixel à gauche de j_min représente des cheveux, donc la ligne i est invalide !
+                        break;
+                    }
+                }
+                else {
+                    if (!droiteValide)
+                    {
+                        if (j >= j_max)
+                        {
+                            //Verification de la nature du pixel (i,j)
+                            Vec3b vec = faceDetectionImage.VideoSourceImage.At<Vec3b>(i, j);
+                            Color32 color = new Color32
+                            {
+                                r = vec.Item2,
+                                g = vec.Item1,
+                                b = vec.Item0
+                            };
+
+                            Vec3f sample = FromRGBToYCbCr(color);
+                            if (EuclidianDistance(sample.Item1, sample.Item2, skinColorYCbCrExpectancy) > skinColorCbCrThreshold && !(color.r == 255 && color.g == 255 && color.b == 255))
+                            {
+                                droiteValide = true;
+                                break; // plus besoin de continuer
+                            }
+                        }
+                    } 
+                }
+            }
+
+            //Conclure sur la validité de la ligne i
+            if (gaucheValide && droiteValide)
+            {
+                yHairMax = i;
+                lineNonHairCounter = 0;
+            } else
+            {
+                lineNonHairCounter++;
+                if (lineNonHairCounter >= nbOfPixelNonHairThreshold)
+                {
+                    break;
+                }
+            }
+        }
+    }
+
+
+
     void FindHairYMax()
     {
         Debug.Log("Find Hair Y Max");
@@ -521,7 +675,7 @@ public class HairDetection : MonoBehaviour {
 
                 //On va balayer l'image vers le bas à la recherche de cheveux -> condition = on trouve au moins 4 pixels correspondant à des cheveux pour une ligne (ou bien on met une autre condition)s
                 //Vec3b vec = faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth];
-                Vec3b vec = faceDetectionImage.VideoSourceImage.At<Vec3b>(i * faceDetectionImage.ImWidth, j);
+                Vec3b vec = faceDetectionImage.VideoSourceImage.At<Vec3b>(i, j);
                 Color32 color = new Color32
                 {
                     r = vec.Item2,
