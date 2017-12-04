@@ -305,9 +305,9 @@ public class Avatar : MonoBehaviour {
 
     public void ChangeEyes(float distanceMiddleSourcilCenterEye, float eyeWidth, float distanceBetweenNoseTopAndEyes)
     {
-        // En fonction de distanceMiddleSourcilCenterEye
-        avatarManager.SetBlendshapeValue("PHMEyesHeight", 100);
-        avatarManager.SetBlendshapeValue("PHMEyesHeight_NEGATIVE_", 100);
+        //// En fonction de distanceMiddleSourcilCenterEye
+        //avatarManager.SetBlendshapeValue("PHMEyesHeight", 100);
+        //avatarManager.SetBlendshapeValue("PHMEyesHeight_NEGATIVE_", 100);
 
         // En fonction de eyeWidth
         /*
@@ -341,12 +341,11 @@ public class Avatar : MonoBehaviour {
                 avatarManager.SetBlendshapeValue("PHMEyesSize", valeur_big);
                 break;
         }
-        //avatarManager.SetBlendshapeValue("PHMEyesSize", 100);
-        //avatarManager.SetBlendshapeValue("PHMEyesHeight_NEGATIVE_", 100);
 
-        // En fonction de distanceBetweenNoseTopAndEyes        
-        avatarManager.SetBlendshapeValue("PHMEyesWidth", 100);
-        avatarManager.SetBlendshapeValue("PHMEyesWidth_NEGATIVE_", 100);
+
+        //// En fonction de distanceBetweenNoseTopAndEyes        
+        //avatarManager.SetBlendshapeValue("PHMEyesWidth", 100);
+        //avatarManager.SetBlendshapeValue("PHMEyesWidth_NEGATIVE_", 100);
     }
 
     public void ChangeSkinTexture(Color color, bool isMale, bool isWhite)
