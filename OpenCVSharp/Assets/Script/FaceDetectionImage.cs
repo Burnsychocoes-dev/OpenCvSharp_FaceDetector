@@ -139,10 +139,15 @@ public class FaceDetectionImage : MonoBehaviour
 
     LandmarksRetriever landmarks;
 
+    Avatar avatar;
+
+    private int etapeCount = 1;
+
 
     void Start()
     {
-        //landmarks = GetComponent<LandmarksRetriever>();
+        landmarks = GetComponent<LandmarksRetriever>();
+        avatar = GetComponent<Avatar>();
         hair = GetComponent<HairDetection>();
 
         byte[] photoFile = File.ReadAllBytes(imagePath);
@@ -189,22 +194,22 @@ public class FaceDetectionImage : MonoBehaviour
         // the texture will be displayed automatically
         //MatToTexture(videoSourceImage);
 
-        hair.Init();
-        hair.Pretraitement();
+        //hair.Init();
+        //hair.Pretraitement();
 
 
         //UpdateWindow(videoSourceImage);
-        Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
+        //Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
 
-        hair.GetSkinColor();
+        //hair.GetSkinColor();
         
-        hair.FindHairRoots();
+        //hair.FindHairRoots();
 
-        hair.FindHairMax();
+        //hair.FindHairMax();
 
         //hair.ClearSkin();
 
-        Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
+        //Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
 
         MatToTexture(videoSourceImage);
 
@@ -260,6 +265,25 @@ public class FaceDetectionImage : MonoBehaviour
 
 
         //UpdateWindow(videoSourceImage);
+
+        if(etapeCount == 1)
+        {
+            landmarks.Init();
+            etapeCount++;
+        }
+        else if(etapeCount == 2)
+        {
+            avatar.SetPerso();
+            avatar.ChangeNose();
+            avatar.ChangeMouth();
+            avatar.ChangeEyes();
+            etapeCount++;
+        }
+        else
+        {
+
+        }
+
 
     }
 

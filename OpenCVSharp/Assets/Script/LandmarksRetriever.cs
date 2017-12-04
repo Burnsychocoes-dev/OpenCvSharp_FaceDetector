@@ -116,7 +116,7 @@ public class LandmarksRetriever : MonoBehaviour {
         Instance = this;
     }
 
-    void Start() {
+    public void Init() {
         faceAnalyse = GetComponent<FaceDetectionImage>();
         hairDetection = GetComponent<HairDetection>();
 
@@ -270,53 +270,53 @@ public class LandmarksRetriever : MonoBehaviour {
 
     void Update()
     {
-      if(faceAnalyse.LipHeight != 0 && !updateLip)
-        {
-            updateLip = true;
-            Debug.Log("lip height :");
-            Debug.Log(faceAnalyse.LipHeight);
-            try
-            {
+      //if(faceAnalyse.LipHeight != 0 && !updateLip)
+      //  {
+      //      updateLip = true;
+      //      Debug.Log("lip height :");
+      //      Debug.Log(faceAnalyse.LipHeight);
+      //      try
+      //      {
 
-                //Pass the filepath and filename to the StreamWriter Constructor
-                StreamWriter sw = new StreamWriter("Assets/Test.txt");
+      //          //Pass the filepath and filename to the StreamWriter Constructor
+      //          StreamWriter sw = new StreamWriter("Assets/Test.txt");
 
-                sw.WriteLine("Start of analyse");
+      //          sw.WriteLine("Start of analyse");
 
-                sw.WriteLine(gender);
+      //          sw.WriteLine(gender);
 
-                sw.WriteLine(leftEyeWidth);
+      //          sw.WriteLine(leftEyeWidth);
 
-                sw.WriteLine(rightEyeWidth);
+      //          sw.WriteLine(rightEyeWidth);
 
-                sw.WriteLine(distanceBetweenNoseTopAndEyes);
+      //          sw.WriteLine(distanceBetweenNoseTopAndEyes);
 
-                sw.WriteLine(distanceBetweenNoseTipAndLip);
+      //          sw.WriteLine(distanceBetweenNoseTipAndLip);
 
-                sw.WriteLine(noseHeight);
+      //          sw.WriteLine(noseHeight);
 
-                sw.WriteLine(noseWidth);
+      //          sw.WriteLine(noseWidth);
 
-                sw.WriteLine(nostrilThickness);
+      //          sw.WriteLine(nostrilThickness);
 
-                sw.WriteLine(lipWidth);
+      //          sw.WriteLine(lipWidth);
 
-                sw.WriteLine(faceAnalyse.LipHeight);
+      //          sw.WriteLine(faceAnalyse.LipHeight);
 
-                sw.WriteLine("End of analyse");
+      //          sw.WriteLine("End of analyse");
 
-                //Close the file
-                sw.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Exception: " + e.Message);
-            }
-            finally
-            {
-                Console.WriteLine("Executing finally block.");
-            }
-        }
+      //          //Close the file
+      //          sw.Close();
+      //      }
+      //      catch (Exception e)
+      //      {
+      //          Console.WriteLine("Exception: " + e.Message);
+      //      }
+      //      finally
+      //      {
+      //          Console.WriteLine("Executing finally block.");
+      //      }
+      //  }
             
     }
 

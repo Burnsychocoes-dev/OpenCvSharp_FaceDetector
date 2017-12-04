@@ -100,8 +100,6 @@ public class Avatar : MonoBehaviour {
     void Start()
     {
         avatarManager = GetComponent<MORPH3D.M3DCharacterManager>();
-        avatarManager.SetBlendshapeValue("PHMEyesSize", 100);
-        ChangeSkinTexture(new Color(0.56f, 0.27f, 0.27f), true, false);
     }
 
 
@@ -171,8 +169,6 @@ public class Avatar : MonoBehaviour {
             perso.mouth.width = Taille.Middle;
         else
             perso.mouth.width = Taille.Big;
-
-
 
     }
 
@@ -303,7 +299,7 @@ public class Avatar : MonoBehaviour {
         }
     }
 
-    public void ChangeEyes(float distanceMiddleSourcilCenterEye, float eyeWidth, float distanceBetweenNoseTopAndEyes)
+    public void ChangeEyes()
     {
         //// En fonction de distanceMiddleSourcilCenterEye
         //avatarManager.SetBlendshapeValue("PHMEyesHeight", 100);
