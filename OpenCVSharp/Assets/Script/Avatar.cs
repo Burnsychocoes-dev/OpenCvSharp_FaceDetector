@@ -357,6 +357,9 @@ public class Avatar : MonoBehaviour {
         if(vToConvert < srcIntervalMin)
         {
             vToConvert = srcIntervalMin;
+        }else if(vToConvert > srcIntervalMax)
+        {
+            vToConvert = srcIntervalMax;
         }
         float dSrc = srcIntervalMax - srcIntervalMin;
         float dDest = destIntervalMax - destIntervalMin;
