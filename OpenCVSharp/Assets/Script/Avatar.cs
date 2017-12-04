@@ -28,7 +28,7 @@ public class Avatar : MonoBehaviour {
     {
         Big,
         Middle,
-        little
+        Little
     }
 
     public enum SkinColor
@@ -134,7 +134,7 @@ public class Avatar : MonoBehaviour {
         perso.eye.distanceMiddleSourcilCenterEye = Mathf.Abs((float)landmarks.RightEyeBrowMiddle.Item1 - (float)landmarks.rightEyeCenter.Item1);
         perso.eye.eyeWidth = (float)landmarks.rightEyeWidth;
         if (perso.eye.eyeWidth <= 0.22f)
-            perso.eye.width = Taille.little;
+            perso.eye.width = Taille.Little;
         else if (perso.eye.eyeWidth > 0.22 && perso.eye.eyeWidth <= 0.24)
             perso.eye.width = Taille.Middle;
         else
@@ -146,13 +146,13 @@ public class Avatar : MonoBehaviour {
         perso.nose.noseWidth = (float)landmarks.noseWidth;
         perso.nose.nostrilThickness = (float)landmarks.nostrilThickness;
         if (perso.nose.noseHeight <= 0.25)
-            perso.nose.height = Taille.little;
+            perso.nose.height = Taille.Little;
         else if (perso.nose.noseHeight > 0.25 && perso.nose.noseHeight <= 0.30)
             perso.nose.height = Taille.Middle;
         else
             perso.nose.height = Taille.Big;
         if (perso.nose.noseWidth <= 0.27)
-            perso.nose.width = Taille.little;
+            perso.nose.width = Taille.Little;
         else if (perso.nose.noseWidth > 0.27 && perso.nose.noseWidth <= 0.31)
             perso.nose.width = Taille.Middle;
         else
@@ -166,7 +166,7 @@ public class Avatar : MonoBehaviour {
         perso.mouth.distanceBetweenCenterLipAndTopLip = (float)landmarks.topLipHeight;
         perso.mouth.MouthWidth = (float)landmarks.lipWidth;
         if (perso.mouth.MouthWidth <= 0.40)
-            perso.mouth.width = Taille.little;
+            perso.mouth.width = Taille.Little;
         else if (perso.mouth.MouthWidth > 0.40 && perso.mouth.MouthWidth <= 0.42)
             perso.mouth.width = Taille.Middle;
         else
@@ -185,6 +185,29 @@ public class Avatar : MonoBehaviour {
          * moyen : 0.25 < noseHeight < 0.3 -> if < 0.29 0 < neg < 33 else 0 < pos < 33
          * grand : 0.3 < noseHeight < 0.33 -> 33 < pos < 100
          */
+        if(perso.nose.height == Taille.Little)
+        {
+            float valeur = PercentageConvertor(perso.nose.noseHeight, 0.23f, 0.25f, 33, 100);
+            avatarManager.SetBlendshapeValue("PHMNoseHeight_NEGATIVE_", valeur);
+        }
+        else if(perso.nose.height == Taille.Middle)
+        {
+            if(perso.nose.noseHeight < 0.275)
+            {
+                float valeur = PercentageConvertor(perso.nose.noseHeight, 0.25f, 0.275f, 0, 33);
+                avatarManager.SetBlendshapeValue("PHMNoseHeight_NEGATIVE_", valeur);
+            }
+            else
+            {
+                float valeur = PercentageConvertor(perso.nose.noseHeight, 0.275f, 0.30f, 0, 33);
+                avatarManager.SetBlendshapeValue("PHMNoseHeight", valeur);
+            }
+        }
+        else if(perso.nose.height == Taille.Big)
+        {
+            float valeur = PercentageConvertor(perso.nose.noseHeight, 0.30f, 0.33f, 33, 100);
+            avatarManager.SetBlendshapeValue("PHMNoseHeight", valeur);
+        }
         avatarManager.SetBlendshapeValue("PHMNoseHeight", 100);
         avatarManager.SetBlendshapeValue("PHMNoseHeight_NEGATIVE_", 100);
 
