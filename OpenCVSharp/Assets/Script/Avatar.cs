@@ -206,8 +206,8 @@ public class Avatar : MonoBehaviour {
                 break;
 
             case Taille.Big:
-                float valeur = PercentageConvertor(perso.nose.noseHeight, 0.30f, 0.33f, 33, 100);
-                avatarManager.SetBlendshapeValue("PHMNoseHeight", valeur);
+                float valeur_big = PercentageConvertor(perso.nose.noseHeight, 0.30f, 0.33f, 33, 100);
+                avatarManager.SetBlendshapeValue("PHMNoseHeight", valeur_big);
                 break;
         }
 
@@ -217,28 +217,30 @@ public class Avatar : MonoBehaviour {
          * moyen : 0.27 < noseWidth < 0.31 -> if < 0.29 0 < neg < 33 else 0 < pos < 33
          * grand : 0.31 < noseWidth < 0.34 -> 33 < pos < 100
          */
-        if (perso.nose.width == Taille.Little)
+        switch (perso.nose.width)
         {
-            float valeur = PercentageConvertor(perso.nose.noseHeight, 0.23f, 0.25f, 33, 100);
-            avatarManager.SetBlendshapeValue("PHMNoseHeight_NEGATIVE_", valeur);
-        }
-        else if (perso.nose.width == Taille.Middle)
-        {
-            if (perso.nose.noseHeight < 0.275)
-            {
-                float valeur = PercentageConvertor(perso.nose.noseHeight, 0.25f, 0.275f, 0, 33);
-                avatarManager.SetBlendshapeValue("PHMNoseHeight_NEGATIVE_", valeur);
-            }
-            else
-            {
-                float valeur = PercentageConvertor(perso.nose.noseHeight, 0.275f, 0.30f, 0, 33);
-                avatarManager.SetBlendshapeValue("PHMNoseHeight", valeur);
-            }
-        }
-        else if (perso.nose.width == Taille.Big)
-        {
-            float valeur = PercentageConvertor(perso.nose.noseHeight, 0.30f, 0.33f, 33, 100);
-            avatarManager.SetBlendshapeValue("PHMNoseHeight", valeur);
+            case Taille.Little:
+                float valeur_little = PercentageConvertor(perso.nose.noseWidth, 0.24f, 0.27f, 33, 100);
+                avatarManager.SetBlendshapeValue("PHMNoseHeight_NEGATIVE_", valeur_little);
+                break;
+
+            case Taille.Middle:
+                if (perso.nose.noseHeight < 0.29)
+                {
+                    float valeur_middle = PercentageConvertor(perso.nose.noseWidth, 0.27f, 0.29f, 0, 33);
+                    avatarManager.SetBlendshapeValue("PHMNoseHeight_NEGATIVE_", valeur_middle);
+                }
+                else
+                {
+                    float valeur_middle = PercentageConvertor(perso.nose.noseWidth, 0.29f, 0.31f, 0, 33);
+                    avatarManager.SetBlendshapeValue("PHMNoseHeight", valeur_middle);
+                }
+                break;
+
+            case Taille.Big:
+                float valeur_big = PercentageConvertor(perso.nose.noseHeight, 0.31f, 0.34f, 33, 100);
+                avatarManager.SetBlendshapeValue("PHMNoseHeight", valeur_big);
+                break;
         }
         avatarManager.SetBlendshapeValue("PHMNoseWidth", 100);
         avatarManager.SetBlendshapeValue("PHMNoseWidth_NEGATIVE_", 100);
