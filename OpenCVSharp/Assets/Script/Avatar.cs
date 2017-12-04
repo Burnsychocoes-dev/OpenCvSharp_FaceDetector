@@ -100,6 +100,8 @@ public class Avatar : MonoBehaviour {
     void Start()
     {
         avatarManager = GetComponent<MORPH3D.M3DCharacterManager>();
+        landmarks = GetComponent<LandmarksRetriever>();
+        face = GetComponent<FaceDetectionImage>();
     }
 
 

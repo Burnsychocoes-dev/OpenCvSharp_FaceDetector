@@ -229,7 +229,7 @@ public class FaceDetectionImage : MonoBehaviour
 
 
 
-    void Update()
+    void FixedUpdate()
     {
         //updateFrameCount++;
 
