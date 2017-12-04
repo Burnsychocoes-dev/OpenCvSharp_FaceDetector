@@ -200,6 +200,8 @@ public class FaceDetectionImage : MonoBehaviour
         
         hair.FindHairRoots();
 
+        hair.FindHairMax();
+
         //hair.ClearSkin();
 
         Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
@@ -638,17 +640,19 @@ public class FaceDetectionImage : MonoBehaviour
                 var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
                 //Cv2.Rectangle(_image, eyeRect, eye_rectangle_color, 3);
 
-                if(eye_count == 1)
+                if(eyeRect.X < rectFront.X + rectFront.Width/2)
                 {
                     // Par rapport à la position de l'oeil gauche
-                    rectEyeLeft = new OpenCvSharp.Rect(eyeRect.X + 75, eyeRect.Y + 100, 25, 25);
+                    //rectEyeLeft = new OpenCvSharp.Rect(eyeRect.X + 75, eyeRect.Y + 100, 25, 25);
                     //Cv2.Rectangle(_image, rectEyeLeft, global_rectangle_color, 3);
+                    rectEyeLeft = eyeRect;
                 }
                 else
                 {
                     // Par rapport à la position de l'oeil droit
-                    rectEyeRight = new OpenCvSharp.Rect(eyeRect.X, eyeRect.Y + 100, 25, 25);
+                    //rectEyeRight = new OpenCvSharp.Rect(eyeRect.X, eyeRect.Y + 100, 25, 25);
                     //Cv2.Rectangle(_image, rectEyeRight, global_rectangle_color, 3);
+                    rectEyeRight = eyeRect;
                 }
                 
 

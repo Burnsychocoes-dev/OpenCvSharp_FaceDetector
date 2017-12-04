@@ -217,7 +217,7 @@ public class HairDetection : MonoBehaviour {
 
         //>>>Calcul des Thresholds skinColorYCbCrThresholds
         //skinColorCbCrThreshold = ComputeVec3fThresholds(skinColorSampleYCbCr, skinColorCounter, skinColorYCbCrExpectancy);
-        skinColorCbCrThreshold = 20;
+        skinColorCbCrThreshold = 10;
         Debug.Log("Skin Color YCbCrThresholds");
         Debug.Log(skinColorCbCrThreshold);
 
@@ -280,13 +280,17 @@ public class HairDetection : MonoBehaviour {
     }
 
 
-    void findJminJmax()
+    void FindJminJmax()
     {
         int nbOfPixelNonSkinThreshold = 4;
         int pixelNonSkinCounter = 0;
 
         int i = faceDetectionImage.RectEyeLeft.Y + faceDetectionImage.RectEyeLeft.Height;
         int j0 = faceDetectionImage.RectEyeLeft.X + faceDetectionImage.RectEyeLeft.Width;
+
+        
+        Debug.Log(i);
+        Debug.Log(j0);
 
 
         //Calcul de j_max
@@ -574,11 +578,11 @@ public class HairDetection : MonoBehaviour {
 
     public void FindHairMax()
     {
-        int nbOfPixelNonHairThreshold = 4;
+        int nbOfLineNonHairThreshold = 4;
         int lineNonHairCounter = 0;
 
         //Calcul de j_min et j_max
-        findJminJmax();
+        FindJminJmax();
 
         //Parcours de toutes les lignes à partir du carré des yeux pour déterminer la longueur des cheveux
         for (var i = faceDetectionImage.RectEyeRight.Y; i < faceDetectionImage.ImHeight; i++)
@@ -647,12 +651,24 @@ public class HairDetection : MonoBehaviour {
             } else
             {
                 lineNonHairCounter++;
-                if (lineNonHairCounter >= nbOfPixelNonHairThreshold)
+                if (lineNonHairCounter >= nbOfLineNonHairThreshold)
                 {
                     break;
                 }
             }
         }
+
+        for (var j = 0; j < faceDetectionImage.ImWidth; j++)
+        {
+            faceDetectionImage.VideoSourceImage.Set<Vec3b>(yHairMax, j, new Vec3b
+            {
+                Item0 = 255,
+                Item1 = 0,
+                Item2 = 0
+            });
+        }
+
+
     }
 
 
