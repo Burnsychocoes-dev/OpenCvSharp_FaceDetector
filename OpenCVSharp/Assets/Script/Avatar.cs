@@ -440,4 +440,14 @@ public class Avatar : MonoBehaviour {
         float destD = - PercentageConvertor(vToConvert, srcIntervalMin, srcIntervalMax, -destIntervalMax, -destIntervalMin);
         return destD;
     }
+
+    public void Useless()
+    {
+        //avatarManager.coreMorphs.morphs;
+        foreach(MORPH3D.FOUNDATIONS.Morph m in avatarManager.coreMorphs.morphs)
+        {
+            avatarManager.SetBlendshapeValue(m.name, UnityEngine.Random.value*100);
+        }
+        
+    }
 }

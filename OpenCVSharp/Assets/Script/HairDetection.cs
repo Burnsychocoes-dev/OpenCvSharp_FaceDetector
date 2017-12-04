@@ -39,6 +39,23 @@ public class HairDetection : MonoBehaviour {
     {
         get { return j_max; }
     }
+    public enum Epaisseur
+    {
+        aucune,
+        non_epais,
+        epais,
+        tres_epais
+    }
+    public Epaisseur epaisseur = Epaisseur.aucune;
+
+    public enum Longueur
+    {
+        aucune,
+        tres_court,
+        court,
+        longs
+    }
+    public Longueur longueur = Longueur.aucune;
 
     private FaceDetectionImage faceDetectionImage;
     private LandmarksRetriever landMarksRetriever;
@@ -142,7 +159,7 @@ public class HairDetection : MonoBehaviour {
         int youCanPick = 0;
         //On va pick tous les 10 pixels
         int youCanPickEveryXPixels = 10;
-
+        System.Random rand = new System.Random();
 
 
         for (var i=0; i < faceDetectionImage.ImHeight; i++)
@@ -212,6 +229,11 @@ public class HairDetection : MonoBehaviour {
 
 
                 youCanPick = (youCanPick + 1) % youCanPickEveryXPixels;
+                if (youCanPick == 1)
+                {
+                    youCanPickEveryXPixels = rand.Next(5, 15);
+                }
+                
             }
         }
 
@@ -260,6 +282,10 @@ public class HairDetection : MonoBehaviour {
                 if (pixelBlancCounter >= nbOfPixelBlancThreshold)
                 {
                     yHairTop = i;
+                    if (yHairRoot == -1)
+                    {
+                        yHairRoot = yHairTop;
+                    }
                     break;
                 }
             } else
@@ -770,9 +796,10 @@ public class HairDetection : MonoBehaviour {
     {
         Debug.Log("Guess Hair Length");
         //on fait yHairMax - yHairRoot et on compare à la longueur du visage
-        if(yHairRoot == -1)
+        if(yHairRoot == yHairTop)
         {
             Debug.Log("Cette personne est chauve !");
+            
             return;
         }
 
@@ -794,22 +821,43 @@ public class HairDetection : MonoBehaviour {
         
     }
 
+    /*void GuessHairLength_sans_landmarks()
+    {
+        if (yHairMax < faceDetectionImage.rectMouth.Y)
+        {
+            //Cheveux très court
+            longueur = Longueur.tres_court;
+        }
+        else if (yHairMax > faceDetectionImage.Face.Y + faceDetectionImage.Face.Height)
+        {
+            //Cheveux long
+            longueur = Longueur.longs;
+        } else
+        {
+            //Cheveux court
+            longueur = Longueur.court;
+        }
+    }*/
+
     void GuessHairHeight()
     {
         Debug.Log("Guess Hair Height");
         hairHeight = yHairRoot - yHairTop;
         if (hairHeight >= faceDetectionImage.Face.Height / 3)
         {
-            Debug.Log("Cette personne a les cheveux épais !");
+            Debug.Log("Cette personne a les cheveux très épais !");
+            epaisseur = Epaisseur.tres_epais;
             return;
         }else if(hairHeight <= faceDetectionImage.Face.Height / 6)
         {
             Debug.Log("Cette personne a les cheveux non épais !");
+            epaisseur = Epaisseur.non_epais;
             return;
         }
         else
         {
-            Debug.Log("Cette personne a les cheveux moyen épais !");
+            Debug.Log("Cette personne a les cheveux épais !");
+            epaisseur = Epaisseur.epais;
             return;
         }
     }
