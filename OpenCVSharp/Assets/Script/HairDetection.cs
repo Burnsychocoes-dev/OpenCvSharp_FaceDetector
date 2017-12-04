@@ -257,6 +257,10 @@ public class HairDetection : MonoBehaviour {
                 if (pixelBlancCounter >= nbOfPixelBlancThreshold)
                 {
                     yHairTop = i;
+                    if (yHairRoot == -1)
+                    {
+                        yHairRoot = yHairTop;
+                    }
                     break;
                 }
             } else
