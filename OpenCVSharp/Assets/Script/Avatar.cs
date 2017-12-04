@@ -102,13 +102,14 @@ public class Avatar : MonoBehaviour {
         avatarManager = GetComponent<MORPH3D.M3DCharacterManager>();
         avatarManager.SetBlendshapeValue("PHMEyesSize", 100);
         ChangeSkinTexture(new Color(0.56f, 0.27f, 0.27f), true, false);
+        //Useless();
     }
 
 
 
     // Update is called once per frame
     void Update () {
-		
+        
 	}
 
     // Use this for init the personnage 
@@ -411,5 +412,15 @@ public class Avatar : MonoBehaviour {
         }
         float destD = - PercentageConvertor(vToConvert, srcIntervalMin, srcIntervalMax, -destIntervalMax, -destIntervalMin);
         return destD;
+    }
+
+    public void Useless()
+    {
+        //avatarManager.coreMorphs.morphs;
+        foreach(MORPH3D.FOUNDATIONS.Morph m in avatarManager.coreMorphs.morphs)
+        {
+            avatarManager.SetBlendshapeValue(m.name, UnityEngine.Random.value*100);
+        }
+        
     }
 }
