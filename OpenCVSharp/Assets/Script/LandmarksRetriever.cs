@@ -105,6 +105,7 @@ public class LandmarksRetriever : MonoBehaviour {
 
     private bool isCallDone = false;
 
+
     private void Awake() {
         if (Instance != null) {
             Debug.LogError("There is multiple instance of singleton LandmarksRetriever");
@@ -116,6 +117,7 @@ public class LandmarksRetriever : MonoBehaviour {
         client.Credentials = CredentialCache.DefaultCredentials;
 
         Instance = this;
+
     }
 
     public void Init() {
@@ -151,7 +153,7 @@ public class LandmarksRetriever : MonoBehaviour {
             //}
             //else
             //{
-            faceWidth = faceAnalyse.Face.Width - 100;
+            faceWidth = hairDetection.J_max - hairDetection.J_min;
             Debug.Log("face width :");
             Debug.Log(faceWidth);
             //}
@@ -370,7 +372,7 @@ public class LandmarksRetriever : MonoBehaviour {
 
     public void RetrieveLandmarks() {
         string jsonResponse = PostRequest(new NameValueCollection() {
-                { "api_key", "e38e2ace964469a86be52a8cec8deb90" },
+                { "api_key", "33f36945ebb1854e9d0a782e6108c6d5" },
                 { "selector", "SETPOSE" }
             });
 

@@ -96,19 +96,21 @@ public class Avatar : MonoBehaviour {
 
     FaceDetectionImage face;
     LandmarksRetriever landmarks;
+    HairDetection hair;
 
     void Start()
     {
         avatarManager = GetComponent<MORPH3D.M3DCharacterManager>();
         landmarks = GetComponent<LandmarksRetriever>();
         face = GetComponent<FaceDetectionImage>();
+        hair = GetComponent<HairDetection>();
     }
 
 
 
     // Update is called once per frame
     void Update () {
-		
+        
 	}
 
     // Use this for init the personnage 
@@ -120,6 +122,13 @@ public class Avatar : MonoBehaviour {
         else
             perso.gender = Gender.Femelle;
 
+        Debug.Log(hair.yHairRoot);
+        Debug.Log(hair.yHairTop);
+        Debug.Log(Mathf.Abs(hair.yHairRoot - hair.yHairTop) / landmarks.faceHeight);
+        if(Mathf.Abs(hair.yHairRoot - hair.yHairTop)/landmarks.faceHeight < 0.05f || hair.yHairRoot == -1)
+        {
+            perso.hair.isHairless = true;
+        }
 
         // Partie skin color
         perso.exactSkinColor = new Color((float)face.CouleurPeauFront.Item0 / 255, (float)face.CouleurPeauFront.Item1 / 255, (float)face.CouleurPeauFront.Item2 / 255);
@@ -133,9 +142,9 @@ public class Avatar : MonoBehaviour {
         perso.eye.distanceBetweenNoseTopAndEyes = (float)landmarks.distanceBetweenNoseTopAndEyes;
         perso.eye.distanceMiddleSourcilCenterEye = Mathf.Abs((float)landmarks.RightEyeBrowMiddle.Item1 - (float)landmarks.rightEyeCenter.Item1);
         perso.eye.eyeWidth = (float)landmarks.rightEyeWidth;
-        if (perso.eye.eyeWidth <= 0.22f)
+        if (perso.eye.eyeWidth <= 0.14f)
             perso.eye.width = Taille.Little;
-        else if (perso.eye.eyeWidth > 0.22 && perso.eye.eyeWidth <= 0.24)
+        else if (perso.eye.eyeWidth > 0.16 && perso.eye.eyeWidth <= 0.18)
             perso.eye.width = Taille.Middle;
         else
             perso.eye.width = Taille.Big;
@@ -309,33 +318,33 @@ public class Avatar : MonoBehaviour {
 
         // En fonction de eyeWidth
         /*
-         * petit : 0.18 < eyeWidth < 0.22 -> 33 < neg < 100
-         * moyen : 0.22 < eyeWidth < 0.24 -> if < 0.23 -> 0 < neg < 33 else 0 < pos < 33
-         * grand : 0.24 < eyeWidth < 0.26 -> 33 < pos < 100
+         * petit : 0.14 < eyeWidth < 0.16 -> 33 < neg < 100
+         * moyen : 0.16 < eyeWidth < 0.20 -> if < 0.23 -> 0 < neg < 33 else 0 < pos < 33
+         * grand : 0.20 < eyeWidth < 0.24 -> 33 < pos < 100
          */
 
         switch (perso.eye.width)
         {
             case Taille.Little:
-                float valeur_little = PercentageConvertorNeg(perso.eye.eyeWidth, 0.18f, 0.22f, 33, 100);
+                float valeur_little = PercentageConvertorNeg(perso.eye.eyeWidth, 0.14f, 0.16f, 33, 100);
                 avatarManager.SetBlendshapeValue("PHMEyesSize_NEGATIVE_", valeur_little);
                 break;
 
             case Taille.Middle:
-                if (perso.nose.noseHeight < 0.23)
+                if (perso.eye.eyeWidth < 0.18)
                 {
-                    float valeur_middle = PercentageConvertorNeg(perso.eye.eyeWidth, 0.22f, 0.23f, 0, 33);
+                    float valeur_middle = PercentageConvertorNeg(perso.eye.eyeWidth, 0.16f, 0.18f, 0, 33);
                     avatarManager.SetBlendshapeValue("PHMEyesSize_NEGATIVE_", valeur_middle);
                 }
                 else
                 {
-                    float valeur_middle = PercentageConvertor(perso.nose.noseHeight, 0.23f, 0.24f, 0, 33);
+                    float valeur_middle = PercentageConvertor(perso.nose.noseHeight, 0.18f, 0.20f, 0, 33);
                     avatarManager.SetBlendshapeValue("PHMEyesSize", valeur_middle);
                 }
                 break;
 
             case Taille.Big:
-                float valeur_big = PercentageConvertor(perso.nose.noseHeight, 0.24f, 0.26f, 33, 100);
+                float valeur_big = PercentageConvertor(perso.nose.noseHeight, 0.20f, 0.24f, 33, 100);
                 avatarManager.SetBlendshapeValue("PHMEyesSize", valeur_big);
                 break;
         }
@@ -372,9 +381,9 @@ public class Avatar : MonoBehaviour {
         avatarManager.GetHairMaterial().SetColor("_Color", color);
     }
 
-    public void SetHair(bool isHairless)
+    public void SetHair()
     {
-        if(isHairless)
+        if(perso.hair.isHairless)
         {
             foreach (var hair in avatarManager.GetAllHair())
             {

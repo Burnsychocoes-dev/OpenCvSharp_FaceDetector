@@ -194,22 +194,22 @@ public class FaceDetectionImage : MonoBehaviour
         // the texture will be displayed automatically
         //MatToTexture(videoSourceImage);
 
-        //hair.Init();
-        //hair.Pretraitement();
+        hair.Init();
+        hair.Pretraitement();
 
 
         //UpdateWindow(videoSourceImage);
-        //Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
+        Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
 
-        //hair.GetSkinColor();
-        
-        //hair.FindHairRoots();
+        hair.GetSkinColor();
 
-        //hair.FindHairMax();
+        hair.FindHairRoots();
+
+        hair.FindHairMax();
 
         //hair.ClearSkin();
 
-        //Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
+        Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
 
         MatToTexture(videoSourceImage);
 
@@ -277,6 +277,7 @@ public class FaceDetectionImage : MonoBehaviour
             avatar.ChangeNose();
             avatar.ChangeMouth();
             avatar.ChangeEyes();
+            avatar.SetHair();
             etapeCount++;
         }
         else

@@ -24,13 +24,21 @@ public class HairDetection : MonoBehaviour {
     private Vec3f hairColorYCbCrExpectancy;
     private float hairColorCbCrThreshold;
 
-    private int yHairRoot =-1;
+    public int yHairRoot =-1;
     //yHairTop représente le plus haut point de la tête
-    private int yHairTop =-1;
+    public int yHairTop =-1;
     private int yHairMax;
     private int hairHeight;
     private int j_min=-1;
+    public int J_min
+    {
+        get { return j_min; }
+    }
     private int j_max=-1;
+    public int J_max
+    {
+        get { return j_max; }
+    }
 
     private FaceDetectionImage faceDetectionImage;
     private LandmarksRetriever landMarksRetriever;
@@ -217,7 +225,7 @@ public class HairDetection : MonoBehaviour {
 
         //>>>Calcul des Thresholds skinColorYCbCrThresholds
         //skinColorCbCrThreshold = ComputeVec3fThresholds(skinColorSampleYCbCr, skinColorCounter, skinColorYCbCrExpectancy);
-        skinColorCbCrThreshold = 10;
+        skinColorCbCrThreshold = 15;
         Debug.Log("Skin Color YCbCrThresholds");
         Debug.Log(skinColorCbCrThreshold);
 
