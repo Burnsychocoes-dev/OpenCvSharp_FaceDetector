@@ -155,7 +155,7 @@ public class HairDetection : MonoBehaviour {
 
                 //>>>Récupérations d'échantillons de couleur du front
                 if (j > faceDetectionImage.RectFront.X && j < faceDetectionImage.RectFront.X + faceDetectionImage.RectFront.Width &&
-                    i > faceDetectionImage.RectFront.Y && i < faceDetectionImage.RectFront.Y + faceDetectionImage.RectFront.Height && youCanPick == 0 && skinColorCounter < colorSampleListSize/2)
+                    i > faceDetectionImage.RectFront.Y && i < faceDetectionImage.RectFront.Y + faceDetectionImage.RectFront.Height && youCanPick == 0 && skinColorCounter < colorSampleListSize)
                 {
                     
                     //Récupérer un échantillon de couleur du front
@@ -171,7 +171,7 @@ public class HairDetection : MonoBehaviour {
                     skinColorCounter++;
                 } 
                 //>>>Peut-être ajouter des échantillons des joues ?
-                else if (j > faceDetectionImage.RectEyeLeft.X && j < faceDetectionImage.RectEyeLeft.X + (faceDetectionImage.RectEyeLeft.Width - 10) &&
+                /*else if (j > faceDetectionImage.RectEyeLeft.X && j < faceDetectionImage.RectEyeLeft.X + (faceDetectionImage.RectEyeLeft.Width - 10) &&
                    i > faceDetectionImage.RectEyeLeft.Y && i < faceDetectionImage.RectEyeLeft.Y + faceDetectionImage.RectEyeLeft.Height && youCanPick == 0 && skinColorCounter < colorSampleListSize )
                 {
                    
@@ -200,7 +200,7 @@ public class HairDetection : MonoBehaviour {
                     //L'ajouter au tableau skinColorSampleYCbCr
                     skinColorSampleYCbCr[skinColorCounter] = FromRGBToYCbCr(color);
                     skinColorCounter++;
-                }
+                }*/
 
 
                 youCanPick = (youCanPick + 1) % youCanPickEveryXPixels;
@@ -268,12 +268,15 @@ public class HairDetection : MonoBehaviour {
                 Debug.Log(yHairRoot);
             }
 
-            faceDetectionImage.VideoSourceImage.Set<Vec3b>(i, j, new Vec3b
+            if (yHairRoot != -1)
             {
-                Item0 = 255,
-                Item1 = 0,
-                Item2 = 0
-            });
+                faceDetectionImage.VideoSourceImage.Set<Vec3b>(i, j, new Vec3b
+                {
+                    Item0 = 0,
+                    Item1 = 255,
+                    Item2 = 0
+                });
+            }
             //Dés qu'on valide la condition, on s'arrête et on set le yHairRoot
         }
 
@@ -285,13 +288,8 @@ public class HairDetection : MonoBehaviour {
         int nbOfPixelNonSkinThreshold = 4;
         int pixelNonSkinCounter = 0;
 
-        int i = faceDetectionImage.RectEyeLeft.Y + faceDetectionImage.RectEyeLeft.Height;
-        int j0 = faceDetectionImage.RectEyeLeft.X + faceDetectionImage.RectEyeLeft.Width;
-
-        
-        Debug.Log(i);
-        Debug.Log(j0);
-
+        int i = faceDetectionImage.RectEyeRight.Y + faceDetectionImage.RectEyeRight.Height;
+        int j0 = faceDetectionImage.RectEyeRight.X + faceDetectionImage.RectEyeRight.Width;
 
         //Calcul de j_max
         for (var j = j0; j < faceDetectionImage.ImWidth; j++)
@@ -326,8 +324,9 @@ public class HairDetection : MonoBehaviour {
         nbOfPixelNonSkinThreshold = 4;
         pixelNonSkinCounter = 0;
 
-        i = faceDetectionImage.RectEyeRight.Y + faceDetectionImage.RectEyeRight.Height;
-        j0 = faceDetectionImage.RectEyeRight.X;
+        i = faceDetectionImage.RectEyeLeft.Y + faceDetectionImage.RectEyeLeft.Height;
+        j0 = faceDetectionImage.RectEyeLeft.X;
+
 
         for (var j = j0; j > 0; j--)
         {
@@ -585,7 +584,10 @@ public class HairDetection : MonoBehaviour {
         FindJminJmax();
 
         //Parcours de toutes les lignes à partir du carré des yeux pour déterminer la longueur des cheveux
-        for (var i = faceDetectionImage.RectEyeRight.Y; i < faceDetectionImage.ImHeight; i++)
+        int i0 = faceDetectionImage.RectEyeRight.Y + faceDetectionImage.RectEyeRight.Height;
+        yHairMax = i0;
+
+        for (var i = i0; i < faceDetectionImage.ImHeight; i++)
         {
             bool gaucheValide = false;
             bool droiteValide = false;
@@ -662,8 +664,25 @@ public class HairDetection : MonoBehaviour {
         {
             faceDetectionImage.VideoSourceImage.Set<Vec3b>(yHairMax, j, new Vec3b
             {
-                Item0 = 255,
-                Item1 = 0,
+                Item0 = 0,
+                Item1 = 255,
+                Item2 = 0
+            });
+        }
+
+        for (var i = 0; i < faceDetectionImage.ImHeight; i++)
+        {
+            faceDetectionImage.VideoSourceImage.Set<Vec3b>(i, j_min, new Vec3b
+            {
+                Item0 = 0,
+                Item1 = 255,
+                Item2 = 0
+            });
+
+            faceDetectionImage.VideoSourceImage.Set<Vec3b>(i, j_max, new Vec3b
+            {
+                Item0 = 0,
+                Item1 = 255,
                 Item2 = 0
             });
         }
