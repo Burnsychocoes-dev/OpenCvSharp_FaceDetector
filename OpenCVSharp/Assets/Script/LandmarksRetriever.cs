@@ -243,11 +243,6 @@ public class LandmarksRetriever : MonoBehaviour {
             Debug.Log(nostrilThickness);
 
 
-            // Récuperation des infos sur la bouche
-            lipWidth = Math.Abs((double)landmarks["lipCornerLeftX"] - (double)landmarks["lipCornerRightX"]) / faceWidth;
-            Debug.Log("lip width :");
-            Debug.Log(lipWidth);
-
 
             // Récuperation des infos utiles pour la hair detection
             leftEyeCorner.Item0 = (double)landmarks["leftEyeCornerLeftX"];
@@ -273,6 +268,19 @@ public class LandmarksRetriever : MonoBehaviour {
             Debug.Log("nose tip position :");
             Debug.Log(nose.Item0);
             Debug.Log(nose.Item1);
+
+            // Récuperation des infos sur la bouche
+            lipWidth = Math.Abs((double)landmarks["lipCornerLeftX"] - (double)landmarks["lipCornerRightX"]) / faceWidth;
+            Debug.Log("lip width :");
+            Debug.Log(lipWidth);
+
+            topLipHeight = Math.Abs((double)landmarks["lipLineMiddleY"] - faceAnalyse.RectMouth.Y) / faceHeight;
+            Debug.Log("topLipHeight :");
+            Debug.Log(topLipHeight);
+
+            buttomLipHeight = Math.Abs((double)landmarks["lipLineMiddleY"] - faceAnalyse.RectMouth.Y - faceAnalyse.RectMouth.Height) / faceHeight;
+            Debug.Log("buttomLipHeight :");
+            Debug.Log(buttomLipHeight);
         }
         
     }
@@ -372,7 +380,7 @@ public class LandmarksRetriever : MonoBehaviour {
 
     public void RetrieveLandmarks() {
         string jsonResponse = PostRequest(new NameValueCollection() {
-                { "api_key", "33f36945ebb1854e9d0a782e6108c6d5" },
+                { "api_key", "4596715a4f420c91a8f0ea597d0ab8e2" },
                 { "selector", "SETPOSE" }
             });
 

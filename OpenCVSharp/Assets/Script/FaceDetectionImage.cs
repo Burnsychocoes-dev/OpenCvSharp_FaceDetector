@@ -80,6 +80,10 @@ public class FaceDetectionImage : MonoBehaviour
     }
     OpenCvSharp.Rect rectCheveux;
     OpenCvSharp.Rect rectMouth;
+    public OpenCvSharp.Rect RectMouth
+    {
+        get { return rectMouth; }
+    }
 
     // Video size
     private const int imWidth = 1280;
@@ -266,12 +270,12 @@ public class FaceDetectionImage : MonoBehaviour
 
         //UpdateWindow(videoSourceImage);
 
-        if(etapeCount == 1)
+        if (etapeCount == 1)
         {
             landmarks.Init();
             etapeCount++;
         }
-        else if(etapeCount == 2)
+        else if (etapeCount == 2)
         {
             avatar.SetPerso();
             avatar.ChangeNose();
@@ -708,6 +712,7 @@ public class FaceDetectionImage : MonoBehaviour
                 {
                     //Debug.Log("mouth height :");
                     //Debug.Log(m.Height);
+                    rectMouth = m;
                     var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
                     //Cv2.Rectangle(_image, m, eye_rectangle_color, 3);
                     lipHeight = (float)m.Height / (float)face.Height;

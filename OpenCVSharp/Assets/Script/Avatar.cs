@@ -31,6 +31,13 @@ public class Avatar : MonoBehaviour {
         Little
     }
 
+    public enum ProportionLevre
+    {
+        UnPourDeux,
+        UnPourUn,
+        DeuxPourUn
+    }
+
     public enum SkinColor
     {
         Black,
@@ -64,6 +71,7 @@ public class Avatar : MonoBehaviour {
     {
         public float distanceBetweenCenterLipAndButtomLip;
         public float distanceBetweenCenterLipAndTopLip;
+        public ProportionLevre proportionLevre;
         public float distanceBetweenChinAndMouth;
         public float distanceBetweenNoseTipAndMouth;
         public float mouthWidth;
@@ -132,6 +140,7 @@ public class Avatar : MonoBehaviour {
 
         // Partie skin color
         perso.exactSkinColor = new Color((float)face.CouleurPeauFront.Item0 / 255, (float)face.CouleurPeauFront.Item1 / 255, (float)face.CouleurPeauFront.Item2 / 255);
+
         if (face.CouleurPeauFront.Item0 > 170)
             perso.skinColor = SkinColor.Black;
         else
@@ -142,6 +151,7 @@ public class Avatar : MonoBehaviour {
         perso.eye.distanceBetweenNoseTopAndEyes = (float)landmarks.distanceBetweenNoseTopAndEyes;
         perso.eye.distanceMiddleSourcilCenterEye = Mathf.Abs((float)landmarks.RightEyeBrowMiddle.Item1 - (float)landmarks.rightEyeCenter.Item1);
         perso.eye.eyeWidth = (float)landmarks.rightEyeWidth;
+
         if (perso.eye.eyeWidth <= 0.14f)
             perso.eye.width = Taille.Little;
         else if (perso.eye.eyeWidth > 0.16 && perso.eye.eyeWidth <= 0.18)
@@ -154,12 +164,14 @@ public class Avatar : MonoBehaviour {
         perso.nose.noseHeight = (float)landmarks.noseHeight;
         perso.nose.noseWidth = (float)landmarks.noseWidth;
         perso.nose.nostrilThickness = (float)landmarks.nostrilThickness;
+
         if (perso.nose.noseHeight <= 0.25)
             perso.nose.height = Taille.Little;
         else if (perso.nose.noseHeight > 0.25 && perso.nose.noseHeight <= 0.30)
             perso.nose.height = Taille.Middle;
         else
             perso.nose.height = Taille.Big;
+
         if (perso.nose.noseWidth <= 0.27)
             perso.nose.width = Taille.Little;
         else if (perso.nose.noseWidth > 0.27 && perso.nose.noseWidth <= 0.31)
@@ -171,9 +183,19 @@ public class Avatar : MonoBehaviour {
         // Partie mouth
         perso.mouth.distanceBetweenChinAndMouth = (float)landmarks.distanceBetweenLipAndChin;
         perso.mouth.distanceBetweenNoseTipAndMouth = (float)landmarks.distanceBetweenNoseTipAndLip;
+
         perso.mouth.distanceBetweenCenterLipAndButtomLip = (float)landmarks.buttomLipHeight;
         perso.mouth.distanceBetweenCenterLipAndTopLip = (float)landmarks.topLipHeight;
+        Debug.Log(Math.Abs((float)perso.mouth.distanceBetweenCenterLipAndTopLip / (float)perso.mouth.distanceBetweenCenterLipAndButtomLip));
+        if (Math.Abs((float)perso.mouth.distanceBetweenCenterLipAndTopLip / (float)perso.mouth.distanceBetweenCenterLipAndButtomLip) < 0.5)
+            perso.mouth.proportionLevre = ProportionLevre.UnPourDeux;
+        else if (Math.Abs((float)perso.mouth.distanceBetweenCenterLipAndTopLip / (float)perso.mouth.distanceBetweenCenterLipAndButtomLip) > 2)
+            perso.mouth.proportionLevre = ProportionLevre.DeuxPourUn;
+        else
+            perso.mouth.proportionLevre = ProportionLevre.UnPourUn;
+               
         perso.mouth.mouthWidth = (float)landmarks.lipWidth;
+
         if (perso.mouth.mouthWidth <= 0.40)
             perso.mouth.width = Taille.Little;
         else if (perso.mouth.mouthWidth > 0.40 && perso.mouth.mouthWidth <= 0.42)
@@ -258,6 +280,22 @@ public class Avatar : MonoBehaviour {
 
     public void ChangeMouth()
     {
+        switch(perso.mouth.proportionLevre)
+        {
+            case ProportionLevre.DeuxPourUn:
+                avatarManager.SetBlendshapeValue("PHMLipLowerSize_NEGATIVE_", 100);
+                avatarManager.SetBlendshapeValue("PHMLipUpperSize", 100);
+                break;
+
+            case ProportionLevre.UnPourUn:
+                avatarManager.SetBlendshapeValue("PHMLipLowerSize_NEGATIVE_", 50);
+                avatarManager.SetBlendshapeValue("PHMLipUpperSize", 100);
+                break;
+
+            case ProportionLevre.UnPourDeux:
+                avatarManager.SetBlendshapeValue("PHMLipUpperSize", 50);
+                break;
+        }
         //// En fonction de distanceBetweenCenterLipAndButtomLip
         //avatarManager.SetBlendshapeValue("PHMLipLowerSize", 100);
         //avatarManager.SetBlendshapeValue("PHMLipLowerSize_NEGATIVE_", 100);
@@ -338,13 +376,13 @@ public class Avatar : MonoBehaviour {
                 }
                 else
                 {
-                    float valeur_middle = PercentageConvertor(perso.nose.noseHeight, 0.18f, 0.20f, 0, 33);
+                    float valeur_middle = PercentageConvertor(perso.eye.eyeWidth, 0.18f, 0.20f, 0, 33);
                     avatarManager.SetBlendshapeValue("PHMEyesSize", valeur_middle);
                 }
                 break;
 
             case Taille.Big:
-                float valeur_big = PercentageConvertor(perso.nose.noseHeight, 0.20f, 0.24f, 33, 100);
+                float valeur_big = PercentageConvertor(perso.eye.eyeWidth, 0.20f, 0.24f, 33, 100);
                 avatarManager.SetBlendshapeValue("PHMEyesSize", valeur_big);
                 break;
         }
