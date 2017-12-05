@@ -145,13 +145,17 @@ public class FaceDetectionImage : MonoBehaviour
 
     Avatar avatar;
 
+    Camera camera;
+
     private enum Etape {
         Segmentation,
         SegmentationIdle,
         FondForme,
         FondFormeIdle,
         ClearSkin,
-        ClearSkinIdle
+        ClearSkinIdle,
+        Avatar,
+        Idle
     }
     private Etape etape;
 
@@ -159,6 +163,8 @@ public class FaceDetectionImage : MonoBehaviour
         landmarks = GetComponent<LandmarksRetriever>();
         avatar = GetComponent<Avatar>();
         hair = GetComponent<HairDetection>();
+        camera = FindObjectOfType<Camera>();
+
 
         byte[] photoFile = File.ReadAllBytes(imagePath);
         imageTexture = new Texture2D(2, 2);
@@ -189,46 +195,80 @@ public class FaceDetectionImage : MonoBehaviour
         etape = Etape.Segmentation;
     }
     
-    void FixedUpdate()
+    void Update()
     {
-        if (Etape.Segmentation.Equals(etape)) {
-            ProcessImage(videoSourceImage, true);
-            MatToTexture(videoSourceImage);
-            etape = Etape.SegmentationIdle;
-        }
-        else if(Etape.SegmentationIdle.Equals(etape)) {
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                etape = Etape.FondForme;
-            }
-        }
-        else if (Etape.FondForme.Equals(etape)) {
-            TextureToMat();
+        switch(etape)
+        {
+            case Etape.Segmentation:
+                Debug.Log("etape segmentation");
+                ProcessImage(videoSourceImage, true);
+                MatToTexture(videoSourceImage);
+                etape = Etape.SegmentationIdle;
+                break;
 
-            ProcessImage(videoSourceImage, false);
+            case Etape.SegmentationIdle:
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    etape = Etape.FondForme;
+                    Debug.Log("etape fond forme");
+                }
+                break;
 
-            hair.Init();
-            hair.Pretraitement();
-            Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
-            hair.GetSkinColor();
-            hair.FindHairRoots();
-            hair.FindHairMax();
-            Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
+            case Etape.FondForme:
+                TextureToMat();
 
-            MatToTexture(videoSourceImage);
+                ProcessImage(videoSourceImage, false);
 
-            etape = Etape.FondFormeIdle;
+                hair.Init();
+                hair.Pretraitement();
+                Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
+                hair.GetSkinColor();
+                hair.FindHairRoots();
+                hair.FindHairMax();
+                Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
+
+                MatToTexture(videoSourceImage);
+
+                etape = Etape.FondFormeIdle;
+                break;
+
+            case Etape.FondFormeIdle:
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    etape = Etape.ClearSkin;
+                    Debug.Log("etape clear skin");
+                }
+                break;
+
+            case Etape.ClearSkin:
+                hair.ClearSkin();
+                MatToTexture(videoSourceImage);
+                etape = Etape.ClearSkinIdle;
+                break;
+
+            case Etape.ClearSkinIdle:
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    etape = Etape.Avatar;
+                    Debug.Log("etape avatar");
+                }
+                break;
+
+            case Etape.Avatar:
+                CleanScreen();
+                landmarks.Init();
+                avatar.SetPerso();
+                avatar.SetHair(false);
+                avatar.ChangeEyes();
+                avatar.ChangeMouth();
+                avatar.ChangeNose();
+                avatar.ChangeSkinTexture(true);
+                etape = Etape.Idle;
+                break;
+
+            default:
+                break;
         }
-        else if (Etape.FondFormeIdle.Equals(etape)) {
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                etape = Etape.ClearSkin;
-            }
-        }
-        else if (Etape.ClearSkin.Equals(etape)) {
-            hair.ClearSkin();
-            MatToTexture(videoSourceImage);
-            etape = Etape.ClearSkinIdle;
-        }
-
     }
 
     // Convert Unity Texture2D object to OpenCVSharp Mat object
@@ -359,6 +399,39 @@ public class FaceDetectionImage : MonoBehaviour
         // to update the texture, OpenGL manner
         processedTexture.Apply();
     }
+
+    void CleanScreen()
+    {
+        // create Color32 array that can be assigned to Texture2D directly
+        Color32[] c = new Color32[imHeight * imWidth];
+
+
+        // parallel for loop
+        Parallel.For(0, imHeight, i =>
+        {
+            for (var j = 0; j < imWidth; j++)
+            {
+                float coordX = j;
+                float coordY = imHeight - i;
+
+                Vec3b vec = videoSourceImageData[j + i * imWidth];
+
+                var color32 = new Color32
+                {
+                    r = 255,
+                    g = 255,
+                    b = 255,
+
+                    a = 0
+                };
+                c[j + i * imWidth] = color32;               
+            }
+        });
+        processedTexture.SetPixels32(c);
+        // to update the texture, OpenGL manner
+        processedTexture.Apply();
+    }
+
     
     void CalculateSkinColor()
     {

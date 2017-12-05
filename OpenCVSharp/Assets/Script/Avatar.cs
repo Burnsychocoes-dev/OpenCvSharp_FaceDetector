@@ -89,7 +89,7 @@ public class Avatar : MonoBehaviour {
     {
         public Gender gender;
         public SkinColor skinColor;
-        public Color exactSkinColor;
+        public Color32 exactSkinColor;
         public Eye eye;
         public Nose nose;
         public Mouth mouth;
@@ -112,6 +112,9 @@ public class Avatar : MonoBehaviour {
         landmarks = GetComponent<LandmarksRetriever>();
         face = GetComponent<FaceDetectionImage>();
         hair = GetComponent<HairDetection>();
+        SetUndressed();
+        SetHair(true);
+        avatarManager.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
     }
 
 
@@ -124,6 +127,8 @@ public class Avatar : MonoBehaviour {
     // Use this for init the personnage 
     public void SetPerso()
     {
+        avatarManager.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+        SetDressed();
         // Partie gender
         if (landmarks.gender == "M")
             perso.gender = Gender.Male;
@@ -139,7 +144,8 @@ public class Avatar : MonoBehaviour {
         }
 
         // Partie skin color
-        perso.exactSkinColor = new Color((float)face.CouleurPeauFront.Item0 / 255, (float)face.CouleurPeauFront.Item1 / 255, (float)face.CouleurPeauFront.Item2 / 255);
+        perso.exactSkinColor = hair.FromYCbCrToRGB(hair.SkinColorYCbCrExpectancy);
+        Debug.Log(perso.exactSkinColor);
 
         if (face.CouleurPeauFront.Item0 > 170)
             perso.skinColor = SkinColor.Black;
@@ -393,39 +399,47 @@ public class Avatar : MonoBehaviour {
         //avatarManager.SetBlendshapeValue("PHMEyesWidth_NEGATIVE_", 100);
     }
 
-    public void ChangeSkinTexture(Color color, bool isMale, bool isWhite)
+    public void ChangeSkinTexture(bool isWhite)
     {
-        if(isWhite && isMale)
+        if(isWhite && perso.gender == Gender.Male)
         {
             avatarManager.GetHairMaterial().mainTexture = maleWhiteHeadSkinTexture;
             avatarManager.GetBodyMaterial().mainTexture = maleWhiteBodySkinTexture;
         }
-        else if(isWhite && !isMale)
+        else if(isWhite && perso.gender == Gender.Femelle)
         {
             avatarManager.GetHairMaterial().mainTexture = femelleWhiteHeadSkinTexture;
             avatarManager.GetBodyMaterial().mainTexture = femelleWhiteBodySkinTexture;
         }
-        else if(!isWhite && isMale)
+        else if(!isWhite && perso.gender == Gender.Male)
         {
             avatarManager.GetHairMaterial().mainTexture = maleBlackHeadSkinTexture;
             avatarManager.GetBodyMaterial().mainTexture = maleBlackBodySkinTexture;
         }
-        else if(!isWhite && !isMale)
+        else if(!isWhite && perso.gender == Gender.Femelle)
         {
             avatarManager.GetHairMaterial().mainTexture = femelleBlackHeadSkinTexture;
             avatarManager.GetBodyMaterial().mainTexture = femelleBlackBodySkinTexture;
         }
+        Color color = new Color((float)perso.exactSkinColor.r / 255, (float)perso.exactSkinColor.g / 255, (float)perso.exactSkinColor.b / 255);
         avatarManager.GetBodyMaterial().SetColor("_Color", color);
         avatarManager.GetHairMaterial().SetColor("_Color", color);
     }
 
-    public void SetHair()
+    public void SetHair(bool init)
     {
-        if(perso.hair.isHairless)
+        if(perso.hair.isHairless || init)
         {
             foreach (var hair in avatarManager.GetAllHair())
             {
                 hair.SetVisibility(false);
+            }
+        }
+        else
+        {
+            foreach (var hair in avatarManager.GetAllHair())
+            {
+                hair.SetVisibility(true);
             }
         }
     }

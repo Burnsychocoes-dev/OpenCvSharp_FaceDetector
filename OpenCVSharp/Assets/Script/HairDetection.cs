@@ -12,6 +12,10 @@ public class HairDetection : MonoBehaviour {
 
     private Vec3f[] skinColorSampleYCbCr;    
     private Vec3f skinColorYCbCrExpectancy;
+    public Vec3f SkinColorYCbCrExpectancy
+    {
+        get { return skinColorYCbCrExpectancy; }
+    }
     private float skinColorCbCrThreshold;
 
     private Vec3f[] hairColorSampleYCbCr;
@@ -908,7 +912,7 @@ public class HairDetection : MonoBehaviour {
         return (Mathf.Sqrt(Mathf.Pow(Cb - expectancy.Item1, 2) + Mathf.Pow(Cr - expectancy.Item2, 2)));
     }
 
-    Vec3f FromRGBToYCbCr(Color32 RGB)
+    public Vec3f FromRGBToYCbCr(Color32 RGB)
     {
         var vec3 = new Vec3f
         {
@@ -923,7 +927,7 @@ public class HairDetection : MonoBehaviour {
         return vec3;
     }
 
-    Color32 FromYCbCrToRGB(Vec3f YCbCr)
+    public Color32 FromYCbCrToRGB(Vec3f YCbCr)
     {
         var rgb = new Color32
         {
