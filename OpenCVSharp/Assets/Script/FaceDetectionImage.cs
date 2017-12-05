@@ -80,6 +80,10 @@ public class FaceDetectionImage : MonoBehaviour
     }
     OpenCvSharp.Rect rectCheveux;
     OpenCvSharp.Rect rectMouth;
+    public OpenCvSharp.Rect RectMouth
+    {
+        get { return rectMouth; }
+    }
 
     // Video size
     private const int imWidth = 1280;
@@ -212,12 +216,28 @@ public class FaceDetectionImage : MonoBehaviour
 
             MatToTexture(videoSourceImage);
 
+<<<<<<< HEAD
             etape = Etape.FondFormeIdle;
         }
         else if (Etape.FondFormeIdle.Equals(etape)) {
             if (Input.GetKeyDown(KeyCode.Space)) {
                 etape = Etape.ClearSkin;
             }
+=======
+        if (etapeCount == 1)
+        {
+            landmarks.Init();
+            etapeCount++;
+        }
+        else if (etapeCount == 2)
+        {
+            avatar.SetPerso();
+            avatar.ChangeNose();
+            avatar.ChangeMouth();
+            avatar.ChangeEyes();
+            avatar.SetHair();
+            etapeCount++;
+>>>>>>> fa01bc8f6df05ebcb680a42256cd9c850de96a4c
         }
         else if (Etape.ClearSkin.Equals(etape)) {
             hair.ClearSkin();
@@ -640,6 +660,7 @@ public class FaceDetectionImage : MonoBehaviour
                 {
                     //Debug.Log("mouth height :");
                     //Debug.Log(m.Height);
+                    rectMouth = m;
                     var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
                     if (draw)
                         Cv2.Rectangle(_image, m, eye_rectangle_color, 3);
