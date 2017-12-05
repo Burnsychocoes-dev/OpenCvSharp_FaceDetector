@@ -47,7 +47,6 @@ public class FaceDetection : MonoBehaviour
     private bool waitSoundEffect = false;
 
     // Video parameters
-    public MeshRenderer WebCamTextureRenderer;
     public MeshRenderer ProcessedTextureRenderer;
     public int deviceNumber;
     private WebCamTexture _webcamTexture;
@@ -65,7 +64,6 @@ public class FaceDetection : MonoBehaviour
     private byte[] cannyImageData;
 
     // Frame rate parameter
-    private int updateFrameCount = 0;
     private int textureCount = 0;
     private int displayCount = 0;
 
@@ -84,8 +82,6 @@ public class FaceDetection : MonoBehaviour
 
             // initialized the webcam texture by the specific device number
             _webcamTexture = new WebCamTexture(devices[deviceNumber].name, imWidth, imHeight);
-            // assign webcam texture to the meshrenderer for display
-            WebCamTextureRenderer.material.mainTexture = _webcamTexture;
 
             // Play the video source
             _webcamTexture.Play();
@@ -117,8 +113,6 @@ public class FaceDetection : MonoBehaviour
 
     void Update()
     {
-
-        updateFrameCount++;
 
         if (_webcamTexture.isPlaying)
         {
