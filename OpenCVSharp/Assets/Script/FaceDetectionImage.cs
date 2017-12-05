@@ -141,11 +141,17 @@ public class FaceDetectionImage : MonoBehaviour
 
     Avatar avatar;
 
-    private int etapeCount = 1;
+    private enum Etape {
+        Segmentation,
+        SegmentationIdle,
+        FondForme,
+        FondFormeIdle,
+        ClearSkin,
+        ClearSkinIdle
+    }
+    private Etape etape;
 
-
-    void Start()
-    {
+    void Start() {
         landmarks = GetComponent<LandmarksRetriever>();
         avatar = GetComponent<Avatar>();
         hair = GetComponent<HairDetection>();
@@ -174,120 +180,52 @@ public class FaceDetectionImage : MonoBehaviour
         // convert texture of original video to OpenCVSharp Mat object
         TextureToMat();
 
-        // create the canny edge image out of source image
-        ProcessImage(videoSourceImage);
-
-        // update the opencv window of source video
-        //UpdateWindow(videoSourceImage);
-
-        //CalculateSkinColor();
-
-
-        //DrawTheLineSeparatingHairAndSkin();
-
-        //update the opencv window of source video
-        //UpdateWindow(videoSourceImage);
-
-        //CalculateHairColor();
-
-        // convert the OpenCVSharp Mat of canny image to Texture2D
-        // the texture will be displayed automatically
-        //MatToTexture(videoSourceImage);
-
-        hair.Init();
-        hair.Pretraitement();
-
-
-        //UpdateWindow(videoSourceImage);
-        Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
-
-        hair.GetSkinColor();
-
-        hair.FindHairRoots();
-
-        hair.FindHairMax();
-
-        //hair.ClearSkin();
-
-        Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
-
         MatToTexture(videoSourceImage);
 
-        /*Debug.Log("Couleur de la peau au niveau du front");
-        Debug.Log(couleurPeauFront.Item0);
-        Debug.Log(couleurPeauFront.Item1);
-        Debug.Log(couleurPeauFront.Item2);
-        Debug.Log("Couleur de la peau au niveau de l'oeil droit");
-        Debug.Log(couleurPeauBasOeilDroit.Item0);
-        Debug.Log(couleurPeauBasOeilDroit.Item1);
-        Debug.Log(couleurPeauBasOeilDroit.Item2);
-        Debug.Log("Couleur de la peau au niveau de l'oeil gauche");
-        Debug.Log(couleurPeauBasOeilGauche.Item0);
-        Debug.Log(couleurPeauBasOeilGauche.Item1);
-        Debug.Log(couleurPeauBasOeilGauche.Item2);*/
+        etape = Etape.Segmentation;
     }
-
-
-
+    
     void FixedUpdate()
     {
-        //updateFrameCount++;
-
-        //// convert texture of original video to OpenCVSharp Mat object
-        //TextureToMat();
-
-        //// create the canny edge image out of source image
-        //ProcessImage(videoSourceImage);
-
-        //// update the opencv window of source video
-        //UpdateWindow(videoSourceImage);
-
-        //// convert the OpenCVSharp Mat of canny image to Texture2D
-        //// the texture will be displayed automatically
-        //MatToTexture();
-
-
-        //DrawTheLineSeparatingHairAndSkin();
-
-
-        //MatToTexture();
-
-        //// Partie dessin des sourcils
-        //Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
-        //var lineColor = Scalar.FromRgb(0, 0, 0);
-        //Cv2.Line(videoSourceImage, (int)landmarks.LeftEyeBrowLeft.Item0, (int)landmarks.LeftEyeBrowLeft.Item1, (int)landmarks.LeftEyeBrowMiddle.Item0, (int)landmarks.LeftEyeBrowMiddle.Item1, lineColor);
-        //Cv2.Line(videoSourceImage, (int)landmarks.LeftEyeBrowMiddle.Item0, (int)landmarks.LeftEyeBrowMiddle.Item1, (int)landmarks.LeftEyeBrowRight.Item0, (int)landmarks.LeftEyeBrowRight.Item1, lineColor);
-
-        //Cv2.Line(videoSourceImage, (int)landmarks.RightEyeBrowRight.Item0, (int)landmarks.RightEyeBrowRight.Item1, (int)landmarks.RightEyeBrowMiddle.Item0, (int)landmarks.RightEyeBrowMiddle.Item1, lineColor);
-        //Cv2.Line(videoSourceImage, (int)landmarks.RightEyeBrowMiddle.Item0, (int)landmarks.RightEyeBrowMiddle.Item1, (int)landmarks.RightEyeBrowRight.Item0, (int)landmarks.RightEyeBrowRight.Item1, lineColor);
-        //Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
-        //MatToTexture(videoSourceImage);
-
-
-        //UpdateWindow(videoSourceImage);
-
-        if(etapeCount == 1)
-        {
-            landmarks.Init();
-            etapeCount++;
+        if (Etape.Segmentation.Equals(etape)) {
+            ProcessImage(videoSourceImage, true);
+            MatToTexture(videoSourceImage);
+            etape = Etape.SegmentationIdle;
         }
-        else if(etapeCount == 2)
-        {
-            avatar.SetPerso();
-            avatar.ChangeNose();
-            avatar.ChangeMouth();
-            avatar.ChangeEyes();
-            avatar.SetHair();
-            etapeCount++;
+        else if(Etape.SegmentationIdle.Equals(etape)) {
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                etape = Etape.FondForme;
+            }
         }
-        else
-        {
+        else if (Etape.FondForme.Equals(etape)) {
+            TextureToMat();
 
+            ProcessImage(videoSourceImage, false);
+
+            hair.Init();
+            hair.Pretraitement();
+            Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
+            hair.GetSkinColor();
+            hair.FindHairRoots();
+            hair.FindHairMax();
+            Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
+
+            MatToTexture(videoSourceImage);
+
+            etape = Etape.FondFormeIdle;
         }
-
+        else if (Etape.FondFormeIdle.Equals(etape)) {
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                etape = Etape.ClearSkin;
+            }
+        }
+        else if (Etape.ClearSkin.Equals(etape)) {
+            hair.ClearSkin();
+            MatToTexture(videoSourceImage);
+            etape = Etape.ClearSkinIdle;
+        }
 
     }
-
 
     // Convert Unity Texture2D object to OpenCVSharp Mat object
     void TextureToMat()
@@ -316,9 +254,7 @@ public class FaceDetectionImage : MonoBehaviour
         // assign the Vec3b array to Mat
         videoSourceImage.SetArray(0, 0, videoSourceImageData);
     }
-
-
-
+    
     // Convert OpenCVSharp Mat object to Unity Texture2D object
     void MatToTexture(Mat _image)
     {
@@ -419,8 +355,7 @@ public class FaceDetectionImage : MonoBehaviour
         // to update the texture, OpenGL manner
         processedTexture.Apply();
     }
-
-
+    
     void CalculateSkinColor()
     {
         // Variables de calcules de moyennne
@@ -499,8 +434,7 @@ public class FaceDetectionImage : MonoBehaviour
         couleurPeauBasOeilGauche = new Vec3f(leftEyeSideSkinRedColorAverage, leftEyeSideSkinGreenColorAverage, leftEyeSideSkinBlueColorAverage);
         Debug.Log(leftCompteur);
     }
-
-
+    
     void CalculateHairColor()
     {
         int hairCompteur = 0;
@@ -536,10 +470,7 @@ public class FaceDetectionImage : MonoBehaviour
         couleurCheveux = new Vec3f(hairRedColorAverage, hairGreenColorAverage, hairBlueColorAverage);
         Debug.Log(hairCompteur);
     }
-
-
-
-
+    
     void DrawTheLineSeparatingHairAndSkin()
     {
         Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
@@ -586,10 +517,9 @@ public class FaceDetectionImage : MonoBehaviour
         rectCheveux = new OpenCvSharp.Rect(rectFront.X, (int)maxCoordY, 25, 25);
         Cv2.Rectangle(videoSourceImage, rectCheveux, lineColor, 3);
     }
-
-
+    
     // Simple example of canny edge detect
-    void ProcessImage(Mat _image)
+    void ProcessImage(Mat _image, bool draw)
     {
         Cv2.Flip(_image, _image, FlipMode.X);
         Cv2.Canny(_image, cannyImage, 100, 100);
@@ -636,7 +566,8 @@ public class FaceDetectionImage : MonoBehaviour
 
             var facec_rectangle_color = Scalar.FromRgb(255, 0, 0);
             face = faceRect;
-            //Cv2.Rectangle(_image, faceRect, facec_rectangle_color, 3);
+            if(draw)
+                Cv2.Rectangle(_image, faceRect, facec_rectangle_color, 3);
 
 
             rectFront = new OpenCvSharp.Rect(faceRect.X + faceRect.Width/2 - 50, faceRect.Y + 50, 100, 50);
@@ -663,7 +594,8 @@ public class FaceDetectionImage : MonoBehaviour
                 //Cv2.WaitKey(1); // do events
 
                 var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
-                //Cv2.Rectangle(_image, eyeRect, eye_rectangle_color, 3);
+                if (draw)
+                    Cv2.Rectangle(_image, eyeRect, eye_rectangle_color, 3);
 
                 if(eyeRect.X < rectFront.X + rectFront.Width/2)
                 {
@@ -709,7 +641,8 @@ public class FaceDetectionImage : MonoBehaviour
                     //Debug.Log("mouth height :");
                     //Debug.Log(m.Height);
                     var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
-                    //Cv2.Rectangle(_image, m, eye_rectangle_color, 3);
+                    if (draw)
+                        Cv2.Rectangle(_image, m, eye_rectangle_color, 3);
                     lipHeight = (float)m.Height / (float)face.Height;
                 }
 
@@ -723,9 +656,7 @@ public class FaceDetectionImage : MonoBehaviour
         }
         Cv2.Flip(_image, _image, FlipMode.X);
     }
-
-
-
+    
     // Display the original video in a opencv window
     void UpdateWindow(Mat _image)
     {

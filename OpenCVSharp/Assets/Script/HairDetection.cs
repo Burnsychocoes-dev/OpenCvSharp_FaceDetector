@@ -5,13 +5,7 @@ using OpenCvSharp;
 
 
 // Parallel computation support
-using Uk.Org.Adcock.Parallel;
 using System;
-using System.Web;
-using System.Runtime.InteropServices;
-using System.IO;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class HairDetection : MonoBehaviour {
     private int colorSampleListSize = 300;
