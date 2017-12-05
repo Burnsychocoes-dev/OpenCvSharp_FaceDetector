@@ -338,13 +338,13 @@ public class Avatar : MonoBehaviour {
                 }
                 else
                 {
-                    float valeur_middle = PercentageConvertor(perso.nose.noseHeight, 0.18f, 0.20f, 0, 33);
+                    float valeur_middle = PercentageConvertor(perso.eye.eyeWidth, 0.18f, 0.20f, 0, 33);
                     avatarManager.SetBlendshapeValue("PHMEyesSize", valeur_middle);
                 }
                 break;
 
             case Taille.Big:
-                float valeur_big = PercentageConvertor(perso.nose.noseHeight, 0.20f, 0.24f, 33, 100);
+                float valeur_big = PercentageConvertor(perso.eye.eyeWidth, 0.20f, 0.24f, 33, 100);
                 avatarManager.SetBlendshapeValue("PHMEyesSize", valeur_big);
                 break;
         }
