@@ -80,6 +80,10 @@ public class FaceDetectionImage : MonoBehaviour
     }
     OpenCvSharp.Rect rectCheveux;
     OpenCvSharp.Rect rectMouth;
+    public OpenCvSharp.Rect RectMouth
+    {
+        get { return rectMouth; }
+    }
 
     // Video size
     private const int imWidth = 1280;

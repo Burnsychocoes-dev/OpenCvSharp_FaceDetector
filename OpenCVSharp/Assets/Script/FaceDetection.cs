@@ -140,7 +140,7 @@ public class FaceDetection : MonoBehaviour
                     frameCount++;
                     if (frameCount == maxCount)
                     {
-                        SceneManager.LoadScene("ProcessImageAnalyse");
+                        SceneManager.LoadScene("AnalysePhoto");
                     }
                 }
             }
