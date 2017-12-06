@@ -8,6 +8,8 @@ using OpenCvSharp;
 using System;
 
 public class HairDetection : MonoBehaviour {
+    [SerializeField]
+    private int fixThreshold = 10;
     private int colorSampleListSize = 300;
 
     private Vec3f[] skinColorSampleYCbCr;    
@@ -50,7 +52,7 @@ public class HairDetection : MonoBehaviour {
     {
         aucune,
         tres_court,
-        court,
+        moyen,
         longs
     }
     public Longueur longueur = Longueur.aucune;
@@ -245,7 +247,7 @@ public class HairDetection : MonoBehaviour {
 
         //>>>Calcul des Thresholds skinColorYCbCrThresholds
         //skinColorCbCrThreshold = ComputeVec3fThresholds(skinColorSampleYCbCr, skinColorCounter, skinColorYCbCrExpectancy);
-        skinColorCbCrThreshold = 15;
+        skinColorCbCrThreshold = fixThreshold;
         Debug.Log("Skin Color YCbCrThresholds");
         Debug.Log(skinColorCbCrThreshold);
 
@@ -790,7 +792,7 @@ public class HairDetection : MonoBehaviour {
         }
     }
 
-    void GuessHairLength()
+    public void GuessHairLength()
     {
         Debug.Log("Guess Hair Length");
         //on fait yHairMax - yHairRoot et on compare à la longueur du visage
@@ -805,15 +807,18 @@ public class HairDetection : MonoBehaviour {
         if (yHairMax <= landMarksRetriever.Nose.Item1)
         {
             Debug.Log("Cette personne a les cheveux court !");
+            longueur = Longueur.tres_court;
             return;
         } else if (yHairMax >= landMarksRetriever.Chin.Item1)
         {
             Debug.Log("Cette personne a les cheveux longs !");
+            longueur = Longueur.longs;
             return;
         }
         else
         {
             Debug.Log("Cette personne a les cheveux moyens !");
+            longueur = Longueur.moyen;
             return;
         }
         
@@ -837,7 +842,7 @@ public class HairDetection : MonoBehaviour {
         }
     }*/
 
-    void GuessHairHeight()
+    public void GuessHairHeight()
     {
         Debug.Log("Guess Hair Height");
         hairHeight = yHairRoot - yHairTop;

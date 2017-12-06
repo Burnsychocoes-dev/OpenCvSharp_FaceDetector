@@ -169,9 +169,9 @@ public class FaceDetectionImage : MonoBehaviour
         byte[] photoFile = File.ReadAllBytes(imagePath);
         imageTexture = new Texture2D(2, 2);
         imageTexture.LoadImage(photoFile);
-        Sprite imageSprite = Sprite.Create(imageTexture, new UnityEngine.Rect(0,0, imageTexture.width, imageTexture.height), new Vector2(2,0));
+        //Sprite imageSprite = Sprite.Create(imageTexture, new UnityEngine.Rect(0,0, imageTexture.width, imageTexture.height), new Vector2(2,0));
         
-        image.sprite = imageSprite;
+        //image.sprite = imageSprite;
 
         // initialize video / image with given size
         videoSourceImage = new Mat(imHeight, imWidth, MatType.CV_8UC3);
@@ -225,6 +225,8 @@ public class FaceDetectionImage : MonoBehaviour
                 hair.GetSkinColor();
                 hair.FindHairRoots();
                 hair.FindHairMax();
+                hair.GuessHairHeight();
+                hair.GuessHairLength();
                 Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
 
                 MatToTexture(videoSourceImage);
@@ -713,10 +715,11 @@ public class FaceDetectionImage : MonoBehaviour
                 //Cv2.ImShow(string.Format("Face {0}", eye_count), detectedEyeImage);
                 //Cv2.WaitKey(1); // do events
 
-                if(m.Y > eyes[0].Y && Mathf.Abs(m.Y - eyes[0].Y) > 100)
+                if (m.Y > eyes[0].Y && (m.Y + m.Height) < (faceRect.Y + faceRect.Height) && Mathf.Abs(m.Y - eyes[0].Y) > 100)
                 {
                     //Debug.Log("mouth height :");
                     //Debug.Log(m.Height);
+                    rectMouth = m;
                     var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
                     if (draw)
                         Cv2.Rectangle(_image, m, eye_rectangle_color, 3);

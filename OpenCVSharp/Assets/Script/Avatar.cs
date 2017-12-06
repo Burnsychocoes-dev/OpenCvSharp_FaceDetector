@@ -115,6 +115,7 @@ public class Avatar : MonoBehaviour {
         SetUndressed();
         SetHair(true);
         avatarManager.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+        this.transform.Translate(new Vector3(5, 0, 0));
     }
 
 
@@ -127,6 +128,7 @@ public class Avatar : MonoBehaviour {
     // Use this for init the personnage 
     public void SetPerso()
     {
+        this.transform.Translate(new Vector3(-5, 0, 0));
         avatarManager.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
         SetDressed();
         // Partie gender
@@ -140,7 +142,11 @@ public class Avatar : MonoBehaviour {
         Debug.Log(Mathf.Abs(hair.yHairRoot - hair.yHairTop) / landmarks.faceHeight);
         if(Mathf.Abs(hair.yHairRoot - hair.yHairTop)/landmarks.faceHeight < 0.05f || hair.yHairRoot == -1)
         {
-            perso.hair.isHairless = true;
+            if(hair.longueur != HairDetection.Longueur.moyen && hair.longueur != HairDetection.Longueur.longs)
+            {
+                perso.hair.isHairless = true;
+            }
+                
         }
 
         // Partie skin color
