@@ -5,12 +5,18 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scene/ProcessVideo_Steve.unity
     guid: ece1932ae0e077c47be6b64208cdfbad
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scene/ProcessImageAnalyse.unity
     guid: 3f6b1480169527348806293a0c11c991
   - enabled: 0
     path: Assets/Scene/Analyse_photo.unity
     guid: 80f9a21720b9a85419b64360b7f95d3c
+  - enabled: 0
+    path: Assets/Scene/PrisePhoto.unity
+    guid: a912ccbdd033cba449cd8faabd942f6a
+  - enabled: 1
+    path: Assets/Scene/AnalysePhoto.unity
+    guid: 9bbc52b1c2dd9184eaea376d0518b045

@@ -202,6 +202,7 @@ GameObject:
   - component: {fileID: 159437546}
   - component: {fileID: 159437545}
   - component: {fileID: 159437547}
+  - component: {fileID: 159437548}
   m_Layer: 0
   m_Name: LandmarksRetriever
   m_TagString: Untagged
@@ -222,6 +223,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   apiEndpoint: http://23.21.173.192/v2/detect
   imagePath: Assets/photo.png
+  gender: 
+  faceHeight: 0
+  faceWidth: 0
+  distanceBetweenLipAndChin: 0
+  leftEyeCenter:
+    Item0: 0
+    Item1: 0
+  rightEyeCenter:
+    Item0: 0
+    Item1: 0
+  leftEyeWidth: 0
+  rightEyeWidth: 0
+  distanceBetweenNoseTopAndEyes: 0
+  distanceBetweenNoseTipAndLip: 0
+  noseHeight: 0
+  noseWidth: 0
+  nostrilThickness: 0
+  distanceBetweenRightEarTragusAndNoseTip: 0
+  distanceBetweenLeftEarTragusAndNoseTip: 0
+  lipWidth: 0
+  topLipHeight: 0
+  buttomLipHeight: 0
 --- !u!4 &159437546
 Transform:
   m_ObjectHideFlags: 0
@@ -251,6 +274,21 @@ MonoBehaviour:
   image: {fileID: 1423264381}
   ProcessedTextureRenderer: {fileID: 179468837}
   margeErreurCouleurPeau: 20
+--- !u!114 &159437548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 159437544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9507d524d64a05342bf8049a43fd5939, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yHairRoot: -1
+  yHairTop: -1
+  epaisseur: 0
+  longueur: 0
 --- !u!1001 &179468836
 Prefab:
   m_ObjectHideFlags: 0
@@ -372,12 +410,12 @@ Prefab:
     - target: {fileID: 224695094438748768, guid: c2e738f388c8b4c47ad86a41bfd6e96c,
         type: 2}
       propertyPath: m_LocalPosition.x
-      value: 303
+      value: 372.5
       objectReference: {fileID: 0}
     - target: {fileID: 224695094438748768, guid: c2e738f388c8b4c47ad86a41bfd6e96c,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 170.5
+      value: 209.5
       objectReference: {fileID: 0}
     - target: {fileID: 224695094438748768, guid: c2e738f388c8b4c47ad86a41bfd6e96c,
         type: 2}

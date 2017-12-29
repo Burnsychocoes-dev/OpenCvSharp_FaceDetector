@@ -5,32 +5,57 @@ using OpenCvSharp;
 
 
 // Parallel computation support
-using Uk.Org.Adcock.Parallel;
 using System;
-using System.Web;
-using System.Runtime.InteropServices;
-using System.IO;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class HairDetection : MonoBehaviour {
+    [SerializeField]
+    private int fixThreshold = 10;
     private int colorSampleListSize = 300;
 
     private Vec3f[] skinColorSampleYCbCr;    
     private Vec3f skinColorYCbCrExpectancy;
+    public Vec3f SkinColorYCbCrExpectancy
+    {
+        get { return skinColorYCbCrExpectancy; }
+    }
     private float skinColorCbCrThreshold;
 
     private Vec3f[] hairColorSampleYCbCr;
     private Vec3f hairColorYCbCrExpectancy;
     private float hairColorCbCrThreshold;
 
-    private int yHairRoot =-1;
+    public int yHairRoot =-1;
     //yHairTop représente le plus haut point de la tête
-    private int yHairTop =-1;
+    public int yHairTop =-1;
     private int yHairMax;
     private int hairHeight;
     private int j_min=-1;
+    public int J_min
+    {
+        get { return j_min; }
+    }
     private int j_max=-1;
+    public int J_max
+    {
+        get { return j_max; }
+    }
+    public enum Epaisseur
+    {
+        aucune,
+        non_epais,
+        epais,
+        tres_epais
+    }
+    public Epaisseur epaisseur = Epaisseur.aucune;
+
+    public enum Longueur
+    {
+        aucune,
+        tres_court,
+        moyen,
+        longs
+    }
+    public Longueur longueur = Longueur.aucune;
 
     private FaceDetectionImage faceDetectionImage;
     private LandmarksRetriever landMarksRetriever;
@@ -222,7 +247,7 @@ public class HairDetection : MonoBehaviour {
 
         //>>>Calcul des Thresholds skinColorYCbCrThresholds
         //skinColorCbCrThreshold = ComputeVec3fThresholds(skinColorSampleYCbCr, skinColorCounter, skinColorYCbCrExpectancy);
-        skinColorCbCrThreshold = 10;
+        skinColorCbCrThreshold = fixThreshold;
         Debug.Log("Skin Color YCbCrThresholds");
         Debug.Log(skinColorCbCrThreshold);
 
@@ -257,6 +282,10 @@ public class HairDetection : MonoBehaviour {
                 if (pixelBlancCounter >= nbOfPixelBlancThreshold)
                 {
                     yHairTop = i;
+                    if (yHairRoot == -1)
+                    {
+                        yHairRoot = yHairTop;
+                    }
                     break;
                 }
             } else
@@ -763,13 +792,14 @@ public class HairDetection : MonoBehaviour {
         }
     }
 
-    void GuessHairLength()
+    public void GuessHairLength()
     {
         Debug.Log("Guess Hair Length");
         //on fait yHairMax - yHairRoot et on compare à la longueur du visage
-        if(yHairRoot == -1)
+        if(yHairRoot == yHairTop)
         {
             Debug.Log("Cette personne est chauve !");
+            
             return;
         }
 
@@ -777,36 +807,60 @@ public class HairDetection : MonoBehaviour {
         if (yHairMax <= landMarksRetriever.Nose.Item1)
         {
             Debug.Log("Cette personne a les cheveux court !");
+            longueur = Longueur.tres_court;
             return;
         } else if (yHairMax >= landMarksRetriever.Chin.Item1)
         {
             Debug.Log("Cette personne a les cheveux longs !");
+            longueur = Longueur.longs;
             return;
         }
         else
         {
             Debug.Log("Cette personne a les cheveux moyens !");
+            longueur = Longueur.moyen;
             return;
         }
         
     }
 
-    void GuessHairHeight()
+    /*void GuessHairLength_sans_landmarks()
+    {
+        if (yHairMax < faceDetectionImage.rectMouth.Y)
+        {
+            //Cheveux très court
+            longueur = Longueur.tres_court;
+        }
+        else if (yHairMax > faceDetectionImage.Face.Y + faceDetectionImage.Face.Height)
+        {
+            //Cheveux long
+            longueur = Longueur.longs;
+        } else
+        {
+            //Cheveux court
+            longueur = Longueur.court;
+        }
+    }*/
+
+    public void GuessHairHeight()
     {
         Debug.Log("Guess Hair Height");
         hairHeight = yHairRoot - yHairTop;
         if (hairHeight >= faceDetectionImage.Face.Height / 3)
         {
-            Debug.Log("Cette personne a les cheveux épais !");
+            Debug.Log("Cette personne a les cheveux très épais !");
+            epaisseur = Epaisseur.tres_epais;
             return;
         }else if(hairHeight <= faceDetectionImage.Face.Height / 6)
         {
             Debug.Log("Cette personne a les cheveux non épais !");
+            epaisseur = Epaisseur.non_epais;
             return;
         }
         else
         {
-            Debug.Log("Cette personne a les cheveux moyen épais !");
+            Debug.Log("Cette personne a les cheveux épais !");
+            epaisseur = Epaisseur.epais;
             return;
         }
     }
@@ -863,7 +917,7 @@ public class HairDetection : MonoBehaviour {
         return (Mathf.Sqrt(Mathf.Pow(Cb - expectancy.Item1, 2) + Mathf.Pow(Cr - expectancy.Item2, 2)));
     }
 
-    Vec3f FromRGBToYCbCr(Color32 RGB)
+    public Vec3f FromRGBToYCbCr(Color32 RGB)
     {
         var vec3 = new Vec3f
         {
@@ -878,7 +932,7 @@ public class HairDetection : MonoBehaviour {
         return vec3;
     }
 
-    Color32 FromYCbCrToRGB(Vec3f YCbCr)
+    public Color32 FromYCbCrToRGB(Vec3f YCbCr)
     {
         var rgb = new Color32
         {

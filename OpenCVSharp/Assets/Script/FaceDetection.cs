@@ -34,6 +34,7 @@ using System.Web;
 using System.Runtime.InteropServices;
 using System.IO;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 // class for video display and processed video display
@@ -47,7 +48,6 @@ public class FaceDetection : MonoBehaviour
     private bool waitSoundEffect = false;
 
     // Video parameters
-    public MeshRenderer WebCamTextureRenderer;
     public MeshRenderer ProcessedTextureRenderer;
     public int deviceNumber;
     private WebCamTexture _webcamTexture;
@@ -63,14 +63,19 @@ public class FaceDetection : MonoBehaviour
     private Texture2D processedTexture;
     private Vec3b[] videoSourceImageData;
     private byte[] cannyImageData;
+    [SerializeField]
+    private RawImage backgroundTexture;
 
     // Frame rate parameter
-    private int updateFrameCount = 0;
     private int textureCount = 0;
     private int displayCount = 0;
-    
+
+    private OpenCvSharp.Rect rectMouth;
+    private OpenCvSharp.Rect rectEye;
+
     void Start()
     {
+        //Application.RequestUserAuthorization(UnityEngine.UserAuthorization.WebCam);
         // create a list of webcam devices that is available
         WebCamDevice[] devices = WebCamTexture.devices;
 
@@ -78,16 +83,18 @@ public class FaceDetection : MonoBehaviour
 
         if (devices.Length > 0)
         {
+            for(int i = 0; i < devices.Length; i++)
+            {
+                if(devices[i].isFrontFacing)
+                {
+                    // initialized the webcam texture by the specific device number
+                    _webcamTexture = new WebCamTexture(devices[i].name, imWidth, imHeight);
 
-            // initialized the webcam texture by the specific device number
-            _webcamTexture = new WebCamTexture(devices[deviceNumber].name, imWidth, imHeight);
-            // assign webcam texture to the meshrenderer for display
-            WebCamTextureRenderer.material.mainTexture = _webcamTexture;
-
-            // Play the video source
-            _webcamTexture.Play();
-
-            
+                    // Play the video source
+                    _webcamTexture.Play();
+                }
+            }
+          
 
             // initialize video / image with given size
             videoSourceImage = new Mat(imHeight, imWidth, MatType.CV_8UC3);
@@ -100,6 +107,7 @@ public class FaceDetection : MonoBehaviour
 
             // assign the processedTexture to the meshrenderer for display
             ProcessedTextureRenderer.material.mainTexture = processedTexture;
+            //backgroundTexture.texture = processedTexture;
             //videoSourceImage.At<Vec3b>(y, x);
 
         }
@@ -114,8 +122,6 @@ public class FaceDetection : MonoBehaviour
 
     void Update()
     {
-
-        updateFrameCount++;
 
         if (_webcamTexture.isPlaying)
         {
@@ -138,12 +144,13 @@ public class FaceDetection : MonoBehaviour
                 // the texture will be displayed automatically
                 MatToTexture();
 
+
                 if (waitSoundEffect)
                 {
                     frameCount++;
                     if (frameCount == maxCount)
                     {
-                        SceneManager.LoadScene("ProcessImageAnalyse");
+                        SceneManager.LoadScene("AnalysePhoto");
                     }
                 }
             }
@@ -200,7 +207,7 @@ public class FaceDetection : MonoBehaviour
     {
         // cannyImageData is byte array, because canny image is grayscale
 
-        //cannyImage.GetArray(0, 0, cannyImageData);
+        cannyImage.GetArray(0, 0, cannyImageData);
 
         //cannyImage.GetArray(0, 0, cannyImageData);
         videoSourceImage.GetArray(0, 0, videoSourceImageData);
@@ -261,8 +268,8 @@ public class FaceDetection : MonoBehaviour
         //right_ear_cascade.Load(Application.dataPath + "/Plugins/Classifiers/haarcascade_mcs_leftear.xml");
         //var left_ear_cascade = new CascadeClassifier();
         //left_ear_cascade.Load(Application.dataPath + "/Plugins/Classifiers/haarcascade_mcs_rightear.xml");
-        //var mouth_cascade = new CascadeClassifier();
-        //mouth_cascade.Load(Application.dataPath + "/Plugins/Classifiers/haarcascade_mcs_mouth.xml");
+        var mouth_cascade = new CascadeClassifier();
+        mouth_cascade.Load(Application.dataPath + "/Plugins/Classifiers/Mouth.xml");
         //Debug.Log(" ");
 
         var faces = face_cascade.DetectMultiScale(
@@ -288,7 +295,7 @@ public class FaceDetection : MonoBehaviour
         var face_count = 0;
         var eye_count = 0;
         //var ear_count = 0;
-        //var mouth_count = 0;
+        var mouth_count = 0;
         foreach (var faceRect in faces)
         {
             var detectedFaceImage = new Mat(_image, faceRect);
@@ -318,7 +325,7 @@ public class FaceDetection : MonoBehaviour
 
                 var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
                 Cv2.Rectangle(_image, eyeRect, eye_rectangle_color, 3);
-
+                rectEye = eyeRect;
 
                 var detectedEyeGrayImage = new Mat();
                 Cv2.CvtColor(detectedEyeImage, detectedEyeGrayImage, ColorConversionCodes.BGRA2GRAY);
@@ -375,32 +382,35 @@ public class FaceDetection : MonoBehaviour
             //}
 
 
-            // var mouth = mouth_cascade.DetectMultiScale(
-            //    image: grayImage,
-            //    scaleFactor: 1.3,
-            //    minNeighbors: 5,
-            //    flags: HaarDetectionType.DoRoughSearch | HaarDetectionType.ScaleImage,
-            //    minSize: new Size(50, 50)
-            //);
-            //foreach (var m in mouth)
-            //{
-            //    var detectedEarImage = new Mat(_image, m);
-            //    //Cv2.ImShow(string.Format("Face {0}", eye_count), detectedEyeImage);
-            //    //Cv2.WaitKey(1); // do events
+            var mouth = mouth_cascade.DetectMultiScale(
+               image: grayImage,
+               scaleFactor: 1.3,
+               minNeighbors: 5,
+               flags: HaarDetectionType.DoRoughSearch | HaarDetectionType.ScaleImage,
+               minSize: new Size(50, 50)
+           );
+            foreach (var m in mouth)
+            {
+                var detectedEarImage = new Mat(_image, m);
+                //Cv2.ImShow(string.Format("Face {0}", eye_count), detectedEyeImage);
+                //Cv2.WaitKey(1); // do events
 
-            //    var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
-            //    Cv2.Rectangle(_image, m, eye_rectangle_color, 3);
+                if(m.Y > rectEye.Y && (m.Y + m.Height) < (faceRect.Y + faceRect.Height) && Mathf.Abs(m.Y - rectEye.Y) > 100)
+                {
+                    var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
+                    Cv2.Rectangle(_image, m, eye_rectangle_color, 3);
 
 
-            //    var detectedEyeGrayImage = new Mat();
-            //    Cv2.CvtColor(detectedEarImage, detectedEyeGrayImage, ColorConversionCodes.BGRA2GRAY);
+                    var detectedEyeGrayImage = new Mat();
+                    Cv2.CvtColor(detectedEarImage, detectedEyeGrayImage, ColorConversionCodes.BGRA2GRAY);
 
-            //    mouth_count++;
-            //}
+                    mouth_count++;
+                }
+            }
             face_count++;
         }
         //Debug.Log(face_count);
-        if (face_count == 1 && eye_count == 2 && !waitSoundEffect)
+        if (face_count == 1 && eye_count == 2 && mouth_count == 1 && !waitSoundEffect)
         {
             //Debug.Log(faces[0]);
             //Debug.Log(meshRendererCenter.x);

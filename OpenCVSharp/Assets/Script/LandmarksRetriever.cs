@@ -105,6 +105,7 @@ public class LandmarksRetriever : MonoBehaviour {
 
     private bool isCallDone = false;
 
+
     private void Awake() {
         if (Instance != null) {
             Debug.LogError("There is multiple instance of singleton LandmarksRetriever");
@@ -116,6 +117,7 @@ public class LandmarksRetriever : MonoBehaviour {
         client.Credentials = CredentialCache.DefaultCredentials;
 
         Instance = this;
+
     }
 
     public void Init() {
@@ -151,28 +153,28 @@ public class LandmarksRetriever : MonoBehaviour {
             //}
             //else
             //{
-            faceWidth = faceAnalyse.Face.Width - 100;
+            faceWidth = hairDetection.J_max - hairDetection.J_min;
             Debug.Log("face width :");
             Debug.Log(faceWidth);
             //}
 
-            distanceBetweenLipAndChin = Math.Abs((double)landmarks["lipLineMiddleY"] - (double)landmarks["chinTipY"]) / faceHeight;
-            Debug.Log("distance between lip and chin :");
-            Debug.Log(distanceBetweenLipAndChin);
+            //distanceBetweenLipAndChin = Math.Abs((double)landmarks["lipLineMiddleY"] - (double)landmarks["chinTipY"]) / faceHeight;
+            //Debug.Log("distance between lip and chin :");
+            //Debug.Log(distanceBetweenLipAndChin);
 
 
             // Récuperation des infos sur les yeux
-            leftEyeCenter.Item0 = (double)landmarks["leftEyeCenterX"];
-            leftEyeCenter.Item1 = (double)landmarks["leftEyeCenterY"];
-            Debug.Log("left eye center position :");
-            Debug.Log(leftEyeCenter.Item0);
-            Debug.Log(leftEyeCenter.Item1);
+            //leftEyeCenter.Item0 = (double)landmarks["leftEyeCenterX"];
+            //leftEyeCenter.Item1 = (double)landmarks["leftEyeCenterY"];
+            //Debug.Log("left eye center position :");
+            //Debug.Log(leftEyeCenter.Item0);
+            //Debug.Log(leftEyeCenter.Item1);
 
-            rightEyeCenter.Item0 = (double)landmarks["rightEyeCenterX"];
-            rightEyeCenter.Item1 = (double)landmarks["rightEyeCenterY"];
-            Debug.Log("right eye center position :");
-            Debug.Log(rightEyeCenter.Item0);
-            Debug.Log(rightEyeCenter.Item1);
+            //rightEyeCenter.Item0 = (double)landmarks["rightEyeCenterX"];
+            //rightEyeCenter.Item1 = (double)landmarks["rightEyeCenterY"];
+            //Debug.Log("right eye center position :");
+            //Debug.Log(rightEyeCenter.Item0);
+            //Debug.Log(rightEyeCenter.Item1);
 
             leftEyeWidth = Math.Abs((double)landmarks["leftEyeCornerLeftX"] - (double)landmarks["leftEyeCornerRightX"]) / faceWidth;
             Debug.Log("left eye width :");
@@ -182,41 +184,41 @@ public class LandmarksRetriever : MonoBehaviour {
             Debug.Log("right eye width :");
             Debug.Log(rightEyeWidth);
 
-            leftEyeBrowLeft.Item0 = (double)landmarks["leftEyeBrowLeftX"];
-            leftEyeBrowLeft.Item1 = (double)landmarks["leftEyeBrowLeftY"];
-            Debug.Log("left eye brow left position :");
-            Debug.Log(leftEyeBrowLeft.Item0);
-            Debug.Log(leftEyeBrowLeft.Item1);
+            //leftEyeBrowLeft.Item0 = (double)landmarks["leftEyeBrowLeftX"];
+            //leftEyeBrowLeft.Item1 = (double)landmarks["leftEyeBrowLeftY"];
+            //Debug.Log("left eye brow left position :");
+            //Debug.Log(leftEyeBrowLeft.Item0);
+            //Debug.Log(leftEyeBrowLeft.Item1);
 
-            leftEyeBrowMiddle.Item0 = (double)landmarks["leftEyeBrowMiddleX"];
-            leftEyeBrowMiddle.Item1 = (double)landmarks["leftEyeBrowMiddleY"];
-            Debug.Log("left eye brow middle position :");
-            Debug.Log(leftEyeBrowMiddle.Item0);
-            Debug.Log(leftEyeBrowMiddle.Item1);
+            //leftEyeBrowMiddle.Item0 = (double)landmarks["leftEyeBrowMiddleX"];
+            //leftEyeBrowMiddle.Item1 = (double)landmarks["leftEyeBrowMiddleY"];
+            //Debug.Log("left eye brow middle position :");
+            //Debug.Log(leftEyeBrowMiddle.Item0);
+            //Debug.Log(leftEyeBrowMiddle.Item1);
 
-            leftEyeBrowRight.Item0 = (double)landmarks["leftEyeBrowRightX"];
-            leftEyeBrowRight.Item1 = (double)landmarks["leftEyeBrowRightY"];
-            Debug.Log("left eye brow right position :");
-            Debug.Log(leftEyeBrowRight.Item0);
-            Debug.Log(leftEyeBrowRight.Item1);
+            //leftEyeBrowRight.Item0 = (double)landmarks["leftEyeBrowRightX"];
+            //leftEyeBrowRight.Item1 = (double)landmarks["leftEyeBrowRightY"];
+            //Debug.Log("left eye brow right position :");
+            //Debug.Log(leftEyeBrowRight.Item0);
+            //Debug.Log(leftEyeBrowRight.Item1);
 
-            rightEyeBrowLeft.Item0 = (double)landmarks["rightEyeBrowLeftX"];
-            rightEyeBrowLeft.Item1 = (double)landmarks["rightEyeBrowLeftY"];
-            Debug.Log("right eye brow left position :");
-            Debug.Log(rightEyeBrowLeft.Item0);
-            Debug.Log(rightEyeBrowLeft.Item1);
+            //rightEyeBrowLeft.Item0 = (double)landmarks["rightEyeBrowLeftX"];
+            //rightEyeBrowLeft.Item1 = (double)landmarks["rightEyeBrowLeftY"];
+            //Debug.Log("right eye brow left position :");
+            //Debug.Log(rightEyeBrowLeft.Item0);
+            //Debug.Log(rightEyeBrowLeft.Item1);
 
-            rightEyeBrowMiddle.Item0 = (double)landmarks["rightEyeBrowMiddleX"];
-            rightEyeBrowMiddle.Item1 = (double)landmarks["rightEyeBrowMiddleY"];
-            Debug.Log("right eye brow middle position :");
-            Debug.Log(rightEyeBrowMiddle.Item0);
-            Debug.Log(rightEyeBrowMiddle.Item1);
+            //rightEyeBrowMiddle.Item0 = (double)landmarks["rightEyeBrowMiddleX"];
+            //rightEyeBrowMiddle.Item1 = (double)landmarks["rightEyeBrowMiddleY"];
+            //Debug.Log("right eye brow middle position :");
+            //Debug.Log(rightEyeBrowMiddle.Item0);
+            //Debug.Log(rightEyeBrowMiddle.Item1);
 
-            rightEyeBrowRight.Item0 = (double)landmarks["rightEyeBrowRightX"];
-            rightEyeBrowRight.Item1 = (double)landmarks["rightEyeBrowRightY"];
-            Debug.Log("right eye brow right position :");
-            Debug.Log(rightEyeBrowRight.Item0);
-            Debug.Log(rightEyeBrowRight.Item1);
+            //rightEyeBrowRight.Item0 = (double)landmarks["rightEyeBrowRightX"];
+            //rightEyeBrowRight.Item1 = (double)landmarks["rightEyeBrowRightY"];
+            //Debug.Log("right eye brow right position :");
+            //Debug.Log(rightEyeBrowRight.Item0);
+            //Debug.Log(rightEyeBrowRight.Item1);
 
             distanceBetweenNoseTopAndEyes = Math.Abs((double)landmarks["noseBtwEyesX"] - (double)landmarks["rightEyeCornerLeftX"]) / faceWidth;
             Debug.Log("distance between nose and eyes :");
@@ -240,11 +242,6 @@ public class LandmarksRetriever : MonoBehaviour {
             Debug.Log("nostril thickness :");
             Debug.Log(nostrilThickness);
 
-
-            // Récuperation des infos sur la bouche
-            lipWidth = Math.Abs((double)landmarks["lipCornerLeftX"] - (double)landmarks["lipCornerRightX"]) / faceWidth;
-            Debug.Log("lip width :");
-            Debug.Log(lipWidth);
 
 
             // Récuperation des infos utiles pour la hair detection
@@ -271,6 +268,19 @@ public class LandmarksRetriever : MonoBehaviour {
             Debug.Log("nose tip position :");
             Debug.Log(nose.Item0);
             Debug.Log(nose.Item1);
+
+            // Récuperation des infos sur la bouche
+            lipWidth = Math.Abs((double)landmarks["lipCornerLeftX"] - (double)landmarks["lipCornerRightX"]) / faceWidth;
+            Debug.Log("lip width :");
+            Debug.Log(lipWidth);
+
+            topLipHeight = Math.Abs((double)landmarks["lipLineMiddleY"] - faceAnalyse.RectMouth.Y) / faceHeight;
+            Debug.Log("topLipHeight :");
+            Debug.Log(topLipHeight);
+
+            buttomLipHeight = Math.Abs((double)landmarks["lipLineMiddleY"] - faceAnalyse.RectMouth.Y + faceAnalyse.RectMouth.Height) / faceHeight;
+            Debug.Log("buttomLipHeight :");
+            Debug.Log(buttomLipHeight);
         }
         
     }
@@ -370,7 +380,7 @@ public class LandmarksRetriever : MonoBehaviour {
 
     public void RetrieveLandmarks() {
         string jsonResponse = PostRequest(new NameValueCollection() {
-                { "api_key", "e38e2ace964469a86be52a8cec8deb90" },
+                { "api_key", "87a845cef7df66481a72f0606528a518" },
                 { "selector", "SETPOSE" }
             });
 
