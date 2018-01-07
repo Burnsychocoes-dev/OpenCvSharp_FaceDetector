@@ -226,9 +226,9 @@ public class LandmarksRetriever : MonoBehaviour {
 
 
             // Récuperation des infos sur le nez
-            distanceBetweenNoseTipAndLip = Math.Abs((double)landmarks["noseTipY"] - (double)landmarks["lipLineMiddleY"]) / faceHeight;
-            Debug.Log("distance between nose tip and lip :");
-            Debug.Log(distanceBetweenNoseTipAndLip);
+            //distanceBetweenNoseTipAndLip = Math.Abs((double)landmarks["noseTipY"] - (double)landmarks["lipLineMiddleY"]) / faceHeight;
+            //Debug.Log("distance between nose tip and lip :");
+            //Debug.Log(distanceBetweenNoseTipAndLip);
 
             noseHeight = Math.Abs((double)landmarks["noseTipY"] - (double)landmarks["noseBtwEyesY"]) / faceHeight;
             Debug.Log("nose height :");
@@ -242,6 +242,19 @@ public class LandmarksRetriever : MonoBehaviour {
             Debug.Log("nostril thickness :");
             Debug.Log(nostrilThickness);
 
+
+            // Récuperation des infos sur la bouche
+            lipWidth = faceAnalyse.RectMouth.Width / faceWidth;
+            Debug.Log("lip width :");
+            Debug.Log(lipWidth);
+
+            topLipHeight = Math.Abs((double)landmarks["lipLineMiddleY"] - faceAnalyse.RectMouth.Y) / faceHeight;
+            Debug.Log("topLipHeight :");
+            Debug.Log(topLipHeight);
+
+            buttomLipHeight = Math.Abs((double)landmarks["lipLineMiddleY"] - faceAnalyse.RectMouth.Y + faceAnalyse.RectMouth.Height) / faceHeight;
+            Debug.Log("buttomLipHeight :");
+            Debug.Log(buttomLipHeight);
 
 
             // Récuperation des infos utiles pour la hair detection
@@ -269,18 +282,6 @@ public class LandmarksRetriever : MonoBehaviour {
             Debug.Log(nose.Item0);
             Debug.Log(nose.Item1);
 
-            // Récuperation des infos sur la bouche
-            lipWidth = Math.Abs((double)landmarks["lipCornerLeftX"] - (double)landmarks["lipCornerRightX"]) / faceWidth;
-            Debug.Log("lip width :");
-            Debug.Log(lipWidth);
-
-            topLipHeight = Math.Abs((double)landmarks["lipLineMiddleY"] - faceAnalyse.RectMouth.Y) / faceHeight;
-            Debug.Log("topLipHeight :");
-            Debug.Log(topLipHeight);
-
-            buttomLipHeight = Math.Abs((double)landmarks["lipLineMiddleY"] - faceAnalyse.RectMouth.Y + faceAnalyse.RectMouth.Height) / faceHeight;
-            Debug.Log("buttomLipHeight :");
-            Debug.Log(buttomLipHeight);
         }
         
     }
@@ -380,7 +381,7 @@ public class LandmarksRetriever : MonoBehaviour {
 
     public void RetrieveLandmarks() {
         string jsonResponse = PostRequest(new NameValueCollection() {
-                { "api_key", "87a845cef7df66481a72f0606528a518" },
+                { "api_key", "3f45aaba7a0ac2708fc55a30e11c2b5f" },
                 { "selector", "SETPOSE" }
             });
 

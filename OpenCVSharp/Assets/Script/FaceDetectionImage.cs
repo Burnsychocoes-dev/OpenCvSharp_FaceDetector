@@ -102,6 +102,7 @@ public class FaceDetectionImage : MonoBehaviour
     public Mat VideoSourceImage
     {
         get { return videoSourceImage; }
+        set { videoSourceImage = value; }
     }
     private Mat cannyImage;
     private Texture2D processedTexture;
@@ -220,13 +221,46 @@ public class FaceDetectionImage : MonoBehaviour
                 ProcessImage(videoSourceImage, false);
 
                 hair.Init();
-                hair.Pretraitement();
+                //hair.Pretraitement();
+
                 Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
-                hair.GetSkinColor();
-                hair.FindHairRoots();
-                hair.FindHairMax();
-                hair.GuessHairHeight();
-                hair.GuessHairLength();
+                Mat result = new Mat(videoSourceImage.Size(), MatType.CV_8UC1);
+                Debug.Log(result.ToString());
+
+                //Mat result = faceDetectionImage.VideoSourceImage;
+                Mat bgModel = new Mat(); //background model
+                Mat fgModel = new Mat(); //foreground model
+
+
+                // draw a rectangle
+                //OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(1, 1, faceDetectionImage.VideoSourceImage.Cols - 1, faceDetectionImage.VideoSourceImage.Rows - 1);
+                // Rectangle de visage
+                //OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(face.X - 25, face.Y - 100, face.Width + 50, face.Height + 200);
+                // Rectangle de bouche
+                OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(RectMouth.X - 10, RectMouth.Y - 10, RectMouth.Width + 20, RectMouth.Height + 20);
+                // Rectangle oeil gauche
+                //OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(rectEyeLeft.X - 50, rectEyeLeft.Y - 50, rectEyeLeft.Width + 100, rectEyeLeft.Height + 100);
+                // Rectangle oeil droit
+                //OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(rectEyeLeft.X - 30, rectEyeLeft.Y - 30, rectEyeLeft.Width + 60, rectEyeLeft.Height + 60);
+
+                hair.GrabCut(videoSourceImage, result, rectangle, bgModel, fgModel, 1, GrabCutModes.InitWithRect);
+
+                Debug.Log(result.ToString());
+
+                Cv2.Compare(result, new Scalar(3, 3, 3), result, CmpTypes.EQ);
+                Mat matrix2_grabcut = new Mat(imHeight, imWidth, MatType.CV_8UC3, new Scalar(255, 255, 255));
+
+                videoSourceImage.CopyTo(matrix2_grabcut, result);
+
+                matrix2_grabcut.CopyTo(videoSourceImage);
+
+
+                ////hair.GetSkinColor();
+                ////hair.FindHairRoots();
+                ////hair.FindHairMax();
+                ////hair.GuessHairHeight();
+                ////hair.GuessHairLength();
+
                 Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
 
                 MatToTexture(videoSourceImage);
