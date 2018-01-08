@@ -7,9 +7,10 @@ using OpenCvSharp;
 // Parallel computation support
 using System;
 
+
 public class HairDetection : MonoBehaviour {
     [SerializeField]
-    private int fixThreshold = 10;
+    private int fixThreshold = 14;
     private int colorSampleListSize = 300;
 
     private Vec3f[] skinColorSampleYCbCr;    
@@ -131,23 +132,29 @@ public class HairDetection : MonoBehaviour {
         //faceDetectionImage = GetComponent<FaceDetectionImage>();
         //Mat result = new Mat(faceDetectionImage.VideoSourceImage.Size(), faceDetectionImage.VideoSourceImage.Type());
         Mat result = new Mat(faceDetectionImage.VideoSourceImage.Size(), MatType.CV_8UC1);
+        Debug.Log(result.ToString());
         
         //Mat result = faceDetectionImage.VideoSourceImage;
         Mat bgModel = new Mat(); //background model
         Mat fgModel = new Mat(); //foreground model
-        
+
 
         //draw a rectangle 
         //OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(1, 1, faceDetectionImage.VideoSourceImage.Cols - 1, faceDetectionImage.VideoSourceImage.Rows - 1);
-        OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(faceDetectionImage.Face.X - 100, faceDetectionImage.Face.Y - 100, faceDetectionImage.Face.Width + 200, faceDetectionImage.Face.Height + 200);
+        //OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(faceDetectionImage.Face.X - 100, faceDetectionImage.Face.Y - 100, faceDetectionImage.Face.Width + 200, faceDetectionImage.Face.Height + 200);
+        OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(faceDetectionImage.RectMouth.X, faceDetectionImage.RectMouth.Y, faceDetectionImage.RectMouth.Width, faceDetectionImage.RectMouth.Height);
 
-        Cv2.GrabCut(faceDetectionImage.VideoSourceImage, result, rectangle, bgModel, fgModel, 10, GrabCutModes.InitWithRect);
+
+        Cv2.GrabCut(faceDetectionImage.VideoSourceImage, result, rectangle, bgModel, fgModel, 1, GrabCutModes.InitWithRect);
+
+        Debug.Log(result.ToString());
+
         Cv2.Compare(result, new Scalar(3, 3, 3), result, CmpTypes.EQ);
         matrix2_grabcut = new Mat(faceDetectionImage.ImHeight, faceDetectionImage.ImWidth, MatType.CV_8UC3, new Scalar(255, 255, 255));
 
-        faceDetectionImage.VideoSourceImage.CopyTo(matrix2_grabcut, result);
+        //faceDetectionImage.VideoSourceImage.CopyTo(matrix2_grabcut, result);
         
-        matrix2_grabcut.CopyTo(faceDetectionImage.VideoSourceImage);
+        //matrix2_grabcut.CopyTo(faceDetectionImage.VideoSourceImage);
     }
 
     public void GetSkinColor()
@@ -944,5 +951,33 @@ public class HairDetection : MonoBehaviour {
             b = (Byte)(YCbCr.Item0 + 1.772f * (YCbCr.Item1 - 128))
         };
         return rgb;
+    }
+
+
+    public void GrabCut(InputArray img, InputOutputArray mask, OpenCvSharp.Rect rect,
+                           InputOutputArray bgdModel, InputOutputArray fgdModel,
+                           int iterCount, GrabCutModes mode)
+    {
+        //if (img == null)
+        //    throw new ArgumentNullException(nameof(img));
+        //if (mask == null)
+        //    throw new ArgumentNullException(nameof(mask));
+        //if (bgdModel == null)
+        //    throw new ArgumentNullException(nameof(bgdModel));
+        //if (fgdModel == null)
+        //    throw new ArgumentNullException(nameof(fgdModel));
+        img.ThrowIfDisposed();
+        mask.ThrowIfNotReady();
+        bgdModel.ThrowIfNotReady();
+        fgdModel.ThrowIfNotReady();
+        NativeMethods.imgproc_grabCut(img.CvPtr, mask.CvPtr, rect,
+            bgdModel.CvPtr, fgdModel.CvPtr, iterCount, (int)mode);
+        GC.KeepAlive(img);
+        GC.KeepAlive(mask);
+        GC.KeepAlive(bgdModel);
+        GC.KeepAlive(fgdModel);
+        mask.Fix();
+        bgdModel.Fix();
+        fgdModel.Fix();
     }
 }
