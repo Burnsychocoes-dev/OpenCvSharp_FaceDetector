@@ -142,7 +142,7 @@ public class FaceDetectionImage : MonoBehaviour
 
     HairDetection hair;
 
-    LandmarksRetriever landmarks;
+    //LandmarksRetriever landmarks;
 
     Avatar avatar;
 
@@ -160,8 +160,14 @@ public class FaceDetectionImage : MonoBehaviour
     }
     private Etape etape;
 
+
+    public float[] landmarks;
+    // The imported function
+    [DllImport("face_landmark_detection_ex", EntryPoint = "FaceLandmarkDetection")] public static extern int Test(String datPath, String filePath, float[] landmarks);
+
+
     void Start() {
-        landmarks = GetComponent<LandmarksRetriever>();
+        //landmarks = GetComponent<LandmarksRetriever>();
         avatar = GetComponent<Avatar>();
         hair = GetComponent<HairDetection>();
         camera = FindObjectOfType<Camera>();
@@ -202,7 +208,7 @@ public class FaceDetectionImage : MonoBehaviour
         {
             case Etape.Segmentation:
                 Debug.Log("etape segmentation");
-                ProcessImage(videoSourceImage, true);
+                ProcessImage(videoSourceImage, false);
                 MatToTexture(videoSourceImage);
                 etape = Etape.SegmentationIdle;
                 break;
@@ -292,7 +298,7 @@ public class FaceDetectionImage : MonoBehaviour
 
             case Etape.Avatar:
                 CleanScreen();
-                landmarks.Init();
+                //landmarks.Init();
                 avatar.SetPerso();
                 avatar.SetHair(false);
                 avatar.ChangeEyes();
@@ -768,6 +774,10 @@ public class FaceDetectionImage : MonoBehaviour
 
             face_count++;
         }
+
+        GetLandmarks();
+        DrawLandmarks(_image);
+
         Cv2.Flip(_image, _image, FlipMode.X);
     }
     
@@ -777,6 +787,117 @@ public class FaceDetectionImage : MonoBehaviour
         Cv2.Flip(_image, _image, FlipMode.X);
         //Cv2.ImShow("Copy video", _image);
         displayCount++;
+    }
+
+    void GetLandmarks()
+    {
+        Test("Assets/Plugins/Dlib/shape_predictor_68_face_landmarks.dat", "Assets/photo.png", landmarks);
+    }
+
+    void DrawLandmarks(Mat _image)
+    {
+        var landmark_color = Scalar.FromRgb(0, 255, 0);
+        // Head
+        for (int i = 0; i < 16; i++)
+        {
+            Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
+            Point point2 = new Point(landmarks[2 * (i + 1)], landmarks[2 * (i + 1) + 1]);
+            Cv2.Line(_image, point1, point2, landmark_color, 2);
+        }
+        // Right brow
+        for (int i = 17; i < 21; i++)
+        {
+            Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
+            Point point2 = new Point(landmarks[2 * (i + 1)], landmarks[2 * (i + 1) + 1]);
+            Cv2.Line(_image, point1, point2, landmark_color, 2);
+        }
+        // Left brow
+        for (int i = 22; i < 26; i++)
+        {
+            Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
+            Point point2 = new Point(landmarks[2 * (i + 1)], landmarks[2 * (i + 1) + 1]);
+            Cv2.Line(_image, point1, point2, landmark_color, 2);
+        }
+        // Nose
+        for (int i = 27; i < 36; i++)
+        {
+            if(i == 35)
+            {
+                Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
+                Point point2 = new Point(landmarks[2 * 30], landmarks[2 * 30 + 1]);
+                Cv2.Line(_image, point1, point2, landmark_color, 2);
+            }
+            else
+            {
+                Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
+                Point point2 = new Point(landmarks[2 * (i + 1)], landmarks[2 * (i + 1) + 1]);
+                Cv2.Line(_image, point1, point2, landmark_color, 2);
+            }
+        }
+        // Left Eye
+        for (int i = 36; i < 42; i++)
+        {
+            if (i == 41)
+            {
+                Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
+                Point point2 = new Point(landmarks[2 * 36], landmarks[2 * 36 + 1]);
+                Cv2.Line(_image, point1, point2, landmark_color, 2);
+            }
+            else
+            {
+                Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
+                Point point2 = new Point(landmarks[2 * (i + 1)], landmarks[2 * (i + 1) + 1]);
+                Cv2.Line(_image, point1, point2, landmark_color, 2);
+            }
+        }
+        // Right Eye
+        for (int i = 42; i < 48; i++)
+        {
+            if (i == 47)
+            {
+                Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
+                Point point2 = new Point(landmarks[2 * 42], landmarks[2 * 42 + 1]);
+                Cv2.Line(_image, point1, point2, landmark_color, 2);
+            }
+            else
+            {
+                Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
+                Point point2 = new Point(landmarks[2 * (i + 1)], landmarks[2 * (i + 1) + 1]);
+                Cv2.Line(_image, point1, point2, landmark_color, 2);
+            }
+        }
+        // Extern lip
+        for (int i = 48; i < 60; i++)
+        {
+            if (i == 59)
+            {
+                Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
+                Point point2 = new Point(landmarks[2 * 48], landmarks[2 * 48 + 1]);
+                Cv2.Line(_image, point1, point2, landmark_color, 2);
+            }
+            else
+            {
+                Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
+                Point point2 = new Point(landmarks[2 * (i + 1)], landmarks[2 * (i + 1) + 1]);
+                Cv2.Line(_image, point1, point2, landmark_color, 2);
+            }
+        }
+        // Intern lip
+        for (int i = 60; i < 68; i++)
+        {
+            if (i == 67)
+            {
+                Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
+                Point point2 = new Point(landmarks[2 * 60], landmarks[2 * 60 + 1]);
+                Cv2.Line(_image, point1, point2, landmark_color, 2);
+            }
+            else
+            {
+                Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
+                Point point2 = new Point(landmarks[2 * (i + 1)], landmarks[2 * (i + 1) + 1]);
+                Cv2.Line(_image, point1, point2, landmark_color, 2);
+            }
+        }
     }
 
     // close the opencv window

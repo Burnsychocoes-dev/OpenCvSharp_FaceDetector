@@ -73,6 +73,11 @@ public class FaceDetection : MonoBehaviour
     private OpenCvSharp.Rect rectMouth;
     private OpenCvSharp.Rect rectEye;
 
+    public float[] landmarks;
+    // The imported function
+    [DllImport("face_landmark_detection_ex", EntryPoint = "FaceLandmarkDetection")] public static extern int Test(String datPath, String filePath, float[] landmarks);
+
+
     void Start()
     {
         //Application.RequestUserAuthorization(UnityEngine.UserAuthorization.WebCam);
@@ -438,7 +443,7 @@ public class FaceDetection : MonoBehaviour
             face_count++;
         }
         //Debug.Log(face_count);
-        if (face_count == 1 && eye_count == 2 && mouth_count == 1 && !waitSoundEffect)
+        if (face_count == 1 && !waitSoundEffect)
         {
             //Debug.Log(faces[0]);
             //Debug.Log(meshRendererCenter.x);
@@ -447,7 +452,7 @@ public class FaceDetection : MonoBehaviour
             float width = faces[0].Width;
             float height = faces[0].Height;
             // Verification si le rect de la face est bien dans la zone de photo
-            if(origin.X > (int)meshRendererCenter.x + 350 && 
+            if (origin.X > (int)meshRendererCenter.x + 350 &&
                 origin.X + width < (int)meshRendererCenter.x + 350 + 600 &&
                 origin.Y > (int)meshRendererCenter.y + 50 &&
                 origin.Y + height < (int)meshRendererCenter.y + 5 + 600 &&
@@ -490,6 +495,7 @@ public class FaceDetection : MonoBehaviour
         //Cv2.ImShow("Copy video", _image);
         displayCount++;
     }
+
 
     // close the opencv window
     public void OnDestroy()
