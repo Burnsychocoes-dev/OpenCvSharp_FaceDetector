@@ -33,6 +33,8 @@ class VolundMultiStandardShaderGUI : ShaderGUI
 		public static GUIContent alphaCutoffText = new GUIContent("Alpha Cutoff", "Threshold for alpha cutoff");
 		public static GUIContent overlayText = new GUIContent("Overlay", "Apply another texture on top of the skin");
 		public static GUIContent overlayColorText = new GUIContent("Overlay Color", "Tint the overlay");
+		public static GUIContent eyeTintText = new GUIContent("Eye Tint", "Apply a color tint to the eye");
+		public static GUIContent eyeTexText = new GUIContent("Eye Albedo", "Use a replacement texture for the eye");
 		public static GUIContent specularMapText = new GUIContent("Specular", "Specular (RGB) and Smoothness (A)");
 		public static GUIContent metallicMapText = new GUIContent("Metallic", "Metallic (R) and Smoothness (A)");
 		public static GUIContent smoothnessText = new GUIContent("Smoothness", "");
@@ -65,6 +67,8 @@ class VolundMultiStandardShaderGUI : ShaderGUI
 	MaterialProperty alphaCutoff = null;
 	MaterialProperty overlayMap = null;
 	MaterialProperty overlayColor = null;
+	MaterialProperty eyeTint = null;
+	MaterialProperty eyeTex = null;
 	MaterialProperty specularMap = null;
 	MaterialProperty specularColor = null;
 	MaterialProperty metallicMap = null;
@@ -106,6 +110,8 @@ class VolundMultiStandardShaderGUI : ShaderGUI
 		alphaCutoff = FindProperty ("_Cutoff", props);
 		overlayMap = FindProperty ("_Overlay", props);
 		overlayColor = FindProperty ("_OverlayColor", props);
+		eyeTex = FindProperty ("_EyeTex", props);
+		eyeTint = FindProperty ("_EyeTint", props);
 		specularMap = FindProperty ("_SpecGlossMap", props, false);
 		specularColor = FindProperty ("_SpecColor", props, false);
 		metallicMap = FindProperty ("_MetallicGlossMap", props, false);
@@ -326,6 +332,10 @@ class VolundMultiStandardShaderGUI : ShaderGUI
 		m_MaterialEditor.TexturePropertySingleLine(Styles.alphaText, alphaMap);
 		m_MaterialEditor.TexturePropertySingleLine(Styles.overlayText, overlayMap);
         m_MaterialEditor.ColorProperty(overlayColor, overlayColor.displayName);
+
+		m_MaterialEditor.TexturePropertySingleLine(Styles.eyeTexText, eyeTex);
+        m_MaterialEditor.ColorProperty(eyeTint, eyeTint.displayName);
+
 		if (((BlendMode)material.GetFloat("_Mode") == BlendMode.Cutout))
 		{
 			m_MaterialEditor.ShaderProperty(alphaCutoff, Styles.alphaCutoffText.text, MaterialEditor.kMiniTextureFieldLabelIndentLevel+1);
@@ -484,7 +494,22 @@ class VolundMultiStandardShaderGUI : ShaderGUI
 			material.globalIlluminationFlags = flags;
 		}
 
+        Color eyeTintColor = material.GetColor("_EyeTint");
+        bool ShouldTintBeEnabled = eyeTintColor.a > 0.05f;
+
         SetKeyword(material, "_OVERLAY", material.GetTexture("_Overlay"));
+        SetKeyword(material, "_EYETINT", ShouldTintBeEnabled);
+        SetKeyword(material, "_EYETEX", material.GetTexture("_EyeTex"));
+
+        //legacy fix for male eye ring in the white area
+        bool ShouldRingCheckBeIncluded = false;
+        Texture mainTex = material.GetTexture("_MainTex");
+        if(mainTex != null && mainTex.name.Contains("M3DMale"))
+        {
+            ShouldRingCheckBeIncluded = true;
+        }
+        SetKeyword(material, "_INCLUDERINGCHECK",ShouldRingCheckBeIncluded);
+
 	}
 
 	bool HasValidEmissiveKeyword (Material material)

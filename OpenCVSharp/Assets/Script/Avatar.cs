@@ -208,9 +208,9 @@ public class Avatar : MonoBehaviour {
                
         perso.mouth.mouthWidth = (float)landmarks.lipWidth;
 
-        if (perso.mouth.mouthWidth <= 0.40)
+        if (perso.mouth.mouthWidth <= 0.59)
             perso.mouth.width = Taille.Little;
-        else if (perso.mouth.mouthWidth > 0.40 && perso.mouth.mouthWidth <= 0.42)
+        else if (perso.mouth.mouthWidth > 0.64 && perso.mouth.mouthWidth <= 0.69)
             perso.mouth.width = Taille.Middle;
         else
             perso.mouth.width = Taille.Big;
@@ -336,25 +336,25 @@ public class Avatar : MonoBehaviour {
         switch (perso.mouth.width)
         {
             case Taille.Little:
-                float valeur_little = PercentageConvertorNeg(perso.mouth.mouthWidth, 0.35f, 0.40f, 33, 100);
+                float valeur_little = PercentageConvertorNeg(perso.mouth.mouthWidth, 0.59f, 0.64f, 33, 100);
                 avatarManager.SetBlendshapeValue("PHMMouthWidth_NEGATIVE_", valeur_little);
                 break;
 
             case Taille.Middle:
                 if (perso.mouth.mouthWidth < 0.41)
                 {
-                    float valeur_middle = PercentageConvertorNeg(perso.mouth.mouthWidth, 0.40f, 0.41f, 0, 33);
+                    float valeur_middle = PercentageConvertorNeg(perso.mouth.mouthWidth, 0.64f, 0.665f, 0, 33);
                     avatarManager.SetBlendshapeValue("PHMMouthWidth_NEGATIVE_", valeur_middle);
                 }
                 else
                 {
-                    float valeur_middle = PercentageConvertor(perso.mouth.mouthWidth, 0.41f, 0.42f, 0, 33);
+                    float valeur_middle = PercentageConvertor(perso.mouth.mouthWidth, 0.665f, 0.69f, 0, 33);
                     avatarManager.SetBlendshapeValue("PHMMouthWidth", valeur_middle);
                 }
                 break;
 
             case Taille.Big:
-                float valeur_big = PercentageConvertor(perso.mouth.mouthWidth, 0.42f, 0.46f, 33, 100);
+                float valeur_big = PercentageConvertor(perso.mouth.mouthWidth, 0.69f, 0.74f, 33, 100);
                 avatarManager.SetBlendshapeValue("PHMMouthWidth", valeur_big);
                 break;
         }
