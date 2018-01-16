@@ -106,6 +106,12 @@ public class Avatar : MonoBehaviour {
     LandmarksRetriever landmarks;
     HairDetection hair;
 
+    float secondCount = 0f;
+    float lipHeightVoiceControl = 0f;
+    float lipWidthVoiceControl = 0f;
+    bool downCount = false;
+    public float speakInterval = 0.5f;
+
     void Start()
     {
         avatarManager = GetComponent<MORPH3D.M3DCharacterManager>();
@@ -116,14 +122,16 @@ public class Avatar : MonoBehaviour {
         SetHair(true);
         avatarManager.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
         this.transform.Translate(new Vector3(5, 0, 0));
+
+        
     }
 
 
 
     // Update is called once per frame
     void Update () {
-        
-	}
+        MakeSpeak();
+    }
 
     // Use this for init the personnage 
     public void SetPerso()
@@ -430,6 +438,47 @@ public class Avatar : MonoBehaviour {
         Color color = new Color((float)perso.exactSkinColor.r / 255, (float)perso.exactSkinColor.g / 255, (float)perso.exactSkinColor.b / 255);
         avatarManager.GetBodyMaterial().SetColor("_Color", color);
         avatarManager.GetHairMaterial().SetColor("_Color", color);
+    }
+
+
+    public void MakeSpeak()
+    {
+        if(secondCount >= speakInterval)
+        {
+            secondCount = speakInterval - Time.deltaTime;
+            lipHeightVoiceControl = 100f;
+            lipWidthVoiceControl = 100f;
+            downCount = true;
+        }
+        else if(secondCount <= 0.0f)
+        {
+            secondCount = 0f + Time.deltaTime;
+            lipHeightVoiceControl = 0f;
+            lipWidthVoiceControl = 0f;
+            downCount = false;
+        }
+        else
+        {
+            if(downCount)
+            {
+                lipHeightVoiceControl -= 100 * Time.deltaTime;
+                lipWidthVoiceControl -= 100 * Time.deltaTime;
+                secondCount -= Time.deltaTime;
+            }
+            else
+            {
+                lipHeightVoiceControl += 100 * Time.deltaTime;
+                lipWidthVoiceControl += 100 * Time.deltaTime;
+                secondCount += Time.deltaTime;
+            }
+        }
+        //Debug.Log(downCount);
+        //Debug.Log(Time.deltaTime);
+        //Debug.Log(secondCount);
+        //Debug.Log(lipHeightVoiceControl);
+        //Debug.Log(lipWidthVoiceControl);
+        avatarManager.SetBlendshapeValue("eCTRLvAA", lipHeightVoiceControl);
+        avatarManager.SetBlendshapeValue("eCTRLvT", lipWidthVoiceControl);
     }
 
     public void SetHair(bool init)

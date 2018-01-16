@@ -199,6 +199,7 @@ public class FaceDetectionImage : MonoBehaviour
 
         MatToTexture(videoSourceImage);
 
+
         etape = Etape.Segmentation;
     }
     
@@ -241,9 +242,9 @@ public class FaceDetectionImage : MonoBehaviour
                 // draw a rectangle
                 //OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(1, 1, faceDetectionImage.VideoSourceImage.Cols - 1, faceDetectionImage.VideoSourceImage.Rows - 1);
                 // Rectangle de visage
-                //OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(face.X - 25, face.Y - 100, face.Width + 50, face.Height + 200);
+                OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(face.X - 25, face.Y - 100, face.Width + 50, face.Height + 200);
                 // Rectangle de bouche
-                OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(RectMouth.X - 10, RectMouth.Y - 10, RectMouth.Width + 20, RectMouth.Height + 20);
+                //OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(RectMouth.X - 10, RectMouth.Y - 10, RectMouth.Width + 20, RectMouth.Height + 20);
                 // Rectangle oeil gauche
                 //OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(rectEyeLeft.X - 50, rectEyeLeft.Y - 50, rectEyeLeft.Width + 100, rectEyeLeft.Height + 100);
                 // Rectangle oeil droit

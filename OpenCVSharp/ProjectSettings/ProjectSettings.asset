@@ -555,14 +555,20 @@ PlayerSettings:
   webGLUseEmbeddedResources: 0
   webGLUseWasm: 0
   webGLCompressionFormat: 1
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    1: CROSS_PLATFORM_INPUT
+    4: CROSS_PLATFORM_INPUT;MOBILE_INPUT
+    7: CROSS_PLATFORM_INPUT;MOBILE_INPUT
+    14: MOBILE_INPUT
+    17: MOBILE_INPUT
+    20: MOBILE_INPUT
   platformArchitecture: {}
   scriptingBackend: {}
   incrementalIl2cppBuild: {}
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 1
   apiCompatibilityLevelPerPlatform:
-    Standalone: 1
+    Standalone: 3
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: OpenCVSharp
@@ -640,7 +646,7 @@ PlayerSettings:
   cloudServicesEnabled:
     UNet: 1
   facebookSdkVersion: 7.9.4
-  apiCompatibilityLevel: 2
+  apiCompatibilityLevel: 3
   cloudProjectId: df9a99f5-9441-44f0-b3d7-99589dab6382
   projectName: OpenCVSharp
   organizationId: burnsychocoes
