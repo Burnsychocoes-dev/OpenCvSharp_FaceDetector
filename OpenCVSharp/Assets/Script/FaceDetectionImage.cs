@@ -224,9 +224,9 @@ public class FaceDetectionImage : MonoBehaviour
 
 
                 // Calcule test de courbe de visage
-                float a1 = angle2Droites(localLandmarks[2 * 9], localLandmarks[2 * 9 + 1],                                                      //Coord vecteur 1
+                float a1 = Angle2Droites(localLandmarks[2 * 9], localLandmarks[2 * 9 + 1],                                                      //Coord vecteur 1
                                                       localLandmarks[2 * 10], localLandmarks[2 * 10 + 1]);                                      //Coord vecteur 2
-                float a3 = angle2Droites(localLandmarks[2 * 11], localLandmarks[2 * 11 + 1], 
+                float a3 = Angle2Droites(localLandmarks[2 * 11], localLandmarks[2 * 11 + 1], 
                                                       localLandmarks[2 * 12], localLandmarks[2 * 12 + 1]);
                 Debug.Log("angle 1 : " + a1);
                 Debug.Log("angle 3 : " + a3);
@@ -267,17 +267,17 @@ public class FaceDetectionImage : MonoBehaviour
                 Debug.Log("noseTipQuadrilatereArea : " + noseTipQuadrilatereArea);
 
 
-                float angleNoseDownTip = angle2Droites(localLandmarks[2 * 35] - localLandmarks[2 * 33], localLandmarks[2 * 35 + 1] - localLandmarks[2 * 33 + 1],
+                float angleNoseDownTip = Angle2Droites(localLandmarks[2 * 35] - localLandmarks[2 * 33], localLandmarks[2 * 35 + 1] - localLandmarks[2 * 33 + 1],
                                                        localLandmarks[2 * 31] - localLandmarks[2 * 33], localLandmarks[2 * 31 + 1] - localLandmarks[2 * 33 + 1]);
                 Debug.Log("angleNoseDownTip : " + angleNoseDownTip);
 
 
-                float bigAngleNoseTopTip = angle2Droites(localLandmarks[2 * 31] - localLandmarks[2 * 30], localLandmarks[2 * 31 + 1] - localLandmarks[2 * 30 + 1],
+                float bigAngleNoseTopTip = Angle2Droites(localLandmarks[2 * 31] - localLandmarks[2 * 30], localLandmarks[2 * 31 + 1] - localLandmarks[2 * 30 + 1],
                                                          localLandmarks[2 * 35] - localLandmarks[2 * 30], localLandmarks[2 * 35 + 1] - localLandmarks[2 * 30 + 1]);
                 Debug.Log("bigAngleNoseTopTip : " + bigAngleNoseTopTip);
 
 
-                float littleAngleNoseTopTip = angle2Droites(localLandmarks[2 * 32] - localLandmarks[2 * 30], localLandmarks[2 * 32 + 1] - localLandmarks[2 * 30 + 1],
+                float littleAngleNoseTopTip = Angle2Droites(localLandmarks[2 * 32] - localLandmarks[2 * 30], localLandmarks[2 * 32 + 1] - localLandmarks[2 * 30 + 1],
                                                             localLandmarks[2 * 34] - localLandmarks[2 * 30], localLandmarks[2 * 34 + 1] - localLandmarks[2 * 30 + 1]);
                 Debug.Log("littleAngleNoseTopTip : " + littleAngleNoseTopTip);
 
@@ -965,7 +965,7 @@ public class FaceDetectionImage : MonoBehaviour
     /*
      * Retourne l'angle formé par 2 droites en degré
     */
-    public static float angle2Droites(float x1, float y1, float x2, float y2)
+    public static float Angle2Droites(float x1, float y1, float x2, float y2)
     {
         float normeVecteur1 = Mathf.Sqrt(Mathf.Pow(x1, 2) + Mathf.Pow(y1, 2));
         float normeVecteur2 = Mathf.Sqrt(Mathf.Pow(x2, 2) + Mathf.Pow(y2, 2));

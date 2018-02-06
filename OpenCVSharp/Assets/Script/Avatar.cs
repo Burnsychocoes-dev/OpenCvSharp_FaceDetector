@@ -492,7 +492,7 @@ public class Avatar : MonoBehaviour {
         }
     }
 
-    public float PercentageConvertor(float vToConvert, float srcIntervalMin, float srcIntervalMax, float destIntervalMin, float destIntervalMax)
+    public static float PercentageConvertor(float vToConvert, float srcIntervalMin, float srcIntervalMax, float destIntervalMin, float destIntervalMax)
     {
         if(vToConvert < srcIntervalMin)
         {
@@ -515,7 +515,7 @@ public class Avatar : MonoBehaviour {
     }
 
     //pour le destInterval Min, on met le Min mathématique, et pas le min sémantique, ex : mouth_wide_neg, entre 33 et 100, on met 33
-    public float PercentageConvertorNeg(float vToConvert, float srcIntervalMin, float srcIntervalMax, float destIntervalMin, float destIntervalMax)
+    public static float PercentageConvertorNeg(float vToConvert, float srcIntervalMin, float srcIntervalMax, float destIntervalMin, float destIntervalMax)
     {
         if (vToConvert < srcIntervalMin)
         {

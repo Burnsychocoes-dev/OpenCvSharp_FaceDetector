@@ -6,6 +6,7 @@ public class AudioTest : MonoBehaviour {
 
     AudioClip myAudioClip;
     float timeCount = 0f;
+    float[] data;
     [SerializeField]
     private float recordTime = 5f;
     bool recordDone = false;
@@ -18,6 +19,7 @@ public class AudioTest : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         timeCount += Time.deltaTime;
+        myAudioClip.GetData(data, 5);
         if (timeCount > recordTime && !recordDone)
         {
             Debug.Log("start saving");
