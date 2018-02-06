@@ -102,7 +102,6 @@ public class FaceDetectionImage : MonoBehaviour
     public Mat VideoSourceImage
     {
         get { return videoSourceImage; }
-        set { videoSourceImage = value; }
     }
     private Mat cannyImage;
     private Texture2D processedTexture;
@@ -142,7 +141,7 @@ public class FaceDetectionImage : MonoBehaviour
 
     HairDetection hair;
 
-    //LandmarksRetriever landmarks;
+    LandmarksRetriever landmarks;
 
     Avatar avatar;
 
@@ -161,13 +160,13 @@ public class FaceDetectionImage : MonoBehaviour
     private Etape etape;
 
 
-    public float[] landmarks;
+    public float[] localLandmarks;
     // The imported function
-    [DllImport("face_landmark_detection_ex", EntryPoint = "FaceLandmarkDetection")] public static extern int Test(String datPath, String filePath, float[] landmarks);
+    [DllImport("face_landmark_detection_ex", EntryPoint = "FaceLandmarkDetection")] public static extern int GetLocalLandmarks(String datPath, String filePath, float[] landmarks);
 
 
     void Start() {
-        //landmarks = GetComponent<LandmarksRetriever>();
+        landmarks = GetComponent<LandmarksRetriever>();
         avatar = GetComponent<Avatar>();
         hair = GetComponent<HairDetection>();
         camera = FindObjectOfType<Camera>();
@@ -199,7 +198,6 @@ public class FaceDetectionImage : MonoBehaviour
 
         MatToTexture(videoSourceImage);
 
-
         etape = Etape.Segmentation;
     }
     
@@ -209,8 +207,81 @@ public class FaceDetectionImage : MonoBehaviour
         {
             case Etape.Segmentation:
                 Debug.Log("etape segmentation");
-                ProcessImage(videoSourceImage, false);
+                ProcessImage(videoSourceImage, true);
                 MatToTexture(videoSourceImage);
+
+
+                float faceHeight = DistanceEuclidienne(localLandmarks[2 * 8], localLandmarks[2 * 8 + 1],
+                                                       localLandmarks[2 * 27], localLandmarks[2 * 27 + 1]);
+                Debug.Log("face height :");
+                Debug.Log(faceHeight);
+
+
+                float faceWidth = DistanceEuclidienne(localLandmarks[2 * 1], localLandmarks[2 * 1 + 1],
+                                                      localLandmarks[2 * 15], localLandmarks[2 * 15 + 1]);
+                Debug.Log("face width :");
+                Debug.Log(faceWidth);
+
+
+                // Calcule test de courbe de visage
+                float a1 = angle2Droites(localLandmarks[2 * 9], localLandmarks[2 * 9 + 1],                                                      //Coord vecteur 1
+                                                      localLandmarks[2 * 10], localLandmarks[2 * 10 + 1]);                                      //Coord vecteur 2
+                float a3 = angle2Droites(localLandmarks[2 * 11], localLandmarks[2 * 11 + 1], 
+                                                      localLandmarks[2 * 12], localLandmarks[2 * 12 + 1]);
+                Debug.Log("angle 1 : " + a1);
+                Debug.Log("angle 3 : " + a3);
+                float courbure = a1 - a3;
+                Debug.Log("Courbure : " + courbure);
+                Debug.Log(courbure);
+
+
+                // Calcule test de courbe de nez
+                float noseHeight = DistanceEuclidienne(localLandmarks[2 * 30], localLandmarks[2 * 30 + 1],                                                    
+                                                       localLandmarks[2 * 27], localLandmarks[2 * 27 + 1]);
+                float noseWidth = DistanceEuclidienne(localLandmarks[2 * 35], localLandmarks[2 * 35 + 1],                                                      
+                                                      localLandmarks[2 * 31], localLandmarks[2 * 31 + 1]);                                                   
+
+
+                float noseTipHeight = DistanceEuclidienne(localLandmarks[2 * 30], localLandmarks[2 * 30 + 1],
+                                                          localLandmarks[2 * 33], localLandmarks[2 * 33 + 1]) / noseHeight;
+                Debug.Log("noseTipHeight : " + noseTipHeight);
+
+
+                float nosePinchDistance = DistanceEuclidienne(localLandmarks[2 * 32], localLandmarks[2 * 32 + 1],                                            //Coord point 1
+                                                              localLandmarks[2 * 34], localLandmarks[2 * 34 + 1]) / noseWidth;                               //Coord point 2
+                Debug.Log("nosePinchDistance : " + nosePinchDistance);
+
+
+                float noseTipTriangleArea = AirTriangle(localLandmarks[2 * 30], localLandmarks[2 * 30 + 1],                                                  //Coord point 1
+                                                        localLandmarks[2 * 32], localLandmarks[2 * 32 + 1],                                                  //Coord point 2
+                                                        localLandmarks[2 * 34], localLandmarks[2 * 34 + 1]) / (noseHeight * noseWidth);                      //Coord point 3
+                Debug.Log("noseTipTriangleArea : " + noseTipTriangleArea);
+
+
+                float noseTipQuadrilatereArea = ( AirTriangle(localLandmarks[2 * 30], localLandmarks[2 * 30 + 1],                                          
+                                                              localLandmarks[2 * 32], localLandmarks[2 * 32 + 1],                                                  
+                                                              localLandmarks[2 * 33], localLandmarks[2 * 33 + 1]) +
+                                                  AirTriangle(localLandmarks[2 * 30], localLandmarks[2 * 30 + 1],
+                                                              localLandmarks[2 * 34], localLandmarks[2 * 34 + 1],
+                                                              localLandmarks[2 * 33], localLandmarks[2 * 33 + 1]) ) / (noseHeight * noseWidth);                      
+                Debug.Log("noseTipQuadrilatereArea : " + noseTipQuadrilatereArea);
+
+
+                float angleNoseDownTip = angle2Droites(localLandmarks[2 * 35] - localLandmarks[2 * 33], localLandmarks[2 * 35 + 1] - localLandmarks[2 * 33 + 1],
+                                                       localLandmarks[2 * 31] - localLandmarks[2 * 33], localLandmarks[2 * 31 + 1] - localLandmarks[2 * 33 + 1]);
+                Debug.Log("angleNoseDownTip : " + angleNoseDownTip);
+
+
+                float bigAngleNoseTopTip = angle2Droites(localLandmarks[2 * 31] - localLandmarks[2 * 30], localLandmarks[2 * 31 + 1] - localLandmarks[2 * 30 + 1],
+                                                         localLandmarks[2 * 35] - localLandmarks[2 * 30], localLandmarks[2 * 35 + 1] - localLandmarks[2 * 30 + 1]);
+                Debug.Log("bigAngleNoseTopTip : " + bigAngleNoseTopTip);
+
+
+                float littleAngleNoseTopTip = angle2Droites(localLandmarks[2 * 32] - localLandmarks[2 * 30], localLandmarks[2 * 32 + 1] - localLandmarks[2 * 30 + 1],
+                                                            localLandmarks[2 * 34] - localLandmarks[2 * 30], localLandmarks[2 * 34 + 1] - localLandmarks[2 * 30 + 1]);
+                Debug.Log("littleAngleNoseTopTip : " + littleAngleNoseTopTip);
+
+
                 etape = Etape.SegmentationIdle;
                 break;
 
@@ -228,46 +299,13 @@ public class FaceDetectionImage : MonoBehaviour
                 ProcessImage(videoSourceImage, false);
 
                 hair.Init();
-                //hair.Pretraitement();
-
+                hair.Pretraitement();
                 Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
-                Mat result = new Mat(videoSourceImage.Size(), MatType.CV_8UC1);
-                Debug.Log(result.ToString());
-
-                //Mat result = faceDetectionImage.VideoSourceImage;
-                Mat bgModel = new Mat(); //background model
-                Mat fgModel = new Mat(); //foreground model
-
-
-                // draw a rectangle
-                //OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(1, 1, faceDetectionImage.VideoSourceImage.Cols - 1, faceDetectionImage.VideoSourceImage.Rows - 1);
-                // Rectangle de visage
-                OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(face.X - 25, face.Y - 100, face.Width + 50, face.Height + 200);
-                // Rectangle de bouche
-                //OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(RectMouth.X - 10, RectMouth.Y - 10, RectMouth.Width + 20, RectMouth.Height + 20);
-                // Rectangle oeil gauche
-                //OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(rectEyeLeft.X - 50, rectEyeLeft.Y - 50, rectEyeLeft.Width + 100, rectEyeLeft.Height + 100);
-                // Rectangle oeil droit
-                //OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(rectEyeLeft.X - 30, rectEyeLeft.Y - 30, rectEyeLeft.Width + 60, rectEyeLeft.Height + 60);
-
-                hair.GrabCut(videoSourceImage, result, rectangle, bgModel, fgModel, 1, GrabCutModes.InitWithRect);
-
-                Debug.Log(result.ToString());
-
-                Cv2.Compare(result, new Scalar(3, 3, 3), result, CmpTypes.EQ);
-                Mat matrix2_grabcut = new Mat(imHeight, imWidth, MatType.CV_8UC3, new Scalar(255, 255, 255));
-
-                videoSourceImage.CopyTo(matrix2_grabcut, result);
-
-                matrix2_grabcut.CopyTo(videoSourceImage);
-
-
-                ////hair.GetSkinColor();
-                ////hair.FindHairRoots();
-                ////hair.FindHairMax();
-                ////hair.GuessHairHeight();
-                ////hair.GuessHairLength();
-
+                hair.GetSkinColor();
+                hair.FindHairRoots();
+                hair.FindHairMax();
+                hair.GuessHairHeight();
+                hair.GuessHairLength();
                 Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
 
                 MatToTexture(videoSourceImage);
@@ -299,7 +337,7 @@ public class FaceDetectionImage : MonoBehaviour
 
             case Etape.Avatar:
                 CleanScreen();
-                //landmarks.Init();
+                landmarks.Init();
                 avatar.SetPerso();
                 avatar.SetHair(false);
                 avatar.ChangeEyes();
@@ -687,7 +725,7 @@ public class FaceDetectionImage : MonoBehaviour
             var facec_rectangle_color = Scalar.FromRgb(255, 0, 0);
             face = faceRect;
             if(draw)
-                Cv2.Rectangle(_image, faceRect, facec_rectangle_color, 3);
+                //Cv2.Rectangle(_image, faceRect, facec_rectangle_color, 3);
 
 
             rectFront = new OpenCvSharp.Rect(faceRect.X + faceRect.Width/2 - 50, faceRect.Y + 50, 100, 50);
@@ -715,7 +753,7 @@ public class FaceDetectionImage : MonoBehaviour
 
                 var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
                 if (draw)
-                    Cv2.Rectangle(_image, eyeRect, eye_rectangle_color, 3);
+                    //Cv2.Rectangle(_image, eyeRect, eye_rectangle_color, 3);
 
                 if(eyeRect.X < rectFront.X + rectFront.Width/2)
                 {
@@ -756,16 +794,16 @@ public class FaceDetectionImage : MonoBehaviour
                 //Cv2.ImShow(string.Format("Face {0}", eye_count), detectedEyeImage);
                 //Cv2.WaitKey(1); // do events
 
-                if (m.Y > eyes[0].Y && (m.Y + m.Height) < (faceRect.Y + faceRect.Height) && Mathf.Abs(m.Y - eyes[0].Y) > 100)
-                {
-                    //Debug.Log("mouth height :");
-                    //Debug.Log(m.Height);
-                    rectMouth = m;
-                    var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
-                    if (draw)
-                        Cv2.Rectangle(_image, m, eye_rectangle_color, 3);
-                    lipHeight = (float)m.Height / (float)face.Height;
-                }
+                //if (m.Y > eyes[0].Y && (m.Y + m.Height) < (faceRect.Y + faceRect.Height) && Mathf.Abs(m.Y - eyes[0].Y) > 100)
+                //{
+                //    //Debug.Log("mouth height :");
+                //    //Debug.Log(m.Height);
+                //    rectMouth = m;
+                //    var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
+                //    if (draw)
+                //        //Cv2.Rectangle(_image, m, eye_rectangle_color, 3);
+                //    lipHeight = (float)m.Height / (float)face.Height;
+                //}
 
                 var detectedEyeGrayImage = new Mat();
                 Cv2.CvtColor(detectedEarImage, detectedEyeGrayImage, ColorConversionCodes.BGRA2GRAY);
@@ -777,22 +815,18 @@ public class FaceDetectionImage : MonoBehaviour
         }
 
         GetLandmarks();
-        DrawLandmarks(_image);
+        if (draw)
+        {
+            DrawLandmarks(_image);
+        }
 
         Cv2.Flip(_image, _image, FlipMode.X);
     }
-    
-    // Display the original video in a opencv window
-    void UpdateWindow(Mat _image)
-    {
-        Cv2.Flip(_image, _image, FlipMode.X);
-        //Cv2.ImShow("Copy video", _image);
-        displayCount++;
-    }
+
 
     void GetLandmarks()
     {
-        Test("Assets/Plugins/Dlib/shape_predictor_68_face_landmarks.dat", "Assets/photo.png", landmarks);
+        GetLocalLandmarks("Assets/Plugins/Dlib/shape_predictor_68_face_landmarks.dat", imagePath, localLandmarks);
     }
 
     void DrawLandmarks(Mat _image)
@@ -801,37 +835,37 @@ public class FaceDetectionImage : MonoBehaviour
         // Head
         for (int i = 0; i < 16; i++)
         {
-            Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
-            Point point2 = new Point(landmarks[2 * (i + 1)], landmarks[2 * (i + 1) + 1]);
+            Point point1 = new Point(localLandmarks[2 * i], localLandmarks[2 * i + 1]);
+            Point point2 = new Point(localLandmarks[2 * (i + 1)], localLandmarks[2 * (i + 1) + 1]);
             Cv2.Line(_image, point1, point2, landmark_color, 2);
         }
         // Right brow
         for (int i = 17; i < 21; i++)
         {
-            Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
-            Point point2 = new Point(landmarks[2 * (i + 1)], landmarks[2 * (i + 1) + 1]);
+            Point point1 = new Point(localLandmarks[2 * i], localLandmarks[2 * i + 1]);
+            Point point2 = new Point(localLandmarks[2 * (i + 1)], localLandmarks[2 * (i + 1) + 1]);
             Cv2.Line(_image, point1, point2, landmark_color, 2);
         }
         // Left brow
         for (int i = 22; i < 26; i++)
         {
-            Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
-            Point point2 = new Point(landmarks[2 * (i + 1)], landmarks[2 * (i + 1) + 1]);
+            Point point1 = new Point(localLandmarks[2 * i], localLandmarks[2 * i + 1]);
+            Point point2 = new Point(localLandmarks[2 * (i + 1)], localLandmarks[2 * (i + 1) + 1]);
             Cv2.Line(_image, point1, point2, landmark_color, 2);
         }
         // Nose
         for (int i = 27; i < 36; i++)
         {
-            if(i == 35)
+            if (i == 35)
             {
-                Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
-                Point point2 = new Point(landmarks[2 * 30], landmarks[2 * 30 + 1]);
+                Point point1 = new Point(localLandmarks[2 * i], localLandmarks[2 * i + 1]);
+                Point point2 = new Point(localLandmarks[2 * 30], localLandmarks[2 * 30 + 1]);
                 Cv2.Line(_image, point1, point2, landmark_color, 2);
             }
             else
             {
-                Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
-                Point point2 = new Point(landmarks[2 * (i + 1)], landmarks[2 * (i + 1) + 1]);
+                Point point1 = new Point(localLandmarks[2 * i], localLandmarks[2 * i + 1]);
+                Point point2 = new Point(localLandmarks[2 * (i + 1)], localLandmarks[2 * (i + 1) + 1]);
                 Cv2.Line(_image, point1, point2, landmark_color, 2);
             }
         }
@@ -840,14 +874,14 @@ public class FaceDetectionImage : MonoBehaviour
         {
             if (i == 41)
             {
-                Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
-                Point point2 = new Point(landmarks[2 * 36], landmarks[2 * 36 + 1]);
+                Point point1 = new Point(localLandmarks[2 * i], localLandmarks[2 * i + 1]);
+                Point point2 = new Point(localLandmarks[2 * 36], localLandmarks[2 * 36 + 1]);
                 Cv2.Line(_image, point1, point2, landmark_color, 2);
             }
             else
             {
-                Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
-                Point point2 = new Point(landmarks[2 * (i + 1)], landmarks[2 * (i + 1) + 1]);
+                Point point1 = new Point(localLandmarks[2 * i], localLandmarks[2 * i + 1]);
+                Point point2 = new Point(localLandmarks[2 * (i + 1)], localLandmarks[2 * (i + 1) + 1]);
                 Cv2.Line(_image, point1, point2, landmark_color, 2);
             }
         }
@@ -856,14 +890,14 @@ public class FaceDetectionImage : MonoBehaviour
         {
             if (i == 47)
             {
-                Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
-                Point point2 = new Point(landmarks[2 * 42], landmarks[2 * 42 + 1]);
+                Point point1 = new Point(localLandmarks[2 * i], localLandmarks[2 * i + 1]);
+                Point point2 = new Point(localLandmarks[2 * 42], localLandmarks[2 * 42 + 1]);
                 Cv2.Line(_image, point1, point2, landmark_color, 2);
             }
             else
             {
-                Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
-                Point point2 = new Point(landmarks[2 * (i + 1)], landmarks[2 * (i + 1) + 1]);
+                Point point1 = new Point(localLandmarks[2 * i], localLandmarks[2 * i + 1]);
+                Point point2 = new Point(localLandmarks[2 * (i + 1)], localLandmarks[2 * (i + 1) + 1]);
                 Cv2.Line(_image, point1, point2, landmark_color, 2);
             }
         }
@@ -872,14 +906,14 @@ public class FaceDetectionImage : MonoBehaviour
         {
             if (i == 59)
             {
-                Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
-                Point point2 = new Point(landmarks[2 * 48], landmarks[2 * 48 + 1]);
+                Point point1 = new Point(localLandmarks[2 * i], localLandmarks[2 * i + 1]);
+                Point point2 = new Point(localLandmarks[2 * 48], localLandmarks[2 * 48 + 1]);
                 Cv2.Line(_image, point1, point2, landmark_color, 2);
             }
             else
             {
-                Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
-                Point point2 = new Point(landmarks[2 * (i + 1)], landmarks[2 * (i + 1) + 1]);
+                Point point1 = new Point(localLandmarks[2 * i], localLandmarks[2 * i + 1]);
+                Point point2 = new Point(localLandmarks[2 * (i + 1)], localLandmarks[2 * (i + 1) + 1]);
                 Cv2.Line(_image, point1, point2, landmark_color, 2);
             }
         }
@@ -888,17 +922,65 @@ public class FaceDetectionImage : MonoBehaviour
         {
             if (i == 67)
             {
-                Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
-                Point point2 = new Point(landmarks[2 * 60], landmarks[2 * 60 + 1]);
+                Point point1 = new Point(localLandmarks[2 * i], localLandmarks[2 * i + 1]);
+                Point point2 = new Point(localLandmarks[2 * 60], localLandmarks[2 * 60 + 1]);
                 Cv2.Line(_image, point1, point2, landmark_color, 2);
             }
             else
             {
-                Point point1 = new Point(landmarks[2 * i], landmarks[2 * i + 1]);
-                Point point2 = new Point(landmarks[2 * (i + 1)], landmarks[2 * (i + 1) + 1]);
+                Point point1 = new Point(localLandmarks[2 * i], localLandmarks[2 * i + 1]);
+                Point point2 = new Point(localLandmarks[2 * (i + 1)], localLandmarks[2 * (i + 1) + 1]);
                 Cv2.Line(_image, point1, point2, landmark_color, 2);
             }
         }
+        //Triangle nez
+        Point point3 = new Point(localLandmarks[2 * 30], localLandmarks[2 * 30 + 1]);
+        Point point4 = new Point(localLandmarks[2 * 32], localLandmarks[2 * 32 + 1]);
+        Cv2.Line(_image, point3, point4, landmark_color, 2);
+        Point point5 = new Point(localLandmarks[2 * 34], localLandmarks[2 * 34 + 1]);
+        Cv2.Line(_image, point3, point5, landmark_color, 2);
+    }
+
+    public static float DistanceEuclidienne(float x1, float y1, float x2, float y2)
+    {
+        return Mathf.Sqrt( Mathf.Pow( y2-y1, 2 ) + Mathf.Pow( x2-x1, 2 ) );
+    }
+
+    public static float AirTriangle(float x1, float y1, float x2, float y2, float x3, float y3)
+    {
+        float a = DistanceEuclidienne(x1, y1, x2, y2); //longueur coté a
+        float b = DistanceEuclidienne(x2, y2, x3, y3); //longueur coté b
+        float c = DistanceEuclidienne(x1, y1, x3, y3); //longueur coté c
+        float p = (a + b + c) / 2; //demi périmètre du triangle
+        float air = Mathf.Sqrt(p*(p-a)*(p-b)*(p-c)); //formule de calcule d'air
+        return air;
+    }
+
+    public static float CoefficientDirecteurDroite(float x1, float y1, float x2, float y2)
+    {
+        float a = (y2 - y1) / (x2 - x1);
+        return a;
+    }
+
+    /*
+     * Retourne l'angle formé par 2 droites en degré
+    */
+    public static float angle2Droites(float x1, float y1, float x2, float y2)
+    {
+        float normeVecteur1 = Mathf.Sqrt(Mathf.Pow(x1, 2) + Mathf.Pow(y1, 2));
+        float normeVecteur2 = Mathf.Sqrt(Mathf.Pow(x2, 2) + Mathf.Pow(y2, 2));
+        float produitScalaire = x1 * x2 + y1 * y2;
+        float angleRadian = Mathf.Acos(produitScalaire / (normeVecteur1 * normeVecteur2));
+        float angleDegree = angleRadian * 180 / Mathf.PI;
+        return angleDegree;
+    }
+
+    // Display the original video in a opencv window
+    void UpdateWindow(Mat _image)
+    {
+        Cv2.Flip(_image, _image, FlipMode.X);
+        //Cv2.ImShow("Copy video", _image);
+        displayCount++;
     }
 
     // close the opencv window

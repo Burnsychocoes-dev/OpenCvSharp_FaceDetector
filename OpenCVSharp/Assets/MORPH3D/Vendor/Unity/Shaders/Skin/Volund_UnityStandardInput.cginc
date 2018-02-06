@@ -20,8 +20,6 @@ uniform float 		_CullMode;
 uniform sampler2D 	_AlphaTex;
 uniform sampler2D   _Overlay;
 uniform half4       _OverlayColor;
-uniform sampler2D   _EyeTex;
-uniform half4       _EyeTint;
 
 //---------------------------------------
 // Directional lightmaps & Parallax require tangent space too
@@ -226,6 +224,13 @@ float4 Parallax (float4 texcoords, half3 viewDir)
 #endif
 }
 
-#include "MorphCommon.cginc"
+half4 Overlay(float2 uv)
+{
+#if !defined(_OVERLAY)
+	return 0;
+#else
+	return tex2D(_Overlay, uv);
+#endif
+}
 			
 #endif // UNITY_STANDARD_INPUT_INCLUDED

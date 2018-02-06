@@ -60,6 +60,9 @@ public class LandmarksRetriever : MonoBehaviour {
         get { return rightEyeBrowRight; }
     }
     public double distanceBetweenNoseTopAndEyes;
+    public double distanceBetweenEyeAndMiddleBrow;
+    public double distanceBetweenLeftEyeCornerAndLeftBrowCorner;
+    public double distanceBetweenRightEyeCornerAndRightBrowCorner;
 
     // Information sur le nez
     public double distanceBetweenNoseTipAndLip;
@@ -107,16 +110,16 @@ public class LandmarksRetriever : MonoBehaviour {
 
 
     private void Awake() {
-        if (Instance != null) {
-            Debug.LogError("There is multiple instance of singleton LandmarksRetriever");
-            return;
-        }
-        client = (HttpWebRequest)WebRequest.Create(apiEndpoint);
-        client.Method = "POST";
-        client.KeepAlive = true;
-        client.Credentials = CredentialCache.DefaultCredentials;
+        //if (Instance != null) {
+        //    Debug.LogError("There is multiple instance of singleton LandmarksRetriever");
+        //    return;
+        //}
+        //client = (HttpWebRequest)WebRequest.Create(apiEndpoint);
+        //client.Method = "POST";
+        //client.KeepAlive = true;
+        //client.Credentials = CredentialCache.DefaultCredentials;
 
-        Instance = this;
+        //Instance = this;
 
     }
 
@@ -127,45 +130,42 @@ public class LandmarksRetriever : MonoBehaviour {
             faceAnalyse = GetComponent<FaceDetectionImage>();
             hairDetection = GetComponent<HairDetection>();
 
-            RetrieveLandmarks();
+            //RetrieveLandmarks();
 
             // Récupération des infos sur le visages
-            gender = (string)landmarks["attributes"]["gender"]["type"];
-            Debug.Log(gender);
-            if (gender == "M")
-            {
-                Debug.Log("c'est un homme");
-            }
-            else
-            {
-                Debug.Log("C'est une femme");
-            }
-
-            faceHeight = faceAnalyse.Face.Height;
-            Debug.Log("face height :");
-            Debug.Log(faceHeight);
-
-            //if((int)landmarks["rightEarTragusX"] != -1 && (int)landmarks["leftEarTragusX"] != -1)
+            //gender = (string)landmarks["attributes"]["gender"]["type"];
+            //Debug.Log(gender);
+            //if (gender == "M")
             //{
-            //faceWidth = Math.Abs((double)landmarks["rightEarTragusX"] - (double)landmarks["leftEarTragusX"]);
-            //Debug.Log("face width :");
-            //Debug.Log(faceWidth);
+            //    Debug.Log("c'est un homme");
             //}
             //else
             //{
-            faceWidth = hairDetection.J_max - hairDetection.J_min;
-            Debug.Log("face width :");
-            Debug.Log(faceWidth);
+            //    Debug.Log("C'est une femme");
             //}
 
-            //distanceBetweenLipAndChin = Math.Abs((double)landmarks["lipLineMiddleY"] - (double)landmarks["chinTipY"]) / faceHeight;
-            //Debug.Log("distance between lip and chin :");
-            //Debug.Log(distanceBetweenLipAndChin);
+            faceHeight = FaceDetectionImage.DistanceEuclidienne(faceAnalyse.localLandmarks[2 * 8], faceAnalyse.localLandmarks[2 * 8 + 1],
+                                                               faceAnalyse.localLandmarks[2 * 27], faceAnalyse.localLandmarks[2 * 27 + 1]);
+            Debug.Log("face height :");
+            Debug.Log(faceHeight);
+
+
+            faceWidth = FaceDetectionImage.DistanceEuclidienne(faceAnalyse.localLandmarks[2 * 1], faceAnalyse.localLandmarks[2 * 1 + 1], 
+                                                               faceAnalyse.localLandmarks[2 * 15], faceAnalyse.localLandmarks[2 * 15 + 1]);
+            Debug.Log("face width :");
+            Debug.Log(faceWidth);
+
+
+            distanceBetweenLipAndChin = FaceDetectionImage.DistanceEuclidienne(faceAnalyse.localLandmarks[2 * 8], faceAnalyse.localLandmarks[2 * 8 + 1],
+                                                               faceAnalyse.localLandmarks[2 * 57], faceAnalyse.localLandmarks[2 * 57 + 1]) / faceHeight;
+            Debug.Log("distance between lip and chin :");
+            Debug.Log(distanceBetweenLipAndChin);
 
 
             // Récuperation des infos sur les yeux
-            //leftEyeCenter.Item0 = (double)landmarks["leftEyeCenterX"];
-            //leftEyeCenter.Item1 = (double)landmarks["leftEyeCenterY"];
+            
+            //leftEyeCenter.Item0 = faceAnalyse.localLandmarks[2 * 66];
+            //leftEyeCenter.Item1 = faceAnalyse.localLandmarks[2 * 66];
             //Debug.Log("left eye center position :");
             //Debug.Log(leftEyeCenter.Item0);
             //Debug.Log(leftEyeCenter.Item1);
@@ -176,13 +176,30 @@ public class LandmarksRetriever : MonoBehaviour {
             //Debug.Log(rightEyeCenter.Item0);
             //Debug.Log(rightEyeCenter.Item1);
 
-            leftEyeWidth = Math.Abs((double)landmarks["leftEyeCornerLeftX"] - (double)landmarks["leftEyeCornerRightX"]) / faceWidth;
+            leftEyeWidth = FaceDetectionImage.DistanceEuclidienne(faceAnalyse.localLandmarks[2 * 36], faceAnalyse.localLandmarks[2 * 36 + 1],
+                                                               faceAnalyse.localLandmarks[2 * 39], faceAnalyse.localLandmarks[2 * 39 + 1]) / faceWidth;
             Debug.Log("left eye width :");
             Debug.Log(leftEyeWidth);
 
-            rightEyeWidth = Math.Abs((double)landmarks["rightEyeCornerLeftX"] - (double)landmarks["rightEyeCornerRightX"]) / faceWidth;
+            rightEyeWidth = FaceDetectionImage.DistanceEuclidienne(faceAnalyse.localLandmarks[2 * 42], faceAnalyse.localLandmarks[2 * 42 + 1],
+                                                               faceAnalyse.localLandmarks[2 * 45], faceAnalyse.localLandmarks[2 * 45 + 1]) / faceWidth;
             Debug.Log("right eye width :");
             Debug.Log(rightEyeWidth);
+
+            distanceBetweenEyeAndMiddleBrow = FaceDetectionImage.DistanceEuclidienne(faceAnalyse.localLandmarks[2 * 37], faceAnalyse.localLandmarks[2 * 37 + 1],
+                                                               faceAnalyse.localLandmarks[2 * 19], faceAnalyse.localLandmarks[2 * 19 + 1]) / faceHeight;
+            Debug.Log("distance between eye And middle brow :");
+            Debug.Log(distanceBetweenEyeAndMiddleBrow);
+
+            distanceBetweenLeftEyeCornerAndLeftBrowCorner = FaceDetectionImage.DistanceEuclidienne(faceAnalyse.localLandmarks[2 * 36], faceAnalyse.localLandmarks[2 * 36 + 1],
+                                                       faceAnalyse.localLandmarks[2 * 17], faceAnalyse.localLandmarks[2 * 17 + 1]) / faceHeight;
+            Debug.Log("distance between eye corner And brow corner :");
+            Debug.Log(distanceBetweenLeftEyeCornerAndLeftBrowCorner);
+
+            distanceBetweenRightEyeCornerAndRightBrowCorner = FaceDetectionImage.DistanceEuclidienne(faceAnalyse.localLandmarks[2 * 39], faceAnalyse.localLandmarks[2 * 39 + 1],
+                                           faceAnalyse.localLandmarks[2 * 21], faceAnalyse.localLandmarks[2 * 21 + 1]) / faceHeight;
+            Debug.Log("distance between eye corner And brow corner :");
+            Debug.Log(distanceBetweenRightEyeCornerAndRightBrowCorner);
 
             //leftEyeBrowLeft.Item0 = (double)landmarks["leftEyeBrowLeftX"];
             //leftEyeBrowLeft.Item1 = (double)landmarks["leftEyeBrowLeftY"];
@@ -220,68 +237,75 @@ public class LandmarksRetriever : MonoBehaviour {
             //Debug.Log(rightEyeBrowRight.Item0);
             //Debug.Log(rightEyeBrowRight.Item1);
 
-            distanceBetweenNoseTopAndEyes = Math.Abs((double)landmarks["noseBtwEyesX"] - (double)landmarks["rightEyeCornerLeftX"]) / faceWidth;
+            distanceBetweenNoseTopAndEyes = FaceDetectionImage.DistanceEuclidienne(faceAnalyse.localLandmarks[2 * 27], faceAnalyse.localLandmarks[2 * 27 + 1],
+                                                               faceAnalyse.localLandmarks[2 * 42], faceAnalyse.localLandmarks[2 * 42 + 1]) / faceWidth;
             Debug.Log("distance between nose and eyes :");
             Debug.Log(distanceBetweenNoseTopAndEyes);
 
 
             // Récuperation des infos sur le nez
-            //distanceBetweenNoseTipAndLip = Math.Abs((double)landmarks["noseTipY"] - (double)landmarks["lipLineMiddleY"]) / faceHeight;
-            //Debug.Log("distance between nose tip and lip :");
-            //Debug.Log(distanceBetweenNoseTipAndLip);
 
-            noseHeight = Math.Abs((double)landmarks["noseTipY"] - (double)landmarks["noseBtwEyesY"]) / faceHeight;
+            distanceBetweenNoseTipAndLip = FaceDetectionImage.DistanceEuclidienne(faceAnalyse.localLandmarks[2 * 33], faceAnalyse.localLandmarks[2 * 33 + 1],
+                                                               faceAnalyse.localLandmarks[2 * 51], faceAnalyse.localLandmarks[2 * 51 + 1]) / faceHeight;
+            Debug.Log("distance between nose tip and lip :");
+            Debug.Log(distanceBetweenNoseTipAndLip);
+
+            noseHeight = FaceDetectionImage.DistanceEuclidienne(faceAnalyse.localLandmarks[2 * 27], faceAnalyse.localLandmarks[2 * 27 + 1],
+                                                               faceAnalyse.localLandmarks[2 * 30], faceAnalyse.localLandmarks[2 * 30 + 1]) / faceHeight;
             Debug.Log("nose height :");
             Debug.Log(noseHeight);
 
-            noseWidth = Math.Abs((double)landmarks["nostrilLeftSideX"] - (double)landmarks["nostrilRightSideX"]) / faceWidth;
+            noseWidth = FaceDetectionImage.DistanceEuclidienne(faceAnalyse.localLandmarks[2 * 31], faceAnalyse.localLandmarks[2 * 31 + 1],
+                                                               faceAnalyse.localLandmarks[2 * 35], faceAnalyse.localLandmarks[2 * 35 + 1]) / faceWidth;
             Debug.Log("nose width :");
             Debug.Log(noseWidth);
 
-            nostrilThickness = Math.Abs((double)landmarks["nostrilRightHoleBottomX"] - (double)landmarks["nostrilRightSideX"]) / faceWidth;
-            Debug.Log("nostril thickness :");
-            Debug.Log(nostrilThickness);
+            //nostrilThickness = Math.Abs((double)landmarks["nostrilRightHoleBottomX"] - (double)landmarks["nostrilRightSideX"]) / faceWidth;
+            //Debug.Log("nostril thickness :");
+            //Debug.Log(nostrilThickness);
 
-
-            // Récuperation des infos sur la bouche
-            lipWidth = faceAnalyse.RectMouth.Width / faceWidth;
-            Debug.Log("lip width :");
-            Debug.Log(lipWidth);
-
-            topLipHeight = Math.Abs((double)landmarks["lipLineMiddleY"] - faceAnalyse.RectMouth.Y) / faceHeight;
-            Debug.Log("topLipHeight :");
-            Debug.Log(topLipHeight);
-
-            buttomLipHeight = Math.Abs((double)landmarks["lipLineMiddleY"] - faceAnalyse.RectMouth.Y + faceAnalyse.RectMouth.Height) / faceHeight;
-            Debug.Log("buttomLipHeight :");
-            Debug.Log(buttomLipHeight);
 
 
             // Récuperation des infos utiles pour la hair detection
-            leftEyeCorner.Item0 = (double)landmarks["leftEyeCornerLeftX"];
-            leftEyeCorner.Item1 = (double)landmarks["leftEyeCornerLeftY"];
+            leftEyeCorner.Item0 = faceAnalyse.localLandmarks[2 * 36];
+            leftEyeCorner.Item1 = faceAnalyse.localLandmarks[2 * 36 + 1];
             Debug.Log("left eye corner position :");
             Debug.Log(leftEyeCorner.Item0);
             Debug.Log(leftEyeCorner.Item1);
 
-            rightEyeCorner.Item0 = (double)landmarks["rightEyeCornerRightX"];
-            rightEyeCorner.Item1 = (double)landmarks["rightEyeCornerRightY"];
+            rightEyeCorner.Item0 = faceAnalyse.localLandmarks[2 * 45];
+            rightEyeCorner.Item1 = faceAnalyse.localLandmarks[2 * 45 + 1];
             Debug.Log("right eye corner position :");
             Debug.Log(rightEyeCorner.Item0);
             Debug.Log(rightEyeCorner.Item1);
 
-            chin.Item0 = (double)landmarks["chinTipX"];
-            chin.Item1 = (double)landmarks["chinTipY"];
+            chin.Item0 = faceAnalyse.localLandmarks[2 * 8];
+            chin.Item1 = faceAnalyse.localLandmarks[2 * 8 + 1];
             Debug.Log("chin tip position :");
             Debug.Log(chin.Item0);
             Debug.Log(chin.Item1);
 
-            nose.Item0 = (double)landmarks["noseTipX"];
-            nose.Item1 = (double)landmarks["noseTipY"];
+            nose.Item0 = faceAnalyse.localLandmarks[2 * 30];
+            nose.Item1 = faceAnalyse.localLandmarks[2 * 30 + 1];
             Debug.Log("nose tip position :");
             Debug.Log(nose.Item0);
             Debug.Log(nose.Item1);
 
+            // Récuperation des infos sur la bouche
+            lipWidth = FaceDetectionImage.DistanceEuclidienne(faceAnalyse.localLandmarks[2 * 48], faceAnalyse.localLandmarks[2 * 48 + 1],
+                                                               faceAnalyse.localLandmarks[2 * 54], faceAnalyse.localLandmarks[2 * 54 + 1]) / faceWidth;
+            Debug.Log("lip width :");
+            Debug.Log(lipWidth);
+
+            topLipHeight = FaceDetectionImage.DistanceEuclidienne(faceAnalyse.localLandmarks[2 * 52], faceAnalyse.localLandmarks[2 * 52 + 1],
+                                                               faceAnalyse.localLandmarks[2 * 63], faceAnalyse.localLandmarks[2 * 63 + 1]) / faceHeight;
+            Debug.Log("topLipHeight :");
+            Debug.Log(topLipHeight);
+
+            buttomLipHeight = FaceDetectionImage.DistanceEuclidienne(faceAnalyse.localLandmarks[2 * 66], faceAnalyse.localLandmarks[2 * 66 + 1],
+                                                               faceAnalyse.localLandmarks[2 * 57], faceAnalyse.localLandmarks[2 * 57 + 1]) / faceHeight;
+            Debug.Log("buttomLipHeight :");
+            Debug.Log(buttomLipHeight);
         }
         
     }
@@ -381,7 +405,7 @@ public class LandmarksRetriever : MonoBehaviour {
 
     public void RetrieveLandmarks() {
         string jsonResponse = PostRequest(new NameValueCollection() {
-                { "api_key", "3f45aaba7a0ac2708fc55a30e11c2b5f" },
+                { "api_key", "87a845cef7df66481a72f0606528a518" },
                 { "selector", "SETPOSE" }
             });
 

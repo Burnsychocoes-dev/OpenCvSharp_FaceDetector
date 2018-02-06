@@ -255,46 +255,6 @@ inline FragmentCommonData FragmentSetup (float4 i_tex, half3 i_eyeVec, half3 i_n
 	}
 #endif
 
-#if _EYETEX && _EYETINT
-	if (IsIris(i_tex.xy)) {
-		//check for our overlay
-		half4 eyeTex = EyeTex(i_tex.xy);
-		if (eyeTex.a > 0) {
-			//blend the tint color with the replacement
-			eyeTex.rgb = (eyeTex.rgb * (1 - _EyeTint.a)) + (_EyeTint.rgb * _EyeTint.a);
-			//blend the replacement with the base
-			eyeTex.rgb = ((1 - eyeTex.a) * o.diffColor.rgb) + (eyeTex.a * eyeTex.rgb);
-
-			o.diffColor = eyeTex;
-		}
-	}
-
-#endif
-
-#if _EYETEX && !_EYETINT
-	if (IsIris(i_tex.xy)) {
-		half4 eyeTex = EyeTex(i_tex.xy);
-		if (eyeTex.a > 0) {
-			//blend the replacement with the base
-			eyeTex.rgb = ((1 - eyeTex.a) * o.diffColor.rgb) + (eyeTex.a * eyeTex.rgb);
-
-			o.diffColor = eyeTex;
-		}
-	}
-
-#endif
-
-#if !_EYETEX && _EYETINT
-	bool isEyeRing = IsEyeRing(i_tex.xy, o.diffColor);
-	if (IsIris(i_tex.xy) || isEyeRing) {
-		if (isEyeRing) {
-			//fade out the tint a bit on the ring
-			_EyeTint.a *= 0.9;
-		}
-		o.diffColor = ((1 - _EyeTint.a) * o.diffColor.rgb) + (_EyeTint.a * _EyeTint.rgb);
-	}
-#endif
-
 	return o;
 }
 

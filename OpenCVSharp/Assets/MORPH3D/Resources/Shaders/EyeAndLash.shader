@@ -1,8 +1,4 @@
-﻿/**
- * This shader handles the alpha part of the eyelash and wet layer of the eye
- * It does NOT handle the iris/color of the eye, only the lighting
- */
-Shader "Morph3D/EyeAndLash" {
+﻿Shader "Morph3D/EyeAndLash" {
 	Properties {
 		_Color ("Color", Color) = (1,1,1,1)
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
@@ -14,7 +10,7 @@ Shader "Morph3D/EyeAndLash" {
 		ZTest Less
 		Tags { 
 			"IgnoreProjector" = "True"
-			"Queue" = "Transparent+1"
+			"Queue" = "Transparent"
 			"RenderType"="Transparent"
 		}
 
@@ -57,7 +53,6 @@ Shader "Morph3D/EyeAndLash" {
 		half4 LightingEyeLight(SurfOut s, half3 lightDir, half3 viewDir, half atten) {
 			half NdotL = dot(s.Normal, lightDir);
 			half4 c;
-
 			c.rgb = s.Albedo * _LightColor0.rgb * (NdotL * atten);
 			c.a = s.Alpha;
 

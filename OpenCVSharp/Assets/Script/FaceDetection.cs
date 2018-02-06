@@ -73,11 +73,6 @@ public class FaceDetection : MonoBehaviour
     private OpenCvSharp.Rect rectMouth;
     private OpenCvSharp.Rect rectEye;
 
-    public float[] landmarks;
-    // The imported function
-    [DllImport("face_landmark_detection_ex", EntryPoint = "FaceLandmarkDetection")] public static extern int Test(String datPath, String filePath, float[] landmarks);
-
-
     void Start()
     {
         //Application.RequestUserAuthorization(UnityEngine.UserAuthorization.WebCam);
@@ -275,8 +270,6 @@ public class FaceDetection : MonoBehaviour
         //left_ear_cascade.Load(Application.dataPath + "/Plugins/Classifiers/haarcascade_mcs_rightear.xml");
         var mouth_cascade = new CascadeClassifier();
         mouth_cascade.Load(Application.dataPath + "/Plugins/Classifiers/Mouth.xml");
-        //var nose_cascade = new CascadeClassifier();
-        //mouth_cascade.Load(Application.dataPath + "/Plugins/Classifiers/haarcascade_mcs_nose.xml");
         //Debug.Log(" ");
 
         var faces = face_cascade.DetectMultiScale(
@@ -388,32 +381,6 @@ public class FaceDetection : MonoBehaviour
             //    ear_count++;
             //}
 
-            //var noses = nose_cascade.DetectMultiScale(
-            //image: grayImage,
-            //scaleFactor: 1.3,
-            //minNeighbors: 5,
-            //flags: HaarDetectionType.DoRoughSearch | HaarDetectionType.ScaleImage,
-            //minSize: new Size(100, 100)
-            //);
-            //foreach (var n in noses)
-            //{
-            //    var detectedEarImage = new Mat(_image, n);
-            //    Cv2.ImShow(string.Format("Face {0}", eye_count), detectedEyeImage);
-            //    Cv2.WaitKey(1); // do events
-
-            //    if (n.Y > rectEye.Y && (n.Y + n.Height) < (faceRect.Y + faceRect.Height) && Mathf.Abs(n.Y - rectEye.Y) > 100)
-            //    {
-            //        var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
-            //        Cv2.Rectangle(_image, n, eye_rectangle_color, 3);
-
-
-            //        var detectedEyeGrayImage = new Mat();
-            //        Cv2.CvtColor(detectedEarImage, detectedEyeGrayImage, ColorConversionCodes.BGRA2GRAY);
-
-            //        mouth_count++;
-            //    }
-            //}
-
 
             var mouth = mouth_cascade.DetectMultiScale(
                image: grayImage,
@@ -421,7 +388,7 @@ public class FaceDetection : MonoBehaviour
                minNeighbors: 5,
                flags: HaarDetectionType.DoRoughSearch | HaarDetectionType.ScaleImage,
                minSize: new Size(50, 50)
-            );
+           );
             foreach (var m in mouth)
             {
                 var detectedEarImage = new Mat(_image, m);
@@ -443,21 +410,22 @@ public class FaceDetection : MonoBehaviour
             face_count++;
         }
         //Debug.Log(face_count);
-        if (face_count == 1 && !waitSoundEffect)
+        if (/*face_count == 1 && */!waitSoundEffect)
         {
             //Debug.Log(faces[0]);
             //Debug.Log(meshRendererCenter.x);
             //Debug.Log((int)meshRendererCenter.y + 50);
-            Point origin = faces[0].Location;
-            float width = faces[0].Width;
-            float height = faces[0].Height;
+            //Point origin = faces[0].Location;
+            //float width = faces[0].Width;
+            //float height = faces[0].Height;
             // Verification si le rect de la face est bien dans la zone de photo
-            if (origin.X > (int)meshRendererCenter.x + 350 &&
-                origin.X + width < (int)meshRendererCenter.x + 350 + 600 &&
-                origin.Y > (int)meshRendererCenter.y + 50 &&
-                origin.Y + height < (int)meshRendererCenter.y + 5 + 600 &&
-                width > 400 &&
-                height > 400)
+            //if(origin.X > (int)meshRendererCenter.x + 350 && 
+            //    origin.X + width < (int)meshRendererCenter.x + 350 + 600 &&
+            //    origin.Y > (int)meshRendererCenter.y + 50 &&
+            //    origin.Y + height < (int)meshRendererCenter.y + 5 + 600 &&
+            //    width > 400 &&
+            //    height > 400)
+            if(Input.GetButtonDown("Jump"))
             {
                 Debug.Log("Take photo !");
                 TakePhoto();
@@ -495,7 +463,6 @@ public class FaceDetection : MonoBehaviour
         //Cv2.ImShow("Copy video", _image);
         displayCount++;
     }
-
 
     // close the opencv window
     public void OnDestroy()
