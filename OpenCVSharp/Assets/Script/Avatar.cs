@@ -108,6 +108,8 @@ public class Avatar : MonoBehaviour {
     LandmarksRetriever landmarks;
     HairDetection hair;
 
+    
+
     void Start()
     {
         avatarManager = GetComponent<MORPH3D.M3DCharacterManager>();
@@ -533,5 +535,45 @@ public class Avatar : MonoBehaviour {
             avatarManager.SetBlendshapeValue(m.name, UnityEngine.Random.value*100);
         }
         
+    }
+
+    public static void MakeAvatarSpeak(MORPH3D.M3DCharacterManager avatar, bool mouthUp, float timeCount, float speechSpeed)
+    {
+        if(timeCount > speechSpeed)
+        {
+            timeCount = 0;
+            if(mouthUp)
+            {
+                avatar.SetBlendshapeValue("eCTRLvAA", 100);
+            }
+            else
+            {
+                avatar.SetBlendshapeValue("eCTRLvAA", 0);
+            }
+            mouthUp = !mouthUp;
+        }
+        else
+        {
+            float value = 0;
+            foreach (MORPH3D.FOUNDATIONS.Morph m in avatar.coreMorphs.morphs)
+            {
+                if(m.name == "eCTRLvAA")
+                {
+                    value = m.value;
+                }
+            }
+            if(mouthUp)
+            {
+                value += PercentageConvertor(Time.deltaTime, 0, speechSpeed, 0, 100);
+                avatar.SetBlendshapeValue("eCTRLvAA", value);
+            }
+            else
+            {
+                value -= PercentageConvertor(Time.deltaTime, 0, speechSpeed, 0, 100);
+                avatar.SetBlendshapeValue("eCTRLvAA", value);
+            }
+            
+
+        }
     }
 }
