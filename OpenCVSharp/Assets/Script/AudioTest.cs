@@ -27,6 +27,19 @@ public class AudioTest : MonoBehaviour {
         get { return emotions; }
     }
 
+    private static int sizeBuffer = 12;
+
+    [SerializeField]
+    private static int nMA = 5;
+
+    private int saveCnt = 0;
+    private int cnt = nMA - 1;
+    private float[] neutrality = new float[sizeBuffer];
+    private float[] happiness = new float[sizeBuffer];
+    private float[] sadness = new float[sizeBuffer];
+    private float[] anger = new float[sizeBuffer];
+    private float[] fear = new float[sizeBuffer];
+
     // The imported function
     [DllImport("VokaturiDataAnalyseV2", EntryPoint = "AnalyzeSamplesWithoutBuffer")] public static extern int AnalyseEmotions(double[] data, int nbrOfSamples, double[] emotions);
 
@@ -61,7 +74,9 @@ public class AudioTest : MonoBehaviour {
             {
                 isSpeaking = false;
             }
-            UpdateAvatarEmotion();
+            //UpdateAvatarEmotion();
+            UpdateAvatarEmotionMA(nMA);
+            //UpdateAvatarEmotionMAA(nMA);
             Debug.Log("end analysing emotions");
         }
         if(isSpeaking)
@@ -131,6 +146,100 @@ public class AudioTest : MonoBehaviour {
         avatarManager.SetBlendshapeValue("eCTRLFear", fear_value);
     }
 
+    private void UpdateAvatarEmotionMA(int n)
+    {
+        neutrality[cnt] = (float)emotions[0];
+        happiness[cnt] = (float)emotions[1];
+        sadness[cnt] = (float)emotions[2];
+        anger[cnt] = (float)emotions[3];
+        fear[cnt] = (float)emotions[4];
+
+        float neutrality_value=0;
+        float happiness_value=0;
+        float sadness_value=0;
+        float anger_value=0;
+        float fear_value=0;
+
+        for(int i=0; i < nMA; i++)
+        {
+            neutrality_value += neutrality[(saveCnt + i) % sizeBuffer];
+            happiness_value += happiness[(saveCnt + i) % sizeBuffer];
+            sadness_value += sadness[(saveCnt + i) % sizeBuffer];
+            anger_value += anger[(saveCnt + i) % sizeBuffer];
+            fear_value += fear[(saveCnt + i) % sizeBuffer];
+        }
+
+        neutrality_value = neutrality_value / (nMA + 1);
+        happiness_value = happiness_value / (nMA + 1);
+        sadness_value = sadness_value / (nMA + 1);
+        anger_value = anger_value / (nMA + 1);
+        fear_value = fear_value / (nMA + 1);
+
+        saveCnt = (saveCnt + 1) % sizeBuffer;
+        cnt = (cnt + 1) % sizeBuffer;
+
+        neutrality_value = Avatar.PercentageConvertor(neutrality_value, 0f, 1f, 0, 100);
+        happiness_value = Avatar.PercentageConvertor(happiness_value, 0f, 1f, 0, 100);
+        sadness_value = Avatar.PercentageConvertor(sadness_value, 0f, 1f, 0, 100);
+        anger_value = Avatar.PercentageConvertor(anger_value, 0f, 1f, 0, 100);
+        fear_value = Avatar.PercentageConvertor(fear_value, 0f, 1f, 0, 100);
+
+        avatarManager.SetBlendshapeValue("eCTRLHappy", happiness_value);
+        avatarManager.SetBlendshapeValue("eCTRLSad", sadness_value);
+        avatarManager.SetBlendshapeValue("eCTRLAngry", anger_value);
+        avatarManager.SetBlendshapeValue("eCTRLFear", fear_value);
+
+    }
+
+    private void UpdateAvatarEmotionMAA(int n)
+    {
+        float neutrality_value = 0;
+        float happiness_value = 0;
+        float sadness_value = 0;
+        float anger_value = 0;
+        float fear_value = 0;
+
+        for (int i = 0; i < nMA-1; i++)
+        {
+            neutrality_value += neutrality[(saveCnt + i) % sizeBuffer];
+            happiness_value += happiness[(saveCnt + i) % sizeBuffer];
+            sadness_value += sadness[(saveCnt + i) % sizeBuffer];
+            anger_value += anger[(saveCnt + i) % sizeBuffer];
+            fear_value += fear[(saveCnt + i) % sizeBuffer];
+        }
+
+        neutrality_value += (float)emotions[0];
+        happiness_value += (float)emotions[1];
+        sadness_value += (float)emotions[2];
+        anger_value += (float)emotions[3];
+        fear_value += (float)emotions[4]; 
+
+        neutrality_value = neutrality_value / (nMA + 1);
+        happiness_value = happiness_value / (nMA + 1);
+        sadness_value = sadness_value / (nMA + 1);
+        anger_value = anger_value / (nMA + 1);
+        fear_value = fear_value / (nMA + 1);
+
+        neutrality[cnt] = neutrality_value;
+        happiness[cnt] = happiness_value;
+        sadness[cnt] = sadness_value;
+        anger[cnt] = anger_value;
+        fear[cnt] = fear_value;
+
+        saveCnt = (saveCnt + 1) % sizeBuffer;
+        cnt = (cnt + 1) % sizeBuffer;
+
+        neutrality_value = Avatar.PercentageConvertor(neutrality_value, 0f, 1f, 0, 100);
+        happiness_value = Avatar.PercentageConvertor(happiness_value, 0f, 1f, 0, 100);
+        sadness_value = Avatar.PercentageConvertor(sadness_value, 0f, 1f, 0, 100);
+        anger_value = Avatar.PercentageConvertor(anger_value, 0f, 1f, 0, 100);
+        fear_value = Avatar.PercentageConvertor(fear_value, 0f, 1f, 0, 100);
+
+        avatarManager.SetBlendshapeValue("eCTRLHappy", happiness_value);
+        avatarManager.SetBlendshapeValue("eCTRLSad", sadness_value);
+        avatarManager.SetBlendshapeValue("eCTRLAngry", anger_value);
+        avatarManager.SetBlendshapeValue("eCTRLFear", fear_value);
+    }
 
     public void MakeAvatarSpeak()
     {
