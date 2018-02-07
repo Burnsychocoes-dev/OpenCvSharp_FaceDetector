@@ -296,12 +296,13 @@ public class FaceDetectionImage : MonoBehaviour
             case Etape.FondForme:
                 TextureToMat();
 
-                ProcessImage(videoSourceImage, false);
+                //ProcessImage(videoSourceImage, false);
 
                 hair.Init();
-                hair.Pretraitement();
+                //hair.Pretraitement();
                 Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
                 hair.GetSkinColor();
+                hair.getEyeColor();
                 hair.FindHairRoots();
                 hair.FindHairMax();
                 hair.GuessHairHeight();
@@ -670,6 +671,7 @@ public class FaceDetectionImage : MonoBehaviour
         Debug.Log("minCoordY");
         Debug.Log(maxCoordY);
         //Debug.Log(rectFront.Y);
+        
         var lineColor = Scalar.FromRgb(0, 0, 255);
         Cv2.Line(videoSourceImage, face.X, (int)maxCoordY, face.X + face.Width, (int)maxCoordY, lineColor);
         rectCheveux = new OpenCvSharp.Rect(rectFront.X, (int)maxCoordY, 25, 25);
@@ -729,7 +731,7 @@ public class FaceDetectionImage : MonoBehaviour
 
 
             rectFront = new OpenCvSharp.Rect(faceRect.X + faceRect.Width/2 - 50, faceRect.Y + 50, 100, 50);
-            //Cv2.Rectangle(_image, rectFront, global_rectangle_color, 3);
+            Cv2.Rectangle(_image, rectFront, global_rectangle_color, 3);
 
 
 
