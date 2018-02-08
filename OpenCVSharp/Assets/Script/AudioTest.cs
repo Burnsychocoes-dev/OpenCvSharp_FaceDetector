@@ -181,8 +181,8 @@ public class AudioTest : MonoBehaviour {
         }
         for(int i=0; i < nMAVolatile; i++)
         {
-            anger_value += anger[(saveCnt + i) % sizeBuffer];
-            fear_value += fear[(saveCnt + i) % sizeBuffer];
+            anger_value += anger[(saveCntVolatile + i) % sizeBuffer];
+            fear_value += fear[(saveCntVolatile + i) % sizeBuffer];
         }
 
         neutrality_value = neutrality_value / (nMA + 1);
