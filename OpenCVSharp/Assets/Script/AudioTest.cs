@@ -8,8 +8,9 @@ public class AudioTest : MonoBehaviour {
 
     AudioClip myAudioClip;
     float timeCount = 0f;
+    private int count05 = 0;
     [SerializeField]
-    private float recordTime = 1f;
+    private float recordTime = 1f;    
     bool recordDone = false;
     private MORPH3D.M3DCharacterManager avatarManager;
     private bool mouthUp = true;
@@ -30,9 +31,11 @@ public class AudioTest : MonoBehaviour {
     private static int sizeBuffer = 12;
 
     [SerializeField]
-    private static int nMA = 3;
+    private static int nMA = 5;
+    private static int nMAVolatile = 3;
 
     private int saveCnt = 0;
+    private int saveCntVolatile = nMA - nMAVolatile;
     private int cnt = nMA - 1;
     private float[] neutrality = new float[sizeBuffer];
     private float[] happiness = new float[sizeBuffer];
@@ -61,16 +64,25 @@ public class AudioTest : MonoBehaviour {
 	void Update () {
         timeCount += Time.deltaTime;
         timeSpeakCount += Time.deltaTime;
-        if (timeCount >= recordTime)
+        if (timeCount >= recordTime/2)
         {
             timeCount = 0;
 
             Debug.Log("start analysing emotions");
-
-            int nbrOfSamples = myAudioClip.samples;
+            int nbrOfSamples = myAudioClip.samples / 2;
             float[] data = new float[nbrOfSamples];
             Debug.Log(nbrOfSamples);
-            myAudioClip.GetData(data, 0);
+
+            if (count05 == 0)
+            {
+                myAudioClip.GetData(data, 0);
+                count05 = 1;
+            }else if (count05 == 1)
+            {
+                myAudioClip.GetData(data, 44100/2);
+                count05 = 0;
+            }            
+            
             double[] double_data = new double[data.Length];
             for(int i=0; i<data.Length; i++)
             {
@@ -85,7 +97,7 @@ public class AudioTest : MonoBehaviour {
                 isSpeaking = false;
             }
             //UpdateAvatarEmotion();
-            UpdateAvatarEmotionMA(nMA);
+            UpdateAvatarEmotionMA(nMA, nMAVolatile);
             //UpdateAvatarEmotionMAA(nMA);
             Debug.Log("happiness : " + happiness_value);
             Debug.Log("sadness : " + sadness_value);
@@ -161,7 +173,7 @@ public class AudioTest : MonoBehaviour {
         fear_value = Avatar.PercentageConvertor((float)emotions[4], 0f, 1f, 0, 100);
     }
 
-    private void UpdateAvatarEmotionMA(int n)
+    private void UpdateAvatarEmotionMA(int n, int nVolatile)
     {
         neutrality[cnt] = (float)emotions[0];
         happiness[cnt] = (float)emotions[1];
@@ -180,6 +192,9 @@ public class AudioTest : MonoBehaviour {
             neutrality_value += neutrality[(saveCnt + i) % sizeBuffer];
             happiness_value += happiness[(saveCnt + i) % sizeBuffer];
             sadness_value += sadness[(saveCnt + i) % sizeBuffer];
+        }
+        for(int i=0; i < nMAVolatile; i++)
+        {
             anger_value += anger[(saveCnt + i) % sizeBuffer];
             fear_value += fear[(saveCnt + i) % sizeBuffer];
         }
@@ -187,10 +202,11 @@ public class AudioTest : MonoBehaviour {
         neutrality_value = neutrality_value / (nMA + 1);
         happiness_value = happiness_value / (nMA + 1);
         sadness_value = sadness_value / (nMA + 1);
-        anger_value = anger_value / (nMA + 1);
-        fear_value = fear_value / (nMA + 1);
+        anger_value = anger_value / (nMAVolatile + 1);
+        fear_value = fear_value / (nMAVolatile + 1);
 
         saveCnt = (saveCnt + 1) % sizeBuffer;
+        saveCntVolatile = (saveCntVolatile + 1) % sizeBuffer;
         cnt = (cnt + 1) % sizeBuffer;
 
         neutrality_value = Avatar.PercentageConvertor(neutrality_value, 0f, 1f, 0, 100);
