@@ -309,9 +309,10 @@ public class FaceDetectionImage : MonoBehaviour
                 hair.GetSkinColor();
                 hair.getEyeColor();
                 hair.FindHairRoots();
+                hair.GetHairColor();
                 hair.FindHairMax();
                 hair.GuessHairHeight();
-                hair.GuessHairLength();
+                //hair.GuessHairLength();
                 Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
 
                 MatToTexture(videoSourceImage);
@@ -520,7 +521,7 @@ public class FaceDetectionImage : MonoBehaviour
     }
 
     
-    void CalculateSkinColor()
+    /*void CalculateSkinColor()
     {
         // Variables de calcules de moyennne
         int leftCompteur = 0;
@@ -681,8 +682,10 @@ public class FaceDetectionImage : MonoBehaviour
         Cv2.Line(videoSourceImage, face.X, (int)maxCoordY, face.X + face.Width, (int)maxCoordY, lineColor);
         rectCheveux = new OpenCvSharp.Rect(rectFront.X, (int)maxCoordY, 25, 25);
         Cv2.Rectangle(videoSourceImage, rectCheveux, lineColor, 3);
-    }
+    }*/
     
+
+
     // Simple example of canny edge detect
     void ProcessImage(Mat _image, bool draw)
     {
