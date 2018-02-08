@@ -11,18 +11,21 @@ public class HairDetection : MonoBehaviour {
     [SerializeField]
     //private int fixThreshold = 10;
     private int colorSampleListSize = 300;
-
-    private Vec3f[] skinColorSampleYCbCr;    
+    private double skinColorCbCrThreshold;
     private Vec3f skinColorYCbCrExpectancy;
     public Vec3f SkinColorYCbCrExpectancy
     {
         get { return skinColorYCbCrExpectancy; }
     }
-    private double skinColorCbCrThreshold;
 
-    private Vec3f[] hairColorSampleYCbCr;
+
+
     private Vec3f hairColorYCbCrExpectancy;
-    private double hairColorCbCrThreshold;
+    public Vec3f HairColorYCbCrExpectancy
+    {
+        get { return hairColorYCbCrExpectancy; }
+    }
+
 
     public int yHairRoot =-1;
     //yHairTop représente le plus haut point de la tête
@@ -58,7 +61,6 @@ public class HairDetection : MonoBehaviour {
     public Longueur longueur = Longueur.aucune;
 
     private FaceDetectionImage faceDetectionImage;
-    private LandmarksRetriever landMarksRetriever;
 
     private Mat matrix2_grabcut;
     public Mat Matrix2_grabcut
@@ -72,10 +74,8 @@ public class HairDetection : MonoBehaviour {
     {
         skinColorYCbCrExpectancy = new Vec3f();
         hairColorYCbCrExpectancy = new Vec3f();
-        skinColorSampleYCbCr = new Vec3f[colorSampleListSize];
-        hairColorSampleYCbCr = new Vec3f[colorSampleListSize];
+
         faceDetectionImage = GetComponent<FaceDetectionImage>();
-        landMarksRetriever = GetComponent<LandmarksRetriever>();
     }
 
     // Update is called once per frame
@@ -105,10 +105,10 @@ public class HairDetection : MonoBehaviour {
         ClearSkin();
         //On va clear tout ce qui n'est pas cheveu
         Debug.Log("Clearing Non Hair");
-        ClearNonHair();
+        //ClearNonHair();
         //On va chercher le dernier Y où on apperçoit des cheveux
         Debug.Log("Finding Hair YMax");
-        FindHairYMax();
+        FindHairMax();
         //On décide
         Debug.Log("Guessing Hair Length");
         GuessHairLength();
@@ -150,93 +150,13 @@ public class HairDetection : MonoBehaviour {
         matrix2_grabcut.CopyTo(faceDetectionImage.VideoSourceImage);
     }
 
+
+
     public void GetSkinColor()
     {
-
         Debug.Log("Get Skin Color");
-        int skinColorCounter = 0;
-        //you can Pick if it's 0
-        int youCanPick = 0;
-        //On va pick tous les 10 pixels
-        int youCanPickEveryXPixels = 10;
-        System.Random rand = new System.Random();
-
-
-        for (var i= faceDetectionImage.RectFront.Y; i < faceDetectionImage.RectFront.Y + faceDetectionImage.RectFront.Height; i++)
-        {
-            for (var j = faceDetectionImage.RectFront.X; j < faceDetectionImage.RectFront.X + faceDetectionImage.RectFront.Width; j++)
-            {
-                //Vec3b vec = faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth];
-                Vec3b vec = faceDetectionImage.VideoSourceImage.At<Vec3b>(i, j);
-
-
-                /* Code pour changer la couleur du pixel (i,j)
-                 * faceDetectionImage.VideoSourceImage.Set<Vec3b>(i, j, new Vec3b
-                {
-                    Item0 = 255,
-                    Item1 = 0,
-                    Item2 = 0
-                });*/
-
-                //>>>Récupérations d'échantillons de couleur du front
-                if (youCanPick == 0 && skinColorCounter < colorSampleListSize)
-                {
-                    
-                    //Récupérer un échantillon de couleur du front
-                    Color32 color = new Color32
-                    {
-                        r = vec.Item2,
-                        g = vec.Item1,
-                        b = vec.Item0
-                    };
-                    //Le transformer en YCbCr
-                    //L'ajouter au tableau skinColorSampleYCbCr
-                    skinColorSampleYCbCr[skinColorCounter] = FromRGBToYCbCr(color);
-                    skinColorCounter++;
-                } 
-                //>>>Peut-être ajouter des échantillons des joues ?
-                /*else if (j > faceDetectionImage.RectEyeLeft.X && j < faceDetectionImage.RectEyeLeft.X + (faceDetectionImage.RectEyeLeft.Width - 10) &&
-                   i > faceDetectionImage.RectEyeLeft.Y && i < faceDetectionImage.RectEyeLeft.Y + faceDetectionImage.RectEyeLeft.Height && youCanPick == 0 && skinColorCounter < colorSampleListSize )
-                {
-                   
-                    Color32 color = new Color32
-                    {
-                        r = vec.Item2,
-                        g = vec.Item1,
-                        b = vec.Item0
-                    };
-                    //Le transformer en YCbCr
-                    //L'ajouter au tableau skinColorSampleYCbCr
-                    skinColorSampleYCbCr[skinColorCounter] = FromRGBToYCbCr(color);
-                    skinColorCounter++;
-                }
-                else if (j > faceDetectionImage.RectEyeRight.X && j < faceDetectionImage.RectEyeRight.X + faceDetectionImage.RectEyeRight.Width &&
-                   i > faceDetectionImage.RectEyeRight.Y && i < faceDetectionImage.RectEyeRight.Y + faceDetectionImage.RectEyeRight.Height && youCanPick == 0 && skinColorCounter < colorSampleListSize)
-                {
-                    
-                    Color32 color = new Color32
-                    {
-                        r = vec.Item2,
-                        g = vec.Item1,
-                        b = vec.Item0
-                    };
-                    //Le transformer en YCbCr
-                    //L'ajouter au tableau skinColorSampleYCbCr
-                    skinColorSampleYCbCr[skinColorCounter] = FromRGBToYCbCr(color);
-                    skinColorCounter++;
-                }*/
-
-
-                youCanPick = (youCanPick + 1) % youCanPickEveryXPixels;
-                if (youCanPick == 1)
-                {
-                    youCanPickEveryXPixels = rand.Next(5, 15);
-                }
-                
-            }
-        }
-
-
+        Vec3f[] skinColorSampleYCbCr = new Vec3f[colorSampleListSize];
+        int skinColorCounter = GetColorFromRect(skinColorSampleYCbCr, faceDetectionImage.RectFront); // récupération d'un échantillon de couleurs dans le rectangle donné en entrée
         //>>>Calcul de l'espérance skinColorYCbCrExpectancy
         skinColorYCbCrExpectancy = ComputeVec3fExpectancy(skinColorSampleYCbCr, skinColorCounter);
         Debug.Log("Skin Color YCbCrExpectancy");
@@ -244,8 +164,6 @@ public class HairDetection : MonoBehaviour {
         Debug.Log(skinColorYCbCrExpectancy.Item2);
 
 
-
-        //skinColorYCbCrExpectancy.Item0 = 128; //simule un éclairage normal
 
         //Affichage de la couleur de peau sur un carré rempli en haut à gauche de l'image
 
@@ -263,11 +181,117 @@ public class HairDetection : MonoBehaviour {
 
         //>>>Calcul des Thresholds skinColorYCbCrThresholds
         skinColorCbCrThreshold = Math.Ceiling(ComputeVec3fThresholds(skinColorSampleYCbCr, skinColorCounter, skinColorYCbCrExpectancy));
-        
+
         //skinColorCbCrThreshold = fixThreshold;
-        Debug.Log("Seuil calculé : " + skinColorCbCrThreshold);
         Debug.Log("Skin Color YCbCrThresholds");
         Debug.Log(skinColorCbCrThreshold);
+    }
+
+
+    public void GetHairColor()
+    {
+        Debug.Log("Get Hair Color");
+
+        if (yHairRoot == -1)
+        {
+            Debug.Log("No hair here");
+            
+        }
+        else
+        {
+            Vec3f[] hairColorSampleYCbCr = new Vec3f[colorSampleListSize];
+
+            //Création du carré dans lequel sera effectué le prélèvement
+            float abscisse_landmark_22 = faceDetectionImage.localLandmarks[2*21];
+            float abscisse_landmark_23 = faceDetectionImage.localLandmarks[2*22];
+
+            int distance =(int)(abscisse_landmark_23 - abscisse_landmark_22);
+
+            int ordonnee_rect = yHairRoot - 3*(yHairRoot-yHairTop)/10;
+
+            OpenCvSharp.Rect rect = new OpenCvSharp.Rect((int)abscisse_landmark_22, ordonnee_rect, distance, (yHairRoot - yHairTop) / 10);
+
+            int hairColorCounter = GetColorFromRect(hairColorSampleYCbCr, rect);
+
+            //>>>Calcul de l'espérance hairColorYCbCrExpectancy
+            hairColorYCbCrExpectancy = ComputeVec3fExpectancy(hairColorSampleYCbCr, hairColorCounter);
+            Debug.Log("Hair Color YCbCrExpectancy");
+            Debug.Log(hairColorYCbCrExpectancy);
+
+
+            //Affichage de la couleur des cheveux sur un carré rempli en bas à gauche de l'image
+
+            int abscisse = faceDetectionImage.VideoSourceImage.Width / 10;  //à gauche de l'image
+            int ordonnee = 9*faceDetectionImage.VideoSourceImage.Height / 10; // en bas de l'image
+
+            Color32 couleurRGB = FromYCbCrToRGB(hairColorYCbCrExpectancy);
+            Scalar couleurRectangle = Scalar.FromRgb(couleurRGB.r, couleurRGB.g, couleurRGB.b);
+
+            
+            OpenCvSharp.Rect rectCouleur = new OpenCvSharp.Rect(abscisse, ordonnee, faceDetectionImage.VideoSourceImage.Width / 20, faceDetectionImage.VideoSourceImage.Height / 20);
+            Cv2.Rectangle(faceDetectionImage.VideoSourceImage, rectCouleur, couleurRectangle, -5);
+
+            Scalar couleur = Scalar.FromRgb(255, 0, 0);
+            Cv2.Rectangle(faceDetectionImage.VideoSourceImage, rect, couleur, 3);
+
+
+
+            /*//>>>Calcul des Thresholds hairColorYCbCrThresholds
+            double hairColorCbCrThreshold = ComputeVec3fThresholds(hairColorSampleYCbCr, hairColorCounter, hairColorYCbCrExpectancy);
+            Debug.Log("Hair Color YCbCrThresholds");
+            Debug.Log(hairColorCbCrThreshold);*/
+        }
+    }
+
+
+
+    private int GetColorFromRect(Vec3f[] colorSampleYcbcr, OpenCvSharp.Rect rect)
+    {
+
+        Debug.Log("Get Skin Color");
+        int skinColorCounter = 0;
+        //you can Pick if it's 0
+        int youCanPick = 0;
+        //On va pick tous les 10 pixels
+        int youCanPickEveryXPixels = 10;
+        System.Random rand = new System.Random();
+
+
+        for (var i= rect.Y; i < rect.Y + rect.Height; i++)
+        {
+            for (var j = rect.X; j < rect.X + rect.Width; j++)
+            {
+                Vec3b vec = faceDetectionImage.VideoSourceImage.At<Vec3b>(i, j);
+
+
+                //>>>Récupérations d'échantillons de couleur du front
+                if (youCanPick == 0 && skinColorCounter < colorSampleListSize)
+                {
+                    
+                    //Récupérer un échantillon de couleur du front
+                    Color32 color = new Color32
+                    {
+                        r = vec.Item2,
+                        g = vec.Item1,
+                        b = vec.Item0
+                    };
+                    //Le transformer en YCbCr
+                    //L'ajouter au tableau skinColorSampleYCbCr
+                    colorSampleYcbcr[skinColorCounter] = FromRGBToYCbCr(color);
+                    skinColorCounter++;
+                } 
+
+
+                youCanPick = (youCanPick + 1) % youCanPickEveryXPixels;
+                if (youCanPick == 1)
+                {
+                    youCanPickEveryXPixels = rand.Next(5, 15);
+                }
+                
+            }
+        }
+        
+        return skinColorCounter;
 
     }
 
@@ -348,7 +372,7 @@ public class HairDetection : MonoBehaviour {
         int pixelNonSkin = 0;
 
         //On part du haut du front
-        //int j = faceDetectionImage.RectFront.X+faceDetectionImage.RectFront.Width/2;
+
         int j = (int)faceDetectionImage.localLandmarks[2 * 8];
 
         for (var i = faceDetectionImage.RectFront.Y; i>0; i--)
@@ -411,120 +435,6 @@ public class HairDetection : MonoBehaviour {
     }
 
 
-    void FindJminJmax()
-    {
-        j_min = (int) Math.Floor(faceDetectionImage.localLandmarks[0]);
-        j_max = (int) Math.Floor(faceDetectionImage.localLandmarks[2*16]);
-    }
-
-    void GetHairColor()
-    {
-        Debug.Log("Get Hair Color");
-
-        if (yHairRoot == -1)
-        {
-            Debug.Log("No hair here");
-            return;
-        }
-
-        int hairColorCounter = 0;
-        //you can Pick if it's 0
-        int youCanPick = 0;
-        //On va pick tous les X pixels
-        int youCanPickEveryXPixels = 10;
-
-        for (var i = yHairRoot; i > 0; i--)
-        {
-            //Pour ne pas prendre des pixels en dehors de la tête
-            for (var j = faceDetectionImage.Face.X+faceDetectionImage.Face.Width/4; j < faceDetectionImage.Face.X + 3*faceDetectionImage.Face.Width / 4; j++)
-            {
-                //Vec3b vec = faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth];
-                Vec3b vec = faceDetectionImage.VideoSourceImage.At<Vec3b>(i * faceDetectionImage.ImWidth, j);
-                Color32 color = new Color32
-                {
-                    r = vec.Item2,
-                    g = vec.Item1,
-                    b = vec.Item0
-                };
-                //>>>Récupérations d'échantillons de couleur des cheveux
-                if(youCanPick==0 && hairColorCounter < colorSampleListSize)
-                {
-                    //Récupérer un échantillon de couleur des cheveux
-                    //Le transformer en YCbCr
-                    hairColorSampleYCbCr[hairColorCounter] = FromRGBToYCbCr(color);
-                    hairColorCounter++;
-                }                              
-                youCanPick = (youCanPick + 1) % youCanPickEveryXPixels;
-            }
-        }
-        //>>>Calcul de l'espérance hairColorYCbCrExpectancy
-        hairColorYCbCrExpectancy = ComputeVec3fExpectancy(hairColorSampleYCbCr, hairColorCounter);
-        Debug.Log("Hair Color YCbCrExpectancy");
-        Debug.Log(hairColorYCbCrExpectancy);
-
-        //>>>Calcul des Thresholds hairColorYCbCrThresholds
-        hairColorCbCrThreshold = ComputeVec3fThresholds(hairColorSampleYCbCr, hairColorCounter, hairColorYCbCrExpectancy);
-        Debug.Log("Hair Color YCbCrThresholds");
-        Debug.Log(hairColorCbCrThreshold);
-    }
-
-   /* void FindHairTop()
-    {
-        Debug.Log("Find Hair Top");
-        if (yHairTop != -1)
-        {
-            Debug.Log("No hair here ");
-            return;
-        }
-        int nbOfPixelBlancThreshold = 4;
-        int pixelBlancCounter = 0;
-        int lastPixelBlancY = -1;
-        int j = faceDetectionImage.RectFront.X + faceDetectionImage.RectFront.Width / 2;
-        //On part de yRoot
-        for (var i = yHairRoot; i > 0; i--)
-        {
-            //Vec3b vec = faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth];
-            Vec3b vec = faceDetectionImage.VideoSourceImage.At<Vec3b>(i * faceDetectionImage.ImWidth, j);
-            Color32 color = new Color32
-            {
-                r = vec.Item2,
-                g = vec.Item1,
-                b = vec.Item0
-            };
-            //Tant qu'on ne trouve pas 4 pixels blancs d'affilée (condition à redéfinir précisement), on remonte vers le haut (donc on varie le y)
-            //Dés qu'on valide la condition, on s'arrête et on set le yHairTop à y+4 (puisqu'on redescend)
-            if (color.r == 255 && color.g == 255 && color.b == 255)
-            {
-                //On vérifie si on a bien une suite de pixels blancs
-                if(lastPixelBlancY == -1)
-                {
-                    pixelBlancCounter++;
-                    lastPixelBlancY = i;
-                }
-                else if(lastPixelBlancY == i+1)
-                {
-                    pixelBlancCounter++;
-                    lastPixelBlancY = i;
-                }
-                else
-                {
-                    lastPixelBlancY = -1;
-                    pixelBlancCounter = 0;
-                }
-                
-                if(pixelBlancCounter == nbOfPixelBlancThreshold)
-                {
-                    //on est arrivé au haut du crane
-                    yHairTop = i + nbOfPixelBlancThreshold;
-                    Debug.Log("Hair top found, y : ");
-                    Debug.Log(yHairTop);
-                    return;
-                }
-                
-            }
-        }
-        
-    }*/
 
     public void ClearSkin()
     {
@@ -547,14 +457,8 @@ public class HairDetection : MonoBehaviour {
                 //Si c'est de la peau, on enlève
                 if (EuclidianDistance(sample.Item1, sample.Item2, skinColorYCbCrExpectancy) < skinColorCbCrThreshold)
                 {
-                    //faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth] = new Vec3b
-                    //{
-                    //    Item0 = 255,
-                    //    Item1 = 255,
-                    //    Item2 = 255
-                    //};
 
-                    faceDetectionImage.VideoSourceImage.Set<Vec3b>(i,j, new Vec3b
+                    faceDetectionImage.VideoSourceImage.Set<Vec3b>(i, j, new Vec3b
                     {
                         Item0 = 255,
                         Item1 = 255,
@@ -564,75 +468,9 @@ public class HairDetection : MonoBehaviour {
             }
         }
 
-
-
     }
 
-    void ClearNonHair()
-    {
-        Debug.Log("Clear Non Hair");
-        //Si on clear juste le skin
-        for (var i = 0; i < faceDetectionImage.ImHeight; i++)
-        {
-            for (var j = 0; j < faceDetectionImage.ImWidth; j++)
-            {
-                //Vec3b vec = faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth];
-                Vec3b vec = faceDetectionImage.VideoSourceImage.At<Vec3b>(i * faceDetectionImage.ImWidth, j);
-                Color32 color = new Color32
-                {
-                    r = vec.Item2,
-                    g = vec.Item1,
-                    b = vec.Item0
-                };
 
-                Vec3f sample = FromRGBToYCbCr(color);
-                //Si ce n'est pas des cheveux
-                if (EuclidianDistance(sample.Item1, sample.Item2, hairColorYCbCrExpectancy) > hairColorCbCrThreshold)
-                {
-                    //faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth] = new Vec3b
-                    //{
-                    //    Item0 = 255,
-                    //    Item1 = 255,
-                    //    Item2 = 255
-                    //};
-                    matrix2_grabcut.Set<Vec3b>(i * faceDetectionImage.ImWidth + j,new Vec3b
-                    {
-                        Item0 = 255,
-                        Item1 = 255,
-                        Item2 = 255
-                    });
-                }
-            }
-        }
-    }
-
-    void ClearFace()
-    {
-        Debug.Log("Clear Face");
-        //Si on veut clear toute la face, donc les yeux et les moustaches avec
-        //On part du yHairRoot jusqu'au yMenton
-        for (var i = yHairRoot; i < landMarksRetriever.Chin.Item1; i++)
-        {
-            //On part du xMinLeftEye jusqu'au xMaxRightEye
-            for (var j = (int)(landMarksRetriever.LeftEyeBrowLeft.Item0); j < landMarksRetriever.RightEyeBrowRight.Item0; j++)
-            {
-                //On met en blanc tout ce qu'il y a dedans
-                //faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth] = new Vec3b
-                //{
-                //    Item0 = 255,
-                //    Item1 = 255,
-                //    Item2 = 255
-                //};
-
-                faceDetectionImage.VideoSourceImage.Set<Vec3b>(i * faceDetectionImage.ImWidth + j, new Vec3b
-                {
-                    Item0 = 255,
-                    Item1 = 255,
-                    Item2 = 255
-                });
-            }
-        }
-    }
 
     public void FindHairMax()
     {
@@ -640,10 +478,11 @@ public class HairDetection : MonoBehaviour {
         int lineNonHairCounter = 0;
 
         //Calcul de j_min et j_max
-        FindJminJmax();
+        j_min = (int)Math.Floor(faceDetectionImage.localLandmarks[0]);
+        j_max = (int)Math.Floor(faceDetectionImage.localLandmarks[2 * 16]);
 
-        //Parcours de toutes les lignes à partir du carré des yeux pour déterminer la longueur des cheveux
-        int i0 = faceDetectionImage.RectEyeRight.Y + faceDetectionImage.RectEyeRight.Height;
+        //Parcours de toutes les lignes à partir du landmarks 15 (extrémité basse de l'oreille)
+        int i0 = (int) faceDetectionImage.localLandmarks[2 * 14 + 1];
         yHairMax = i0;
 
         for (var i = i0; i < faceDetectionImage.ImHeight; i++)
@@ -722,7 +561,7 @@ public class HairDetection : MonoBehaviour {
 
         for (var j = 0; j < faceDetectionImage.ImWidth; j++)
         {
-            faceDetectionImage.VideoSourceImage.Set<Vec3b>(yHairMax, j, new Vec3b
+            faceDetectionImage.VideoSourceImage.Set<Vec3b>(i0, j, new Vec3b
             {
                 Item0 = 0,
                 Item1 = 255,
@@ -751,74 +590,7 @@ public class HairDetection : MonoBehaviour {
     }
 
 
-
-    void FindHairYMax()
-    {
-        Debug.Log("Find Hair Y Max");
-
-        int nbOfPixelNonHairThreshold = 4;
-        int pixelNonHairCounter = 0;
-        int lastPixelNonHairY = -1;
-        int lastPixelHairY = -1;
-
-        //On part de yRoot
-        for (var i = yHairRoot; i < faceDetectionImage.ImHeight; i++)
-        {
-            //Pour ne pas prendre des pixels en dehors de la tête
-            for (var j = 0; j < faceDetectionImage.ImWidth; j++)
-            {
-
-                //On va balayer l'image vers le bas à la recherche de cheveux -> condition = on trouve au moins 4 pixels correspondant à des cheveux pour une ligne (ou bien on met une autre condition)s
-                //Vec3b vec = faceDetectionImage.VideoSourceImageData[j + i * faceDetectionImage.ImWidth];
-                Vec3b vec = faceDetectionImage.VideoSourceImage.At<Vec3b>(i, j);
-                Color32 color = new Color32
-                {
-                    r = vec.Item2,
-                    g = vec.Item1,
-                    b = vec.Item0
-                };
-                Vec3f sample = FromRGBToYCbCr(color);
-                //Tant qu'on trouve des cheveux, on continue vers le bas
-                if (EuclidianDistance(sample.Item1, sample.Item2, hairColorYCbCrExpectancy) < hairColorCbCrThreshold)
-                {
-                    lastPixelHairY = i;
-                }
-                
-            }
-            //Si il n'y a pas eu de cheveu
-            if(lastPixelHairY != i)
-            {
-                if (lastPixelNonHairY == -1)
-                {
-                    lastPixelNonHairY = i;
-                    pixelNonHairCounter++;
-                }
-                //Si le dernier endroit où il n'y a pas de cheveux était juste au dessus
-                else if(lastPixelNonHairY == i - 1)
-                {
-                    lastPixelNonHairY = i;
-                    pixelNonHairCounter++;
-                }
-                else
-                {
-                    lastPixelNonHairY = -1;
-                    pixelNonHairCounter= 0;
-                }
-
-                if (pixelNonHairCounter == nbOfPixelNonHairThreshold)
-                {
-                    //si on ne trouve plus de cheveux sur threshold pixels, c'est qu'on a trouvé la fin des cheveux, on met à jour yHairMax
-                    yHairMax = i - nbOfPixelNonHairThreshold;
-                    Debug.Log("Hair max found, y : ");
-                    Debug.Log(yHairMax);
-                    return;
-                }
-            }
-
-        }
-    }
-
-    public void GuessHairLength()
+    /*public void GuessHairLength()
     {
         Debug.Log("Guess Hair Length");
         //on fait yHairMax - yHairRoot et on compare à la longueur du visage
@@ -848,11 +620,11 @@ public class HairDetection : MonoBehaviour {
             return;
         }
         
-    }
+    }*/
 
-    /*void GuessHairLength_sans_landmarks()
+    void GuessHairLength()
     {
-        if (yHairMax < faceDetectionImage.rectMouth.Y)
+        /*if (yHairMax < faceDetectionImage.rectMouth.Y)
         {
             //Cheveux très court
             longueur = Longueur.tres_court;
@@ -865,8 +637,8 @@ public class HairDetection : MonoBehaviour {
         {
             //Cheveux court
             longueur = Longueur.court;
-        }
-    }*/
+        }*/
+    }
 
     public void GuessHairHeight()
     {

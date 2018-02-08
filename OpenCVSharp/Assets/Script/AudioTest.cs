@@ -43,6 +43,14 @@ public class AudioTest : MonoBehaviour {
     private float[] anger = new float[sizeBuffer];
     private float[] fear = new float[sizeBuffer];
 
+    private float neutrality_value = 0;
+    private float happiness_value = 0;
+    private float sadness_value = 0;
+    private float anger_value = 0;
+    private float fear_value = 0;
+    [SerializeField]
+    private float updateOnRealTimeSpeed = 0.5f;
+
     // The imported function
     [DllImport("VokaturiDataAnalyseV2", EntryPoint = "AnalyzeSamplesWithoutBuffer")] public static extern int AnalyseEmotions(double[] data, int nbrOfSamples, double[] emotions);
 
@@ -59,6 +67,7 @@ public class AudioTest : MonoBehaviour {
         if (timeCount >= recordTime/2)
         {
             timeCount = 0;
+
             Debug.Log("start analysing emotions");
             int nbrOfSamples = myAudioClip.samples / 2;
             float[] data = new float[nbrOfSamples];
@@ -90,6 +99,11 @@ public class AudioTest : MonoBehaviour {
             //UpdateAvatarEmotion();
             UpdateAvatarEmotionMA(nMA, nMAVolatile);
             //UpdateAvatarEmotionMAA(nMA);
+            Debug.Log("happiness : " + happiness_value);
+            Debug.Log("sadness : " + sadness_value);
+            Debug.Log("anger : " + anger_value);
+            Debug.Log("fear : " + fear_value);
+
             Debug.Log("end analysing emotions");
         }
         if(isSpeaking)
@@ -139,6 +153,10 @@ public class AudioTest : MonoBehaviour {
             }
             avatarManager.SetBlendshapeValue(morphName, 0);
         }
+        UpdateAvatarBlendshapeOnRealTime("eCTRLHappy", happiness_value);
+        UpdateAvatarBlendshapeOnRealTime("eCTRLSad", sadness_value);
+        UpdateAvatarBlendshapeOnRealTime("eCTRLAngry", anger_value);
+        UpdateAvatarBlendshapeOnRealTime("eCTRLFear", fear_value);
     }
 
     private void UpdateAvatarEmotion()
@@ -148,15 +166,11 @@ public class AudioTest : MonoBehaviour {
         //double sadness = emotions[2];
         //double anger = emotions[3];
         //double fear = emotions[4];
-        float neutrality_value = Avatar.PercentageConvertor((float)emotions[0], 0f, 1f, 0, 100);
-        float happiness_value = Avatar.PercentageConvertor((float)emotions[1], 0f, 1f, 0, 100);
-        float sadness_value = Avatar.PercentageConvertor((float)emotions[2], 0f, 1f, 0, 100);
-        float anger_value = Avatar.PercentageConvertor((float)emotions[3], 0f, 1f, 0, 100);
-        float fear_value = Avatar.PercentageConvertor((float)emotions[4], 0f, 1f, 0, 100);
-        avatarManager.SetBlendshapeValue("eCTRLHappy", happiness_value);
-        avatarManager.SetBlendshapeValue("eCTRLSad", sadness_value);
-        avatarManager.SetBlendshapeValue("eCTRLAngry", anger_value);
-        avatarManager.SetBlendshapeValue("eCTRLFear", fear_value);
+        neutrality_value = Avatar.PercentageConvertor((float)emotions[0], 0f, 1f, 0, 100);
+        happiness_value = Avatar.PercentageConvertor((float)emotions[1], 0f, 1f, 0, 100);
+        sadness_value = Avatar.PercentageConvertor((float)emotions[2], 0f, 1f, 0, 100);
+        anger_value = Avatar.PercentageConvertor((float)emotions[3], 0f, 1f, 0, 100);
+        fear_value = Avatar.PercentageConvertor((float)emotions[4], 0f, 1f, 0, 100);
     }
 
     private void UpdateAvatarEmotionMA(int n, int nVolatile)
@@ -167,11 +181,11 @@ public class AudioTest : MonoBehaviour {
         anger[cnt] = (float)emotions[3];
         fear[cnt] = (float)emotions[4];
 
-        float neutrality_value=0;
-        float happiness_value=0;
-        float sadness_value=0;
-        float anger_value=0;
-        float fear_value=0;
+        neutrality_value=0;
+        happiness_value=0;
+        sadness_value=0;
+        anger_value=0;
+        fear_value=0;
 
         for(int i=0; i < nMA; i++)
         {
@@ -200,21 +214,15 @@ public class AudioTest : MonoBehaviour {
         sadness_value = Avatar.PercentageConvertor(sadness_value, 0f, 1f, 0, 100);
         anger_value = Avatar.PercentageConvertor(anger_value, 0f, 1f, 0, 100);
         fear_value = Avatar.PercentageConvertor(fear_value, 0f, 1f, 0, 100);
-
-        avatarManager.SetBlendshapeValue("eCTRLHappy", happiness_value);
-        avatarManager.SetBlendshapeValue("eCTRLSad", sadness_value);
-        avatarManager.SetBlendshapeValue("eCTRLAngry", anger_value);
-        avatarManager.SetBlendshapeValue("eCTRLFear", fear_value);
-
     }
 
     private void UpdateAvatarEmotionMAA(int n)
     {
-        float neutrality_value = 0;
-        float happiness_value = 0;
-        float sadness_value = 0;
-        float anger_value = 0;
-        float fear_value = 0;
+        neutrality_value = 0;
+        happiness_value = 0;
+        sadness_value = 0;
+        anger_value = 0;
+        fear_value = 0;
 
         for (int i = 0; i < nMA-1; i++)
         {
@@ -251,11 +259,6 @@ public class AudioTest : MonoBehaviour {
         sadness_value = Avatar.PercentageConvertor(sadness_value, 0f, 1f, 0, 100);
         anger_value = Avatar.PercentageConvertor(anger_value, 0f, 1f, 0, 100);
         fear_value = Avatar.PercentageConvertor(fear_value, 0f, 1f, 0, 100);
-
-        avatarManager.SetBlendshapeValue("eCTRLHappy", happiness_value);
-        avatarManager.SetBlendshapeValue("eCTRLSad", sadness_value);
-        avatarManager.SetBlendshapeValue("eCTRLAngry", anger_value);
-        avatarManager.SetBlendshapeValue("eCTRLFear", fear_value);
     }
 
     public void MakeAvatarSpeak()
@@ -332,6 +335,42 @@ public class AudioTest : MonoBehaviour {
             {
                 value -= Avatar.PercentageConvertor(Time.deltaTime, 0, speechSpeed, 0, 100);
                 avatarManager.SetBlendshapeValue(morphName, value);
+            }
+        }
+    }
+
+    public void UpdateAvatarBlendshapeOnRealTime(string morphName, float newValue)
+    {
+        float previousValue = 0;
+        foreach(MORPH3D.FOUNDATIONS.Morph m in avatarManager.coreMorphs.morphs)
+        {
+            if(m.name == morphName)
+            {
+                previousValue = m.value;
+            }
+        }
+        if(newValue > previousValue)
+        {
+            float updateValue = previousValue + Avatar.PercentageConvertor(Time.deltaTime, 0, updateOnRealTimeSpeed, 0, 100);
+            if(updateValue < newValue)
+            {
+                avatarManager.SetBlendshapeValue(morphName, updateValue);
+            }
+            else
+            {
+                avatarManager.SetBlendshapeValue(morphName, newValue);
+            }
+        }
+        if(newValue < previousValue)
+        {
+            float updateValue = previousValue - Avatar.PercentageConvertor(Time.deltaTime, 0, updateOnRealTimeSpeed, 0, 100);
+            if (updateValue > newValue)
+            {
+                avatarManager.SetBlendshapeValue(morphName, updateValue);
+            }
+            else
+            {
+                avatarManager.SetBlendshapeValue(morphName, newValue);
             }
         }
     }
