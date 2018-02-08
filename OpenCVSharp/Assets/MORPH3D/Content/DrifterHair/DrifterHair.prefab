@@ -368,8 +368,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4065220482925652}
-  - component: {fileID: 95707572652526938}
-  - component: {fileID: 205086233960973994}
   - component: {fileID: 114789911514772142}
   - component: {fileID: 114226840534459294}
   m_Layer: 0
@@ -1356,23 +1354,6 @@ Transform:
   m_Father: {fileID: 4755301488012688}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &95707572652526938
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1591971764534216}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 39d079d1930e3ed43b74f233f071ad95, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114226840534459294
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1819,32 +1800,3 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0012080818, y: 0.32206464, z: 0.012080722}
     m_Extent: {x: 0.11231622, y: 0.15171683, z: 0.13634571}
   m_DirtyAABB: 0
---- !u!205 &205086233960973994
-LODGroup:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1591971764534216}
-  serializedVersion: 2
-  m_LocalReferencePoint: {x: -0.00076411664, y: 1.6746846, z: -0.022510193}
-  m_Size: 0.30646443
-  m_FadeMode: 0
-  m_AnimateCrossFading: 0
-  m_LODs:
-  - screenRelativeHeight: 0.25
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 137436208451354898}
-  - screenRelativeHeight: 0.125
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 137391678403490972}
-  - screenRelativeHeight: 0.0625
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 137664569678745746}
-  - screenRelativeHeight: 0.01
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 137312602934489644}
-  m_Enabled: 1
