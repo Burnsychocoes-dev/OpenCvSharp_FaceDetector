@@ -282,6 +282,11 @@ public class FaceDetectionImage : MonoBehaviour
                 Debug.Log("littleAngleNoseTopTip : " + littleAngleNoseTopTip);
 
 
+                // Position bridge nez
+                float angleNoseBridgeAndEyes = Angle2Droites(localLandmarks[2 * 39] - localLandmarks[2 * 27], localLandmarks[2 * 39 + 1] - localLandmarks[2 * 27 + 1],
+                                                            localLandmarks[2 * 42] - localLandmarks[2 * 27], localLandmarks[2 * 27 + 1] - localLandmarks[2 * 42 + 1]);
+                Debug.Log("angleNoseBridgeAndEyes : " + angleNoseBridgeAndEyes);
+
                 etape = Etape.SegmentationIdle;
                 break;
 

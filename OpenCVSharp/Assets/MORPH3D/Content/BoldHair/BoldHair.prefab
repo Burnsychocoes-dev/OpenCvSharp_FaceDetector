@@ -417,8 +417,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4098868482105402}
-  - component: {fileID: 95137822839214372}
-  - component: {fileID: 205806543800929222}
   - component: {fileID: 114295448171564890}
   - component: {fileID: 114306402263411922}
   m_Layer: 0
@@ -863,23 +861,6 @@ Transform:
   m_Father: {fileID: 4690288291307808}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &95137822839214372
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1859226460437522}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: e6153fa6a6431cf448379ab3d78f88ae, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114161511427788726
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1259,32 +1240,3 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0033190101, y: 0.35393518, z: 0.01386264}
     m_Extent: {x: 0.10356207, y: 0.12384182, z: 0.10660283}
   m_DirtyAABB: 0
---- !u!205 &205806543800929222
-LODGroup:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1859226460437522}
-  serializedVersion: 2
-  m_LocalReferencePoint: {x: 0.0033190101, y: 1.7063243, z: -0.02126436}
-  m_Size: 0.24768353
-  m_FadeMode: 0
-  m_AnimateCrossFading: 0
-  m_LODs:
-  - screenRelativeHeight: 0.25
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 137175273691882954}
-  - screenRelativeHeight: 0.125
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 137060626858459474}
-  - screenRelativeHeight: 0.0625
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 137102820852032316}
-  - screenRelativeHeight: 0.01
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 137483097766215024}
-  m_Enabled: 1
