@@ -79,6 +79,12 @@ public class LandmarksRetriever : MonoBehaviour {
     public double topLipHeight;
     public double buttomLipHeight;
 
+    // Information sur la courbure du visage7
+    public double chinWidth;
+    public double cornerChinWidth;
+    public double jawCurveAngle;
+    public double distanceButtomCurve;
+
     // Information utile pour hair detection
     private Vec2d leftEyeCorner;
     private Vec2d rightEyeCorner;
@@ -306,6 +312,23 @@ public class LandmarksRetriever : MonoBehaviour {
                                                                faceAnalyse.localLandmarks[2 * 57], faceAnalyse.localLandmarks[2 * 57 + 1]) / faceHeight;
             Debug.Log("buttomLipHeight :");
             Debug.Log(buttomLipHeight);
+
+            // Récuperation des infos sur la forme du visage
+            chinWidth = FaceDetectionImage.DistanceEuclidienne(faceAnalyse.localLandmarks[2 * 7], faceAnalyse.localLandmarks[2 * 7 + 1],
+                                                               faceAnalyse.localLandmarks[2 * 9], faceAnalyse.localLandmarks[2 * 9 + 1]) / faceWidth;
+            Debug.Log("chinWidth : " + chinWidth);
+
+            cornerChinWidth = FaceDetectionImage.DistanceEuclidienne(faceAnalyse.localLandmarks[2 * 4], faceAnalyse.localLandmarks[2 * 4 + 1],
+                                                               faceAnalyse.localLandmarks[2 * 12], faceAnalyse.localLandmarks[2 * 12 + 1]) / faceWidth;
+            Debug.Log("cornerChinWidth : " + cornerChinWidth);
+
+            distanceButtomCurve = FaceDetectionImage.DistanceEuclidienne(faceAnalyse.localLandmarks[2 * 5], faceAnalyse.localLandmarks[2 * 5 + 1],
+                                                               faceAnalyse.localLandmarks[2 * 11], faceAnalyse.localLandmarks[2 * 11 + 1]) / faceWidth;
+            Debug.Log("distanceButtomCurve : " + distanceButtomCurve);
+
+            //jawCornerWidth2 = FaceDetectionImage.DistanceEuclidienne(faceAnalyse.localLandmarks[2 * 3], faceAnalyse.localLandmarks[2 * 3 + 1],
+            //                                                   faceAnalyse.localLandmarks[2 * 13], faceAnalyse.localLandmarks[2 * 13 + 1]) / faceWidth;
+            //Debug.Log("jawCornerWidth2 : " + jawCornerWidth2);
         }
         
     }
