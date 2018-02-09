@@ -80,6 +80,12 @@ public class Avatar : MonoBehaviour {
         public Taille width;
     }
 
+    public struct Visage
+    {
+        public float cornerChinWidth;
+        public float distanceButtomCurve;
+    }
+
     public struct Hair
     {
         public bool isHairless;
@@ -96,6 +102,7 @@ public class Avatar : MonoBehaviour {
         public Nose nose;
         public Mouth mouth;
         public Hair hair;
+        public Visage visage;
     }
 
     private Personnage perso;
@@ -108,7 +115,10 @@ public class Avatar : MonoBehaviour {
     LandmarksRetriever landmarks;
     HairDetection hair;
 
-    
+
+    // Variables centre de gravité
+    float mouthHeightGravityCenter = 0;
+    float chinHeightGravityCenter = 0;
 
     void Start()
     {
@@ -135,6 +145,8 @@ public class Avatar : MonoBehaviour {
         this.transform.Translate(new Vector3(-5, 0, 0));
         avatarManager.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
         SetDressed();
+        avatarManager.SetBlendshapeValue("eCTRLHappy", 0);
+
         // Partie gender
         //if (landmarks.gender == "M")
         //    perso.gender = Gender.Male;
@@ -145,7 +157,7 @@ public class Avatar : MonoBehaviour {
         //Debug.Log(hair.yHairTop);
         //Debug.Log(Mathf.Abs(hair.yHairRoot - hair.yHairTop) / landmarks.faceHeight);
 
-        if(Mathf.Abs(hair.yHairRoot - hair.yHairTop)/landmarks.faceHeight < 0.05f || hair.yHairRoot == -1)
+        if (Mathf.Abs(hair.yHairRoot - hair.yHairTop)/landmarks.faceHeight < 0.05f || hair.yHairRoot == -1)
         {
             if(hair.longueur != HairDetection.Longueur.moyen && hair.longueur != HairDetection.Longueur.longs)
             {
@@ -222,6 +234,10 @@ public class Avatar : MonoBehaviour {
         else
             perso.mouth.width = Taille.Big;
 
+        // Partie visage curve
+        perso.visage.cornerChinWidth = (float)landmarks.cornerChinWidth;
+        perso.visage.distanceButtomCurve = (float)landmarks.distanceButtomCurve;
+
     }
 
 
@@ -240,11 +256,13 @@ public class Avatar : MonoBehaviour {
         {
             case Taille.Little:
                 float valeur_little = PercentageConvertorNeg(perso.nose.noseHeight, 0.31f, 0.39f, 0, 100);
+                mouthHeightGravityCenter = -valeur_little;
                 avatarManager.SetBlendshapeValue("PHMNoseHeight_NEGATIVE_", valeur_little);
                 break;
 
             case Taille.Big:
                 float valeur_big = PercentageConvertor(perso.nose.noseHeight, 0.39f, 0.47f, 0, 100);
+                mouthHeightGravityCenter = valeur_big;
                 avatarManager.SetBlendshapeValue("PHMNoseHeight", valeur_big);
                 break;
         }
@@ -343,26 +361,54 @@ public class Avatar : MonoBehaviour {
         }
 
 
-        // En fonction de distanceBetweenChinAndMouth
+        // En fonction de distanceBetweenNoseTipAndMouth
         /*
          * Version finale : 
-         * Avatar min : 0.20 -> 0.19
-         * Avatar max : 0.27 -> 0.28
-         * Avatar moy : 0.235
-         * Si la valeur de distanceBetweenChinAndMouth est entre 0.19 et 0.235 on va lui appliquer sa conversion en blendshape PHMMouthHeight_NEGATIVE_
-         * Si la valeur de distanceBetweenChinAndMouth est entre 0.235 et 0.28 on va lui appliquer sa conversion en blendshape PHMMouthHeight
+         * Avatar min : 0.09 -> 0.08
+         * Avatar max : 0.19 -> 0.20
+         * Avatar moy : 0.14
+         * Si la valeur de distanceBetweenChinAndMouth est entre 0.08 et 0.14 on va lui appliquer sa conversion en blendshape PHMMouthHeight_NEGATIVE_
+         * Si la valeur de distanceBetweenChinAndMouth est entre 0.14 et 0.20 on va lui appliquer sa conversion en blendshape PHMMouthHeight
          */
-        if (perso.mouth.distanceBetweenChinAndMouth <= 0.18)
-            avatarManager.SetBlendshapeValue("PHMMouthHeight_NEGATIVE_", 100);
-        else if (perso.mouth.distanceBetweenChinAndMouth > 0.18 && perso.mouth.distanceBetweenChinAndMouth <= 0.235)
+        if (perso.mouth.distanceBetweenNoseTipAndMouth <= 0.14)
         {
-            float valeur = PercentageConvertorNeg(perso.mouth.distanceBetweenChinAndMouth, 0.18f, 0.235f, 0, 100);
-            avatarManager.SetBlendshapeValue("PHMMouthHeight_NEGATIVE_", valeur);
+            float valeur = PercentageConvertorNeg(perso.mouth.distanceBetweenNoseTipAndMouth, 0.18f, 0.235f, 0, 100);
+            valeur -= mouthHeightGravityCenter;
+            if (valeur > 100)
+            {
+                chinHeightGravityCenter = -100;
+                avatarManager.SetBlendshapeValue("PHMMouthHeight_NEGATIVE_", 100);
+            }
+            else if (valeur < 0)
+            {
+                chinHeightGravityCenter = 0;
+                avatarManager.SetBlendshapeValue("PHMMouthHeight_NEGATIVE_", 0);
+            }
+            else
+            {
+                chinHeightGravityCenter = -valeur;
+                avatarManager.SetBlendshapeValue("PHMMouthHeight_NEGATIVE_", valeur);
+            }
         }        
         else
         {
-            float valeur = PercentageConvertor(perso.mouth.distanceBetweenChinAndMouth, 0.235f, 0.29f, 0, 100);
-            avatarManager.SetBlendshapeValue("PHMMouthHeight", valeur);
+            float valeur = PercentageConvertor(perso.mouth.distanceBetweenNoseTipAndMouth, 0.235f, 0.29f, 0, 100);
+            valeur += mouthHeightGravityCenter;
+            if (valeur > 100)
+            {
+                chinHeightGravityCenter = 100;
+                avatarManager.SetBlendshapeValue("PHMMouthHeight", 100);
+            }
+            else if (valeur < 0)
+            {
+                chinHeightGravityCenter = 0;
+                avatarManager.SetBlendshapeValue("PHMMouthHeight", 0);
+            }
+            else
+            {
+                chinHeightGravityCenter = valeur;
+                avatarManager.SetBlendshapeValue("PHMMouthHeight", valeur);
+            }
         }
 
 
@@ -454,6 +500,91 @@ public class Avatar : MonoBehaviour {
 
     public void ModelingFaceCurve()
     {
+        // En fonction de distanceBetweenChinAndMouth
+        /*
+         * Version finale : 
+         * Avatar min : 0.18 -> 0.17
+         * Avatar max : 0.30 -> 0.31
+         * Avatar moy : 0.24
+         * Si la valeur de distanceBetweenChinAndMouth est entre 0.17 et 0.24 on va lui appliquer sa conversion en blendshape PHMJawHeight_NEGATIVE_
+         * Si la valeur de distanceBetweenChinAndMouth est entre 0.24 et 0.31 on va lui appliquer sa conversion en blendshape PHMJawHeight
+         */
+        if (perso.mouth.distanceBetweenChinAndMouth <= 0.24)
+        {
+            float valeur = PercentageConvertorNeg(perso.mouth.distanceBetweenChinAndMouth, 0.17f, 0.24f, 0, 100);
+            valeur -= chinHeightGravityCenter;
+            if (valeur > 100)
+            {
+                avatarManager.SetBlendshapeValue("PHMJawHeight_NEGATIVE_", 100);
+            }
+            else if (valeur < 0)
+            {
+                avatarManager.SetBlendshapeValue("PHMJawHeight_NEGATIVE_", 0);
+            }
+            else
+            {
+                avatarManager.SetBlendshapeValue("PHMJawHeight_NEGATIVE_", valeur);
+            }
+        }
+        else
+        {
+            float valeur = PercentageConvertor(perso.mouth.distanceBetweenChinAndMouth, 0.24f, 0.31f, 0, 100);
+            valeur += chinHeightGravityCenter;
+            if (valeur > 100)
+            {
+                avatarManager.SetBlendshapeValue("PHMJawHeight", 100);
+            }
+            else if (valeur < 0)
+            {
+                avatarManager.SetBlendshapeValue("PHMJawHeight", 0);
+            }
+            else
+            {
+                avatarManager.SetBlendshapeValue("PHMJawHeight", valeur);
+            }
+        }
+
+
+        // En fonction de CornerChinWidth
+        /*
+         * Version finale : 
+         * Avatar min : 0.80 -> 0.75
+         * Avatar max : 0.85 -> 0.90
+         * Avatar moy : 0.825
+         * Si la valeur de CornerChinWidth est entre 0.75 et 0.825 on va lui appliquer sa conversion en blendshape PHMJawCornerWidth
+         * Si la valeur de CornerChinWidth est entre 0.825 et 0.90 on va lui appliquer sa conversion en blendshape PHMJawCornerWidth_NEGATIVE_
+         */
+        if (perso.visage.cornerChinWidth <= 0.825)
+        {
+            float valeur = PercentageConvertorNeg(perso.visage.cornerChinWidth, 0.75f, 0.825f, 0, 100);
+            avatarManager.SetBlendshapeValue("PHMJawCornerWidth_NEGATIVE_", valeur);
+        }
+        else
+        {
+            float valeur = PercentageConvertor(perso.visage.cornerChinWidth, 0.825f, 0.90f, 0, 100);
+            avatarManager.SetBlendshapeValue("PHMJawCornerWidth", valeur);
+        }
+
+
+        // En fonction de distanceButtomCurve
+        /*
+         * Version finale : 
+         * Avatar min : 0.63 -> 0.62
+         * Avatar max : 0.68 -> 0.69
+         * Avatar moy : 0.655
+         * Si la valeur de distanceButtomCurve est entre 0.62 et 0.655 on va lui appliquer sa conversion en blendshape PHMJawCurve
+         * Si la valeur de distanceButtomCurve est entre 0.655 et 0.69 on va lui appliquer sa conversion en blendshape PHMJawCurve_NEGATIVE_
+         */
+        if (perso.visage.distanceButtomCurve <= 0.655)
+        {
+            float valeur = PercentageConvertorNeg(perso.visage.cornerChinWidth, 0.62f, 0.655f, 0, 100);
+            avatarManager.SetBlendshapeValue("PHMJawCurve_NEGATIVE_", valeur);
+        }
+        else
+        {
+            float valeur = PercentageConvertor(perso.visage.cornerChinWidth, 0.655f, 0.69f, 0, 100);
+            avatarManager.SetBlendshapeValue("PHMJawCurve", valeur);
+        }
 
     }
 
@@ -470,7 +601,7 @@ public class Avatar : MonoBehaviour {
         {
             foreach (var hair in avatarManager.GetAllHair())
             {
-                if(hair.name == "FunkyHair")
+                if(hair.name == "ScottHair")
                 {
                     hair.SetVisibility(true);
                 }

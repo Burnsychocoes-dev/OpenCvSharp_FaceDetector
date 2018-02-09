@@ -99,6 +99,7 @@ public class AudioTest : MonoBehaviour {
             //UpdateAvatarEmotion();
             UpdateAvatarEmotionMA(nMA, nMAVolatile);
             //UpdateAvatarEmotionMAA(nMA);
+            Debug.Log("Neutrality : " + neutrality_value);
             Debug.Log("happiness : " + happiness_value);
             Debug.Log("sadness : " + sadness_value);
             Debug.Log("anger : " + anger_value);
@@ -199,15 +200,49 @@ public class AudioTest : MonoBehaviour {
             fear_value += fear[(saveCntVolatile + i) % sizeBuffer];
         }
 
-        neutrality_value = neutrality_value / (nMA + 1);
-        happiness_value = happiness_value / (nMA + 1);
-        sadness_value = sadness_value / (nMA + 1);
-        anger_value = anger_value / (nMAVolatile + 1);
-        fear_value = fear_value / (nMAVolatile + 1);
+        neutrality_value = neutrality_value / nMA;
+        happiness_value = happiness_value / nMA;
+        sadness_value = sadness_value / nMA;
+        anger_value = anger_value / nMAVolatile;
+        fear_value = fear_value / nMAVolatile;
 
         saveCnt = (saveCnt + 1) % sizeBuffer;
         saveCntVolatile = (saveCntVolatile + 1) % sizeBuffer;
         cnt = (cnt + 1) % sizeBuffer;
+
+        //// Petit test de prise de decision par max
+        //float[] tableau = new float[5];
+        //tableau[0] = neutrality_value;
+        //tableau[1] = happiness_value;
+        //tableau[2] = sadness_value;
+        //tableau[3] = anger_value;
+        //tableau[4] = fear_value;
+
+        //int maxIndice = IndexOfMaxEmotion(tableau);
+
+        //switch(maxIndice)
+        //{
+        //    case 1:
+        //        happiness_value = 1;
+        //        break;
+
+        //    case 2:
+        //        sadness_value = 1;
+        //        break;
+
+        //    case 3:
+        //        anger_value = 1;
+        //        break;
+
+        //    case 4:
+        //        fear_value = 1;
+        //        break;
+
+        //    default:
+        //        neutrality_value = 1;
+        //        break;
+        //}
+
 
         neutrality_value = Avatar.PercentageConvertor(neutrality_value, 0f, 1f, 0, 100);
         happiness_value = Avatar.PercentageConvertor(happiness_value, 0f, 1f, 0, 100);
@@ -337,6 +372,22 @@ public class AudioTest : MonoBehaviour {
                 avatarManager.SetBlendshapeValue(morphName, value);
             }
         }
+    }
+
+
+    public int IndexOfMaxEmotion(float[] emotions)
+    {
+        int maxIndex = 0;
+        float maxValue = emotions[0];
+        for(int i=1; i<emotions.Length; i++)
+        {
+            if (emotions[i]>maxValue)
+            {
+                maxValue = emotions[i];
+                maxIndex = i;
+            }
+        }
+        return maxIndex;
     }
 
     public void UpdateAvatarBlendshapeOnRealTime(string morphName, float newValue)
