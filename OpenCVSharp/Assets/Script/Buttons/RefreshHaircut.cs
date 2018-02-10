@@ -2,28 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Charselector : MonoBehaviour {
+public class RefreshHaircut : MonoBehaviour {
 
     //public string _nextScene = "";
     public Sprite sprite;
     protected Sprite spritesave;
     protected SpriteRenderer spriterender;
 
-    protected enum Choice
-    {
-        CHARACTER,
-        HAIRCUT
-    }
-    [SerializeField]
-    protected Choice choice;
-
-    protected enum Type
-    {
-        PREVIOUS,
-        NEXT
-    }
-    [SerializeField]
-    protected Type type;
     //protected FadingScene fadingScene;
     void Start()
     {
@@ -66,26 +51,6 @@ public class Charselector : MonoBehaviour {
 
     protected void OnMouseDown()
     {
-        switch (choice)
-        {
-            case Choice.CHARACTER:
-                switch (type)
-                {
-                    case Type.NEXT:
-                        break;
-                    case Type.PREVIOUS:
-                        break;
-                }
-                break;
-            case Choice.HAIRCUT:
-                switch (type)
-                {
-                    case Type.NEXT:
-                        break;
-                    case Type.PREVIOUS:
-                        break;
-                }
-                break;
-        }
+        
     }
 }
