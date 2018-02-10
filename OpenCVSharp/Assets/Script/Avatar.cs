@@ -147,10 +147,10 @@ public class Avatar : MonoBehaviour {
 
         if(Mathf.Abs(hair.yHairRoot - hair.yHairTop)/landmarks.faceHeight < 0.05f || hair.yHairRoot == -1)
         {
-            if(hair.longueur != HairDetection.Longueur.moyen && hair.longueur != HairDetection.Longueur.longs)
-            {
+            /*if(hair.longueur != HairDetection.Longueur.moyen && hair.longueur != HairDetection.Longueur.longs)
+            {*/
                 perso.hair.isHairless = true;
-            }
+            //}
                 
         }
 
