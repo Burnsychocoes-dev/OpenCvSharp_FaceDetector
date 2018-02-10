@@ -50,9 +50,14 @@ public class RecordButton : MonoBehaviour {
 
     protected void OnMouseDown()
     {
-        //SoundEffectsHelper.Instance.MakeButtonSelectedSound();
-        //float fadeTime = fadingScene.BeginFade(1);
-        //yield return new WaitForSeconds(fadeTime);
-        //SceneManager.LoadScene(_nextScene);
+        var avatars = GetComponentsInChildren<AvatarMaker>();
+        foreach(var a in avatars)
+        {
+            if(a.PrefabGender == a.Perso.gender)
+            {
+                var emotionAnalyser = a.GetComponent<AudioEmotionAnalyser>();
+                emotionAnalyser.AudioRecord = !emotionAnalyser.AudioRecord;
+            }
+        }
     }
 }

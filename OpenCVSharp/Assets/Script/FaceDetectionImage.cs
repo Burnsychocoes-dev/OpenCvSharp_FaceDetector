@@ -143,7 +143,7 @@ public class FaceDetectionImage : MonoBehaviour
 
     LandmarksRetriever landmarks;
 
-    Avatar avatar;
+    AvatarMaker avatar;
 
     Camera camera;
 
@@ -167,7 +167,7 @@ public class FaceDetectionImage : MonoBehaviour
 
     void Start() {
         landmarks = GetComponent<LandmarksRetriever>();
-        avatar = GetComponent<Avatar>();
+        avatar = GetComponent<AvatarMaker>();
         hair = GetComponent<HairDetection>();
         camera = FindObjectOfType<Camera>();
 
@@ -366,7 +366,7 @@ public class FaceDetectionImage : MonoBehaviour
             case Etape.Avatar:
                 CleanScreen();
                 landmarks.Init();
-                avatar.SetPerso();
+                //avatar.SetPerso();
                 avatar.SetHair(false);
                 avatar.ChangeEyes();
                 avatar.ChangeNose();
