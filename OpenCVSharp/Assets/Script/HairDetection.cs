@@ -863,9 +863,7 @@ public class HairDetection : MonoBehaviour
     //Cette méthode permet de déterminer parmis les coupes existantes dans MORPH3D celle qui est la + appropriée
     public void GuessHairCut()
     {
-        Boolean isMen = photo.isMen;
-
-        if (isMen)
+        if (AvatarScript.avatar1.gender == AvatarScript.Gender.Male)
         {
             //L'utilisateur est un homme, le choix des coupes s'effectue parmis les coupes d'hommes
 
@@ -988,7 +986,7 @@ public class HairDetection : MonoBehaviour
 
         }
 
-        Debug.Log(haircut);
+        Debug.Log("Coupe de cheveux : " + haircut);
 
     }
 
