@@ -8,6 +8,13 @@ public class RecordButton : MonoBehaviour {
     public Sprite sprite;
     protected Sprite spritesave;
     protected SpriteRenderer spriterender;
+    protected enum State
+    {
+        RECORDING,
+        PAUSE
+    }
+
+    protected State state = State.PAUSE;
     //protected FadingScene fadingScene;
     void Start()
     {
@@ -22,15 +29,7 @@ public class RecordButton : MonoBehaviour {
     protected void OnMouseEnter()
     {
 
-        if (sprite != null)
-        {
-            spritesave = spriterender.sprite;
-            spriterender.sprite = sprite;
-        }
-        else
-        {
-
-        }
+        
         //SoundEffectsHelper.Instance.MakeButtonSelectSound();
     }
     protected void OnMouseOver()
@@ -40,16 +39,36 @@ public class RecordButton : MonoBehaviour {
     protected void OnMouseExit()
     {
         //rend.material.color = Color.white;
-        if (sprite != null)
-        {
-            spriterender.sprite = spritesave;
-        }
+        
 
     }
 
 
     protected void OnMouseDown()
     {
+        switch (state)
+        {
+            case State.PAUSE:
+                if (sprite != null)
+                {
+                    spritesave = spriterender.sprite;
+                    spriterender.sprite = sprite;
+                }
+                else
+                {
+
+                }
+                state = State.RECORDING;
+                break;
+            case State.RECORDING:
+                if (sprite != null)
+                {
+                    spriterender.sprite = spritesave;
+                }
+                state = State.PAUSE;
+                break;
+        }
+
         var avatars = GetComponentsInChildren<AvatarMaker>();
         foreach(var a in avatars)
         {
