@@ -113,6 +113,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+<<<<<<< HEAD
 --- !u!1 &1236517
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,6 +252,8 @@ Material:
     - _Spread: 64
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+=======
+>>>>>>> parent of f488d98... preparation interface graphique et build
 --- !u!1 &467501018
 GameObject:
   m_ObjectHideFlags: 0
@@ -523,12 +526,17 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 793812213}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+<<<<<<< HEAD
   m_LocalPosition: {x: -4.3, y: -2, z: -2}
+=======
+  m_LocalPosition: {x: -2.5, y: -2, z: -2}
+>>>>>>> parent of f488d98... preparation interface graphique et build
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD
 --- !u!1001 &804475878
 Prefab:
   m_ObjectHideFlags: 0
@@ -831,6 +839,8 @@ Material:
     - _OverlayColor: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _SpecularMapColorTweak: {r: 1, g: 1, b: 1, a: 1}
+=======
+>>>>>>> parent of f488d98... preparation interface graphique et build
 --- !u!1 &1246432271
 GameObject:
   m_ObjectHideFlags: 0
@@ -896,6 +906,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+<<<<<<< HEAD
 --- !u!21 &1256748314
 Material:
   serializedVersion: 6
@@ -1289,6 +1300,8 @@ Material:
     - _OverlayColor: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _SpecularMapColorTweak: {r: 1, g: 1, b: 1, a: 1}
+=======
+>>>>>>> parent of f488d98... preparation interface graphique et build
 --- !u!1001 &1957781297
 Prefab:
   m_ObjectHideFlags: 0
@@ -1298,7 +1311,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4853612198323216, guid: cd59676cca2a0d04e8230ee5e0d1a2f0, type: 2}
       propertyPath: m_LocalPosition.x
+<<<<<<< HEAD
       value: 4.5
+=======
+      value: 2.5
+>>>>>>> parent of f488d98... preparation interface graphique et build
       objectReference: {fileID: 0}
     - target: {fileID: 4853612198323216, guid: cd59676cca2a0d04e8230ee5e0d1a2f0, type: 2}
       propertyPath: m_LocalPosition.y

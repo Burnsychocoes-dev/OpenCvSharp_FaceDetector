@@ -53,6 +53,7 @@ public class RecordButton : MonoBehaviour {
 
     protected void OnMouseDown()
     {
+<<<<<<< HEAD
         switch (state)
         {
             case State.STOP:
@@ -86,5 +87,11 @@ public class RecordButton : MonoBehaviour {
             }
         }
         
+=======
+        //SoundEffectsHelper.Instance.MakeButtonSelectedSound();
+        //float fadeTime = fadingScene.BeginFade(1);
+        //yield return new WaitForSeconds(fadeTime);
+        //SceneManager.LoadScene(_nextScene);
+>>>>>>> parent of f488d98... preparation interface graphique et build
     }
 }
