@@ -9,6 +9,7 @@ public class AudioEmotionAnalyser : MonoBehaviour {
     AudioClip myAudioClip;
     float timeCount = 0f;
     private int count05 = 0;
+
     [SerializeField]
     private float recordTime = 1f;    
     bool recordDone = false;
@@ -39,6 +40,10 @@ public class AudioEmotionAnalyser : MonoBehaviour {
     [SerializeField]
     private static int nMA = 5;
     private static int nMAVolatile = 3;
+    //
+    private static int secondeDivisor = 2;
+
+    private int countDivisor = 0;
 
     private int saveCnt = 0;
     private int saveCntVolatile = nMA - nMAVolatile;
@@ -54,6 +59,9 @@ public class AudioEmotionAnalyser : MonoBehaviour {
     private float sadness_value = 0;
     private float anger_value = 0;
     private float fear_value = 0;
+
+    private float correction_value = 1.15f;
+    //correction à la hause de 15%
     [SerializeField]
     private float updateOnRealTimeSpeed = 0.5f;
 
@@ -72,16 +80,18 @@ public class AudioEmotionAnalyser : MonoBehaviour {
         {
             timeCount += Time.deltaTime;
             timeSpeakCount += Time.deltaTime;
-            if (timeCount >= recordTime / 2)
+            //
+            if (timeCount >= recordTime / secondeDivisor)
             {
                 timeCount = 0;
 
                 Debug.Log("start analysing emotions");
-                int nbrOfSamples = myAudioClip.samples / 2;
+                int nbrOfSamples = myAudioClip.samples / secondeDivisor;
                 float[] data = new float[nbrOfSamples];
                 Debug.Log(nbrOfSamples);
-
-                if (count05 == 0)
+                myAudioClip.GetData(data, countDivisor*44100/secondeDivisor);
+                countDivisor = (countDivisor+1)%secondeDivisor;
+                /*if (count05 == 0)
                 {
                     myAudioClip.GetData(data, 0);
                     count05 = 1;
@@ -90,7 +100,7 @@ public class AudioEmotionAnalyser : MonoBehaviour {
                 {
                     myAudioClip.GetData(data, 44100 / 2);
                     count05 = 0;
-                }
+                }*/
 
                 double[] double_data = new double[data.Length];
                 for (int i = 0; i < data.Length; i++)
@@ -105,9 +115,8 @@ public class AudioEmotionAnalyser : MonoBehaviour {
                 {
                     isSpeaking = false;
                 }
-                //UpdateAvatarEmotion();
-                UpdateAvatarEmotionMA(nMA, nMAVolatile);
-                //UpdateAvatarEmotionMAA(nMA);
+                //UpdateAvatarEmotionMA();
+                UpdateAvatarEmotionMA_correctSilence();
                 Debug.Log("Neutrality : " + neutrality_value);
                 Debug.Log("happiness : " + happiness_value);
                 Debug.Log("sadness : " + sadness_value);
@@ -184,7 +193,7 @@ public class AudioEmotionAnalyser : MonoBehaviour {
         fear_value = AvatarMaker.PercentageConvertor((float)emotions[4], 0f, 1f, 0, 100);
     }
 
-    private void UpdateAvatarEmotionMA(int n, int nVolatile)
+    private void UpdateAvatarEmotionMA()
     {
         neutrality[cnt] = (float)emotions[0];
         happiness[cnt] = (float)emotions[1];
@@ -261,7 +270,86 @@ public class AudioEmotionAnalyser : MonoBehaviour {
         fear_value = AvatarMaker.PercentageConvertor(fear_value, 0f, 1f, 0, 100);
     }
 
-    private void UpdateAvatarEmotionMAA(int n)
+    private void UpdateAvatarEmotionMA_correctSilence(){
+        int cnt0 = 0;
+        int cnt0Volatile = 0;
+        int totalCnt0 = 0;
+        int totalCnt0Volatile = 0;
+        neutrality[cnt] = (float)emotions[0];
+        happiness[cnt] = (float)emotions[1];
+        sadness[cnt] = (float)emotions[2];
+        anger[cnt] = (float)emotions[3];
+        fear[cnt] = (float)emotions[4];
+
+        neutrality_value=0;
+        happiness_value=0;
+        sadness_value=0;
+        anger_value=0;
+        fear_value=0;
+
+        for(int i=0; i < nMA; i++)
+        {
+            neutrality_value += neutrality[(saveCnt + i) % sizeBuffer];
+            happiness_value += happiness[(saveCnt + i) % sizeBuffer];
+            sadness_value += sadness[(saveCnt + i) % sizeBuffer];
+            //comptage de faux silences
+            if (neutrality[(saveCnt + i) % size] == 0 &&
+                    happiness[(saveCnt + i) % size] == 0 &&
+                    sadness[(saveCnt + i) % size] == 0 &&
+                    anger[(saveCnt + i) % size] == 0 &&
+                    fear[(saveCnt + i) % size] == 0 ) {
+                    cnt0++;
+                }
+                else {
+                    if (cnt0 <= 3) {
+                        totalCnt0 += cnt0;                      
+                    }
+                    cnt0 = 0;
+                }
+        }
+        for(int i=0; i < nMAVolatile; i++)
+        {
+            anger_value += anger[(saveCntVolatile + i) % sizeBuffer];
+            fear_value += fear[(saveCntVolatile + i) % sizeBuffer];
+
+            //comptage de faux silences
+            if (neutrality[(saveCntVolatile + i) % size] == 0 &&
+                    happiness[(saveCntVolatile + i) % size] == 0 &&
+                    sadness[(saveCntVolatile + i) % size] == 0 &&
+                    anger[(saveCntVolatile + i) % size] == 0 &&
+                    fear[(saveCntVolatile + i) % size] == 0) {
+                    cnt0Volatile++;
+                }
+                else {
+                    if (cnt0Volatile <= 3) {
+                        totalCnt0Volatile += cnt0Volatile;
+                    }
+                    cnt0Volatile = 0;
+                }
+        }
+
+        neutrality_value = neutrality_value * correction_value / (nMA-totalCnt0) ;
+        happiness_value = happiness_value * correction_value / (nMA-totalCnt0);
+        sadness_value = sadness_value * correction_value / (nMA-totalCnt0);
+        anger_value = anger_value * correction_value/ (nMAVolatile-totalCnt0Volatile);
+        fear_value = fear_value * correction_value/ (nMAVolatile-totalCnt0Volatile);
+
+        saveCnt = (saveCnt + 1) % sizeBuffer;
+        saveCntVolatile = (saveCntVolatile + 1) % sizeBuffer;
+        cnt = (cnt + 1) % sizeBuffer;
+        totalCnt0 =0;
+        totalCnt0Volatile = 0;
+        
+
+
+        neutrality_value = AvatarMaker.PercentageConvertor(neutrality_value, 0f, 1f, 0, 100);
+        happiness_value = AvatarMaker.PercentageConvertor(happiness_value, 0f, 1f, 0, 100);
+        sadness_value = AvatarMaker.PercentageConvertor(sadness_value, 0f, 1f, 0, 100);
+        anger_value = AvatarMaker.PercentageConvertor(anger_value, 0f, 1f, 0, 100);
+        fear_value = AvatarMaker.PercentageConvertor(fear_value, 0f, 1f, 0, 100);
+    }
+
+    private void UpdateAvatarEmotionMAA()
     {
         neutrality_value = 0;
         happiness_value = 0;
