@@ -18,8 +18,14 @@ public class GenderButton : ChangeSceneOnClickScript {
         switch (gender)
         {
             case Gender.MAN:
+                AvatarScript.avatar1.gender = AvatarScript.Gender.Male;
+                AvatarScript.avatar2.gender = AvatarScript.Gender.Male;
+                AvatarScript.avatar3.gender = AvatarScript.Gender.Male;
                 break;
             case Gender.WOMAN:
+                AvatarScript.avatar1.gender = AvatarScript.Gender.Femelle;
+                AvatarScript.avatar2.gender = AvatarScript.Gender.Femelle;
+                AvatarScript.avatar3.gender = AvatarScript.Gender.Femelle;
                 break;
         }
         //SoundEffectsHelper.Instance.MakeButtonSelectedSound();

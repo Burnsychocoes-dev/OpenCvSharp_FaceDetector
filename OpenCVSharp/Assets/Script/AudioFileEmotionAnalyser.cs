@@ -69,11 +69,11 @@ public class AudioFileEmotionAnalyser : MonoBehaviour
         //double sadness = emotions[2];
         //double anger = emotions[3];
         //double fear = emotions[4];
-        float neutrality_value = Avatar.PercentageConvertorNeg((float)emotions[0], 0f, 1f, 0, 100);
-        float happiness_value = Avatar.PercentageConvertorNeg((float)emotions[1], 0f, 1f, 0, 100);
-        float sadness_value = Avatar.PercentageConvertorNeg((float)emotions[2], 0f, 1f, 0, 100);
-        float anger_value = Avatar.PercentageConvertorNeg((float)emotions[3], 0f, 1f, 0, 100);
-        float fear_value = Avatar.PercentageConvertorNeg((float)emotions[4], 0f, 1f, 0, 100);
+        float neutrality_value = AvatarMaker.PercentageConvertorNeg((float)emotions[0], 0f, 1f, 0, 100);
+        float happiness_value = AvatarMaker.PercentageConvertorNeg((float)emotions[1], 0f, 1f, 0, 100);
+        float sadness_value = AvatarMaker.PercentageConvertorNeg((float)emotions[2], 0f, 1f, 0, 100);
+        float anger_value = AvatarMaker.PercentageConvertorNeg((float)emotions[3], 0f, 1f, 0, 100);
+        float fear_value = AvatarMaker.PercentageConvertorNeg((float)emotions[4], 0f, 1f, 0, 100);
         avatarManager.SetBlendshapeValue("eCTRLHappy", happiness_value);
         avatarManager.SetBlendshapeValue("eCTRLSad", sadness_value);
         avatarManager.SetBlendshapeValue("eCTRLAngry", anger_value);

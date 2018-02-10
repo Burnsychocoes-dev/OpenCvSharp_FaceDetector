@@ -109,7 +109,9 @@ public class FaceDetection : MonoBehaviour
             ProcessedTextureRenderer.material.mainTexture = processedTexture;
             //backgroundTexture.texture = processedTexture;
             //videoSourceImage.At<Vec3b>(y, x);
-
+            //Debug.Log(AvatarScript.avatar1.gender);
+            //Debug.Log(AvatarScript.avatar2.gender);
+            //Debug.Log(AvatarScript.avatar3.gender);
         }
 
         // create opencv window to display the original video
@@ -441,7 +443,7 @@ public class FaceDetection : MonoBehaviour
     }
 
 
-    void TakePhoto()
+    public void TakePhoto()
     {
         Texture2D photo = new Texture2D(_webcamTexture.width, _webcamTexture.height);
         photo.SetPixels(_webcamTexture.GetPixels());
