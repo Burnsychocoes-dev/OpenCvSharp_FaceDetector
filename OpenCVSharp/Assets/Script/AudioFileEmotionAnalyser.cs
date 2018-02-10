@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEditor;
 using System.IO;
 using System;
 
@@ -51,7 +50,7 @@ public class AudioFileEmotionAnalyser : MonoBehaviour
         cnt += Time.deltaTime;
     }
 
-    [MenuItem("Tools/Read file")]
+    //[MenuItem("Tools/Read file")]
     private void InitReadString()
     {
         //path = "Assets/Resources/test.txt";
