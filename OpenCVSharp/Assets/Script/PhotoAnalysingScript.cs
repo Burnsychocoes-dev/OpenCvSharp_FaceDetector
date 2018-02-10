@@ -164,7 +164,7 @@ public class PhotoAnalysingScript : MonoBehaviour
     // The imported function
     [DllImport("face_landmark_detection_ex", EntryPoint = "FaceLandmarkDetection")] public static extern int GetLocalLandmarks(String datPath, String filePath, float[] landmarks);
 
-    public Boolean isMen = true;
+
     void Start() {
         //landmarks = GetComponent<LandmarksRetriever>();
         //avatar = GetComponent<AvatarMaker>();
