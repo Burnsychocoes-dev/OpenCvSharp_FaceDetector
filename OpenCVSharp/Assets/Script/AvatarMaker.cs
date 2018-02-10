@@ -211,11 +211,11 @@ public class AvatarMaker : MonoBehaviour {
         // En fonction de noseHeight
         /*
          * Version finale : 
-         * Avatar min : 0.32 -> 0.39
-         * Avatar max : 0.39 -> 0.46
+         * Avatar min : 0.33 -> 0.31
+         * Avatar max : 0.45 -> 0.47
          * Avatar moy : 0.39
-         * Si la valeur de noseHeight est entre 0.32 et 0.39 on va lui appliquer sa conversion en blendshape PHMNoseHeight_NEGATIVE_
-         * Si la valeur de noseHeight est entre 0.39 et 0.46 on va lui appliquer sa conversion en blendshape PHMNoseHeight
+         * Si la valeur de noseHeight est entre 0.31 et 0.39 on va lui appliquer sa conversion en blendshape PHMNoseHeight_NEGATIVE_
+         * Si la valeur de noseHeight est entre 0.39 et 0.47 on va lui appliquer sa conversion en blendshape PHMNoseHeight
          */
         switch (perso.nose.height)
         {

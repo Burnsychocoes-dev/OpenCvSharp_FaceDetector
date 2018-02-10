@@ -104,7 +104,7 @@ Shader "Morph3D/Standard-2pass-double sided"
 				float4 posWorld = mul(_Object2World, v.vertex);
 #endif
 				#if UNITY_SPECCUBE_BOX_PROJECTION
-					o.posWorld = posWorld.xyz;
+					//o.posWorld = posWorld.xyz;
 				#endif
 				o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
 				o.tex = TexCoords(v);
@@ -114,13 +114,13 @@ Shader "Morph3D/Standard-2pass-double sided"
 					float4 tangentWorld = float4(UnityObjectToWorldDir(v.tangent.xyz), v.tangent.w);
 
 					float3x3 tangentToWorld = CreateTangentToWorldPerVertex(normalWorld, tangentWorld.xyz, tangentWorld.w);
-					o.tangentToWorldAndParallax[0].xyz = tangentToWorld[0];
+					/*o.tangentToWorldAndParallax[0].xyz = tangentToWorld[0];
 					o.tangentToWorldAndParallax[1].xyz = tangentToWorld[1];
-					o.tangentToWorldAndParallax[2].xyz = tangentToWorld[2];
+					o.tangentToWorldAndParallax[2].xyz = tangentToWorld[2];*/
 				#else
-					o.tangentToWorldAndParallax[0].xyz = 0;
+					/*o.tangentToWorldAndParallax[0].xyz = 0;
 					o.tangentToWorldAndParallax[1].xyz = 0;
-					o.tangentToWorldAndParallax[2].xyz = normalWorld;
+					o.tangentToWorldAndParallax[2].xyz = normalWorld;*/
 				#endif
 				//We need this for shadow receving
 				TRANSFER_SHADOW(o);
@@ -250,7 +250,7 @@ Shader "Morph3D/Standard-2pass-double sided"
 				float4 posWorld = mul(_Object2World, v.vertex);
 #endif
 				#if UNITY_SPECCUBE_BOX_PROJECTION
-					o.posWorld = posWorld.xyz;
+					//o.posWorld = posWorld.xyz;
 				#endif
 				o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
 				o.tex = TexCoords(v);
@@ -260,13 +260,13 @@ Shader "Morph3D/Standard-2pass-double sided"
 					float4 tangentWorld = float4(UnityObjectToWorldDir(v.tangent.xyz), v.tangent.w);
 
 					float3x3 tangentToWorld = CreateTangentToWorldPerVertex(normalWorld, tangentWorld.xyz, tangentWorld.w);
-					o.tangentToWorldAndParallax[0].xyz = tangentToWorld[0];
+					/*o.tangentToWorldAndParallax[0].xyz = tangentToWorld[0];
 					o.tangentToWorldAndParallax[1].xyz = tangentToWorld[1];
-					o.tangentToWorldAndParallax[2].xyz = tangentToWorld[2];
+					o.tangentToWorldAndParallax[2].xyz = tangentToWorld[2];*/
 				#else
-					o.tangentToWorldAndParallax[0].xyz = 0;
+		/*			o.tangentToWorldAndParallax[0].xyz = 0;
 					o.tangentToWorldAndParallax[1].xyz = 0;
-					o.tangentToWorldAndParallax[2].xyz = normalWorld;
+					o.tangentToWorldAndParallax[2].xyz = normalWorld;*/
 				#endif
 				//We need this for shadow receving
 				TRANSFER_SHADOW(o);
