@@ -113,6 +113,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+<<<<<<< HEAD
 --- !u!21 &271602911
 Material:
   serializedVersion: 6
@@ -207,6 +208,55 @@ Material:
     - _OverlayColor: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _SpecularMapColorTweak: {r: 1, g: 1, b: 1, a: 1}
+=======
+--- !u!1001 &363756506
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4297392214140702, guid: 6ced3e6a342834d4fb8eb6b68e5738b5, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4297392214140702, guid: 6ced3e6a342834d4fb8eb6b68e5738b5, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4297392214140702, guid: 6ced3e6a342834d4fb8eb6b68e5738b5, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4297392214140702, guid: 6ced3e6a342834d4fb8eb6b68e5738b5, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4297392214140702, guid: 6ced3e6a342834d4fb8eb6b68e5738b5, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4297392214140702, guid: 6ced3e6a342834d4fb8eb6b68e5738b5, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4297392214140702, guid: 6ced3e6a342834d4fb8eb6b68e5738b5, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4297392214140702, guid: 6ced3e6a342834d4fb8eb6b68e5738b5, type: 2}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114810781324376344, guid: 6ced3e6a342834d4fb8eb6b68e5738b5,
+        type: 2}
+      propertyPath: _nextScene
+      value: Scene6
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 6ced3e6a342834d4fb8eb6b68e5738b5, type: 2}
+  m_IsPrefabParent: 0
+>>>>>>> parent of f488d98... preparation interface graphique et build
 --- !u!1 &467501018
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,6 +380,7 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b5a3c911435d99e45aeacaa8d049a089, type: 2}
   m_IsPrefabParent: 0
+<<<<<<< HEAD
 --- !u!1 &541334701
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,6 +494,8 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+=======
+>>>>>>> parent of f488d98... preparation interface graphique et build
 --- !u!1001 &737290795
 Prefab:
   m_ObjectHideFlags: 0
@@ -591,14 +644,13 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 793812213}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.22, y: -2.5, z: -2}
+  m_LocalPosition: {x: 0, y: -2.5, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1967324691}
-  - {fileID: 1445371781}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD
 --- !u!21 &1122544920
 Material:
   serializedVersion: 6
@@ -625,6 +677,8 @@ Material:
     - _Spread: 64
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+=======
+>>>>>>> parent of f488d98... preparation interface graphique et build
 --- !u!1 &1246432271
 GameObject:
   m_ObjectHideFlags: 0
@@ -690,6 +744,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+<<<<<<< HEAD
 --- !u!84 &1357684086
 RenderTexture:
   m_ObjectHideFlags: 0
@@ -1231,3 +1286,5 @@ Transform:
   m_PrefabParentObject: {fileID: 4183274149837528, guid: d543868d92c75cc4c8da735ac2efb807,
     type: 2}
   m_PrefabInternal: {fileID: 1856449733}
+=======
+>>>>>>> parent of f488d98... preparation interface graphique et build
