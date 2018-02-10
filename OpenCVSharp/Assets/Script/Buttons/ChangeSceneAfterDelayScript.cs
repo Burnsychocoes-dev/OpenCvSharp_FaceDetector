@@ -10,9 +10,6 @@ public class ChangeSceneAfterDelayScript : MonoBehaviour {
 
 	public IEnumerator Start()
 	{
-        //Debug.Log("change");
-        //Debug.Log(KarmaScript.karma);
-        //KarmaScript.karma = 1;
         yield return new WaitForSeconds(_delay);
         float fadeTime = /*GameObject.Find("FadeScript").*/GetComponent<FadingScene>().BeginFade(1);
         yield return new WaitForSeconds(fadeTime);

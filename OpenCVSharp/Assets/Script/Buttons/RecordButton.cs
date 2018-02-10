@@ -8,12 +8,6 @@ public class RecordButton : MonoBehaviour {
     public Sprite sprite;
     protected Sprite spritesave;
     protected SpriteRenderer spriterender;
-    protected enum State
-    {
-        RECORDING,
-        STOP
-    }
-    protected State state = State.STOP;
     //protected FadingScene fadingScene;
     void Start()
     {
@@ -28,15 +22,15 @@ public class RecordButton : MonoBehaviour {
     protected void OnMouseEnter()
     {
 
-        //if (sprite != null)
-        //{
-        //    spritesave = spriterender.sprite;
-        //    spriterender.sprite = sprite;
-        //}
-        //else
-        //{
+        if (sprite != null)
+        {
+            spritesave = spriterender.sprite;
+            spriterender.sprite = sprite;
+        }
+        else
+        {
 
-        //}
+        }
         //SoundEffectsHelper.Instance.MakeButtonSelectSound();
     }
     protected void OnMouseOver()
@@ -46,37 +40,16 @@ public class RecordButton : MonoBehaviour {
     protected void OnMouseExit()
     {
         //rend.material.color = Color.white;
-        
+        if (sprite != null)
+        {
+            spriterender.sprite = spritesave;
+        }
 
     }
 
 
     protected void OnMouseDown()
     {
-<<<<<<< HEAD
-        switch (state)
-        {
-            case State.STOP:
-                if (sprite != null)
-                {
-                    spritesave = spriterender.sprite;
-                    spriterender.sprite = sprite;
-                }
-                else
-                {
-
-                }
-                state = State.RECORDING;
-                break;
-            case State.RECORDING:
-                if (sprite != null)
-                {
-                    spriterender.sprite = spritesave;
-                }
-                state = State.STOP;
-                break;
-        }
-        
         var avatars = GetComponentsInChildren<AvatarMaker>();
         foreach(var a in avatars)
         {
@@ -86,12 +59,5 @@ public class RecordButton : MonoBehaviour {
                 emotionAnalyser.AudioRecord = !emotionAnalyser.AudioRecord;
             }
         }
-        
-=======
-        //SoundEffectsHelper.Instance.MakeButtonSelectedSound();
-        //float fadeTime = fadingScene.BeginFade(1);
-        //yield return new WaitForSeconds(fadeTime);
-        //SceneManager.LoadScene(_nextScene);
->>>>>>> parent of f488d98... preparation interface graphique et build
     }
 }

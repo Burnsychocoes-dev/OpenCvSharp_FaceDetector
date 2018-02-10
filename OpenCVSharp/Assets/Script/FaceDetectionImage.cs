@@ -143,7 +143,7 @@ public class FaceDetectionImage : MonoBehaviour
 
     LandmarksRetriever landmarks;
 
-    Avatar avatar;
+    AvatarMaker avatar;
 
     Camera camera;
 
@@ -167,7 +167,7 @@ public class FaceDetectionImage : MonoBehaviour
 
     void Start() {
         landmarks = GetComponent<LandmarksRetriever>();
-        avatar = GetComponent<Avatar>();
+        avatar = GetComponent<AvatarMaker>();
         hair = GetComponent<HairDetection>();
         camera = FindObjectOfType<Camera>();
 
@@ -331,10 +331,8 @@ public class FaceDetectionImage : MonoBehaviour
                 hair.getEyeColor();
                 hair.FindHairRoots();
                 hair.GetHairColor();
-                //hair.FindHairMax();
-                
-                hair.GuessHairCut();
-                //hair.GuessHairHeight();
+                hair.FindHairMax();
+                hair.GuessHairHeight();
                 //hair.GuessHairLength();
                 Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
 
@@ -368,7 +366,7 @@ public class FaceDetectionImage : MonoBehaviour
             case Etape.Avatar:
                 CleanScreen();
                 landmarks.Init();
-                avatar.SetPerso();
+                //avatar.SetPerso();
                 avatar.SetHair(false);
                 avatar.ChangeEyes();
                 avatar.ChangeNose();
