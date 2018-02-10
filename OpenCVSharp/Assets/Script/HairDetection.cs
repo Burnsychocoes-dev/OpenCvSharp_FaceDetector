@@ -33,7 +33,7 @@ public class HairDetection : MonoBehaviour {
     private int yHairMax;
     private int hairHeight;
     private int j_min=-1;
-    public int J_min
+    /*public int J_min
     {
         get { return j_min; }
     }
@@ -41,11 +41,11 @@ public class HairDetection : MonoBehaviour {
     public int J_max
     {
         get { return j_max; }
-    }
-    public enum Epaisseur
+    }*/
+    /*public enum Epaisseur
     {
         aucune,
-        non_epais,
+        peu_epais,
         epais,
         tres_epais
     }
@@ -58,7 +58,23 @@ public class HairDetection : MonoBehaviour {
         moyen,
         longs
     }
-    public Longueur longueur = Longueur.aucune;
+    public Longueur longueur = Longueur.aucune;*/
+
+    public enum Haircut
+    {
+        Chauve,
+        BoldHair,
+        CasualLongHair,
+        DrifterHair,
+        FunkyHair,
+        JakeHair,
+        KamiHair,
+        ScottHair,
+        MicahMaleHair,
+        KungFuHair
+    }
+
+    public Haircut haircut = Haircut.Chauve;
 
     private FaceDetectionImage faceDetectionImage;
 
@@ -255,8 +271,8 @@ public class HairDetection : MonoBehaviour {
         //On va pick tous les 10 pixels
         int youCanPickEveryXPixels = 10;
         System.Random rand = new System.Random();
-
-
+        
+        
         for (var i= rect.Y; i < rect.Y + rect.Height; i++)
         {
             for (var j = rect.X; j < rect.X + rect.Width; j++)
@@ -478,8 +494,8 @@ public class HairDetection : MonoBehaviour {
         int lineNonHairCounter = 0;
 
         //Calcul de j_min et j_max
-        j_min = (int)Math.Floor(faceDetectionImage.localLandmarks[0]);
-        j_max = (int)Math.Floor(faceDetectionImage.localLandmarks[2 * 16]);
+        int j_min = (int)Math.Floor(faceDetectionImage.localLandmarks[0]);
+        int j_max = (int)Math.Floor(faceDetectionImage.localLandmarks[2 * 16]);
 
         //Parcours de toutes les lignes à partir du landmarks 15 (extrémité basse de l'oreille)
         int i0 = (int) faceDetectionImage.localLandmarks[2 * 14 + 1];
@@ -497,7 +513,7 @@ public class HairDetection : MonoBehaviour {
                     if (j <= j_min)
                     {
                         //Verification de la nature du pixel (i,j)
-                        Vec3b vec = faceDetectionImage.VideoSourceImage.At<Vec3b>(i, j);
+                        Vec3b vec = faceDetectionImage.VideoSourceImage.At<Vec3b>(i, j); //Récupération du vecteur (b,v,r) du pixel (i,j)
                         Color32 color = new Color32
                         {
                             r = vec.Item2,
@@ -590,78 +606,284 @@ public class HairDetection : MonoBehaviour {
     }
 
 
-    /*public void GuessHairLength()
-    {
-        Debug.Log("Guess Hair Length");
-        //on fait yHairMax - yHairRoot et on compare à la longueur du visage
-        if(yHairRoot == yHairTop)
-        {
-            Debug.Log("Cette personne est chauve !");
-            
-            return;
-        }
 
-        //On va comparer yHairMax par rapport aux landmarks : le nez et le menton
-        if (yHairMax <= landMarksRetriever.Nose.Item1)
-        {
-            Debug.Log("Cette personne a les cheveux court !");
-            longueur = Longueur.tres_court;
-            return;
-        } else if (yHairMax >= landMarksRetriever.Chin.Item1)
-        {
-            Debug.Log("Cette personne a les cheveux longs !");
-            longueur = Longueur.longs;
-            return;
-        }
-        else
-        {
-            Debug.Log("Cette personne a les cheveux moyens !");
-            longueur = Longueur.moyen;
-            return;
-        }
+    
+    //Cette fonction permet de déterminer la longueur des cheveux
+    //En sortie : un entier compris entre 1 et 3 :
+    //           - 1 => les cheveux sont courts
+    //           - 3 => les cheveux sont longs
+    //           - 2 => à mis chemin entre 1 et 2
+    private int GuessHairLength()
+    {
+        int ordonnee_landmarks_14 = (int) faceDetectionImage.localLandmarks[2*13 + 1];
+        int ordonnee_landmarks_9 = (int)faceDetectionImage.localLandmarks[2 * 8 + 1];
+
+        int resultat = 0;
         
-    }*/
-
-    void GuessHairLength()
-    {
-        /*if (yHairMax < faceDetectionImage.rectMouth.Y)
+        if (yHairMax < ordonnee_landmarks_14)
         {
-            //Cheveux très court
-            longueur = Longueur.tres_court;
-        }
-        else if (yHairMax > faceDetectionImage.Face.Y + faceDetectionImage.Face.Height)
+            //Les Cheveux sont courts
+            resultat = 1;
+        } else if (yHairMax < ordonnee_landmarks_9)
         {
-            //Cheveux long
-            longueur = Longueur.longs;
+            //Les Cheveux ne sont ni court, ni long
+            resultat = 2;
         } else
         {
-            //Cheveux court
-            longueur = Longueur.court;
-        }*/
+            //Les Cheveux sont long
+            resultat = 3;
+        }         
+        return resultat;
     }
 
-    public void GuessHairHeight()
+
+    //Cette fonction permet de déterminer la proportion de l'épaisseur des cheveux par rapport au visage
+    //En sortie : un entier compris entre 0 et 4 :
+    //           - 1 => l'épaisseur est faible
+    //           - 2 => l'épaisseur est moyenne
+    //           - 3 => l'épaisseur est forte
+    //           - 4 => l'épaisseur est très forte
+
+    private int GuessHairHeight()
     {
-        Debug.Log("Guess Hair Height");
-        hairHeight = yHairRoot - yHairTop;
-        if (hairHeight >= faceDetectionImage.Face.Height / 3)
+        int resultat = 0;
+        int epaisseur = yHairRoot - yHairTop;
+
+        float ordonnee_landmark_20 = faceDetectionImage.localLandmarks[2 * 19 + 1];
+        float ordonnee_landmark_25 = faceDetectionImage.localLandmarks[2 * 24 + 1];
+
+        int ordonnee_haut_visage = (int)(ordonnee_landmark_20 + ordonnee_landmark_25) / 2;
+        int ordonnee_bas_visage = (int)faceDetectionImage.localLandmarks[2 * 8];
+        int taille_visage = ordonnee_bas_visage - ordonnee_haut_visage;
+
+        double proportion = (double)epaisseur / (double)(taille_visage);
+        double proportion_faible = 0.05;
+        double proportion_moyenne = 0.25;
+        double proportion_forte = 0.45;
+        double proportion_tres_forte = 0.55;
+
+
+        double distance_1 = Math.Abs(proportion - proportion_faible);
+        double distance_2 = Math.Abs(proportion - proportion_moyenne);
+        double distance_3 = Math.Abs(proportion - proportion_forte);
+        double distance_4 = Math.Abs(proportion - proportion_tres_forte);
+
+        if (distance_1 <= distance_2 && distance_1 <= distance_3 && distance_1 <= distance_4)
         {
-            Debug.Log("Cette personne a les cheveux très épais !");
-            epaisseur = Epaisseur.tres_epais;
-            return;
-        }else if(hairHeight <= faceDetectionImage.Face.Height / 6)
-        {
-            Debug.Log("Cette personne a les cheveux non épais !");
-            epaisseur = Epaisseur.non_epais;
-            return;
+            //le front est grand
+            resultat = 1;
         }
-        else
+        else if (distance_2 <= distance_1 && distance_2 <= distance_3 && distance_2 <= distance_4)
         {
-            Debug.Log("Cette personne a les cheveux épais !");
-            epaisseur = Epaisseur.epais;
-            return;
+            //le front est moyen
+            resultat = 2;
         }
+        else if (distance_3 <= distance_1 && distance_3 <= distance_2 && distance_3 <= distance_4)
+        {
+            //le front est petit
+            resultat = 3;
+        } else
+        {
+            resultat = 4;
+        }
+        return resultat;
     }
+
+
+
+    //Cette fonction permet de déterminer la proportion du front par rapport au visage
+    //           - 1 => le front est grand
+    //           - 3 => le front est petit 
+    //           - 2 => à mis chemin entre 1 et 2
+    private int TailleFront()
+    {
+        int resultat = 0;
+
+        float ordonnee_landmark_20 = faceDetectionImage.localLandmarks[2 * 19 + 1];
+        float ordonnee_landmark_25 = faceDetectionImage.localLandmarks[2 * 24 + 1];
+
+        int ordonnee_haut_visage = (int) (ordonnee_landmark_20 + ordonnee_landmark_25) / 2;
+        int ordonnee_bas_visage = (int) faceDetectionImage.localLandmarks[2 * 8];
+
+        int taille_visage = ordonnee_bas_visage - ordonnee_haut_visage;
+
+        int taille_front = ordonnee_haut_visage - yHairRoot;
+
+        double proportion = ((double)taille_front / (double)taille_visage);
+        Debug.Log("Proportion obtenue : " + proportion);
+
+        double proportion_forte = 0.3;
+        double proportion_moyenne = 0.15;
+
+        double proportion_faible = 0.05;
+        //double proportion_moyenne = (proportion_forte + proportion_faible) / 2;
+
+        double distance_1 = Math.Abs(proportion - proportion_forte);
+        double distance_2 = Math.Abs(proportion - proportion_moyenne);
+        double distance_3 = Math.Abs(proportion - proportion_faible);
+
+        if (distance_1 <= distance_2 && distance_1 <= distance_3)
+        {
+            //le front est grand
+            resultat = 1;
+        } else if (distance_2 <= distance_1 && distance_2 <= distance_3)
+        {
+            //le front est moyen
+            resultat = 2;
+        } else
+        {
+            //le front est petit
+            resultat = 3;
+        }
+
+
+        return resultat;
+    }
+
+
+    //Cette fonction permet de savoir si les cheveux sont disparate (les cheveux débordent considérablement au dela des oreilles)
+    public Boolean EstDisparate()
+    {
+        //Calcul de l'abscisse du point à la frontière entre les cheveux et le fond en parcourant la ligne d'ordonnée un landmark du sourcil
+        // à gauche et à droite
+        int iDroit = (int)faceDetectionImage.localLandmarks[2 * 24 + 1];
+        int jDroit = (int)faceDetectionImage.localLandmarks[2 * 24];
+        int xFrontiereDroite = -1;
+
+        int iGauche = (int)faceDetectionImage.localLandmarks[2 * 19 + 1];
+        int jGauche = (int)faceDetectionImage.localLandmarks[2 * 19];
+        int xFrontiereGauche = -1;
+
+        //Calcul de la frontière à droite
+        for (int j = jDroit; j<faceDetectionImage.ImWidth; j++)
+        {
+            Vec3b vec = faceDetectionImage.VideoSourceImage.At<Vec3b>(iDroit, j); //Récupération du vecteur (b,v,r) du pixel (i,j)
+            if (vec.Item2 == 0 && vec.Item1 == 0 && vec.Item0 == 0)
+            {
+                xFrontiereDroite = j;
+                break;
+            }
+
+            faceDetectionImage.VideoSourceImage.Set<Vec3b>(iDroit, j, new Vec3b
+            {
+                Item0 = 0,
+                Item1 = 255,
+                Item2 = 0
+            });
+        }
+
+        //Calcul de la frontière à gauche
+        for (int j = jGauche; j >= 0; j--)
+        {
+            Vec3b vec = faceDetectionImage.VideoSourceImage.At<Vec3b>(iGauche, j); //Récupération du vecteur (b,v,r) du pixel (i,j)
+            if (vec.Item2 == 0 && vec.Item1 == 0 && vec.Item0 == 0)
+            {
+                xFrontiereGauche = j;
+                break;
+            }
+
+            faceDetectionImage.VideoSourceImage.Set<Vec3b>(iGauche, j, new Vec3b
+            {
+                Item0 = 0,
+                Item1 = 255,
+                Item2 = 0
+            });
+        }
+
+
+        int j_min = (int)Math.Floor(faceDetectionImage.localLandmarks[0]);
+        int j_max = (int)Math.Floor(faceDetectionImage.localLandmarks[2 * 16]);
+
+        int largeurVisage = j_max - j_min;
+        double proportion_1 = ((double)(xFrontiereDroite - j_max))/ ((double) largeurVisage); // décrit à quel point les cheveux débordent à droite 
+        double proportion_2 = ((double)(j_min - xFrontiereGauche)) / ((double)largeurVisage); // décrit à quel point les cheveux débordent à gauche 
+
+        return (proportion_1 >= 0.17 || proportion_2 >= 0.17);
+    }
+
+    //Cette méthode permet de déterminer parmis les coupes existantes dans MORPH3D celle qui est la + appropriée
+    public void GuessHairCut()
+    {
+        yHairMax = (int)faceDetectionImage.localLandmarks[2 * 14 + 1];
+        yHairTop = 75;
+        int longueurCheveux = GuessHairLength();
+        int tailleFront = TailleFront();
+        int epaisseur = GuessHairHeight();
+
+        if (epaisseur == 1)
+        {
+            //L'épaisseur des cheveux est trop faible
+            haircut = Haircut.Chauve;
+        } else
+        {
+            if (longueurCheveux == 2)
+            {
+                //Les cheveux ne sont ni court, ni long
+                haircut = Haircut.DrifterHair;
+
+            }
+            else if (longueurCheveux == 3)
+            {
+                //Les cheveux sont long
+                haircut = Haircut.CasualLongHair;
+            }
+            else
+            {
+                //Les cheveux sont courts
+
+                if (tailleFront == 1)
+                {
+                    //Le front est grand
+                    if (epaisseur == 2)
+                    {
+                        //l'épaisseur des cheveux est moyenne
+                        haircut = Haircut.BoldHair;
+                    } else
+                    {
+                        //l'épaisseur des cheveux est élevé, voir très élevé, il reste 2 candidats qu'on va distinguer aléatoirement (forte ressemblance)
+                        System.Random rand = new System.Random();
+                        int aleatoire = rand.Next(2);
+                        if (aleatoire == 0)
+                        {
+                            haircut = Haircut.ScottHair;
+                        } 
+                        if (aleatoire == 1)
+                        {
+                            haircut = Haircut.FunkyHair;
+                        }
+                    }
+
+                }
+                else if (tailleFront == 2)
+                {
+                    //le front est moyen
+                    if (epaisseur == 2 || epaisseur == 3)
+                    {
+                        //épaisseur moyenne ou élevée
+                        haircut = Haircut.JakeHair;
+                    } else
+                    {
+                        //épaisseur très élevée, il reste 2 candidats à départager par rapport au caractère disparate ou compacte des cheveux
+                        if (EstDisparate())
+                        {
+                            haircut = Haircut.MicahMaleHair;
+                        } else
+                        {
+                            haircut = Haircut.KamiHair;
+                        }
+                    }
+                }
+                else
+                {
+                    //Le front est casiment inexistant
+                    haircut = Haircut.KungFuHair;
+                }
+            }
+        }
+        Debug.Log(haircut);
+
+    }
+
 
     //met à jour l'espérance à partir d'un tableau d'échantillons
     Vec3f ComputeVec3fExpectancy(Vec3f[] tab, int taille_tab)
