@@ -1,8 +1,14 @@
 ﻿Shader "Morph3D/Skin Deferred" {
+
 	Properties{
 		_Color("Color", Color) = (1,1,1,1)
 		_MainTex("Albedo (RGB)", 2D) = "white" {}
 		_NormalTex("Normal", 2D) = "bump" {}
+
+		_Overlay("Overlay",2D) = "clear" {}
+		_OverlayColor("Overlay Color", Color) = (0,0,0,0)
+		_EyeTint("Eye Tint", Color) = (0,0,0,0)
+		_EyeTex("Eye Albedo", 2D) = "clear" {}
 
 		_Glossiness("Smoothness", Range(0,1)) = 0.5
 		//_Metallic("Metallic", Range(0,1)) = 0.0
@@ -18,62 +24,200 @@
 
 	SubShader{
 		Tags{
+			"RenderType"="Transparent"
 			"Queue" = "Transparent"
 		}
+
+
 		LOD 200
 
-		Cull Back
-		ZWrite On
-		Blend SrcAlpha OneMinusSrcAlpha
+			Cull Back
+			ZWrite On
+			ZTest LEqual
+			Blend SrcAlpha OneMinusSrcAlpha
 
-		CGPROGRAM
-		#pragma target 3.0
-		#pragma surface surf StandardSpecular nolightmap noforwardadd addshadow
-
-		sampler2D _MainTex;
-
-		sampler2D _NormalTex;
-
-		sampler2D _AlphaTex;
-		float _AlphaCutoff;
-
-		sampler2D _SpecGlossMap;
-		sampler2D _OcclusionMap;
-		float4 _SpecColorA;
-		float _OcclusionStrength;
-
-		struct Input {
-			float2 uv_MainTex;
-			float2 uv_NormalTex;
-			float2 uv_OcclusionTex;
-			float2 uv_SpecGlossTex;
-		};
-
-		float _Glossiness;
-		//half _Metallic;
-		float4 _Color;
+			CGPROGRAM
+			#pragma target 3.0
+			#pragma surface surf StandardSpecular nolightmap noforwardadd addshadow
 
 
-		void surf(Input IN, inout SurfaceOutputStandardSpecular o) {
-			// Albedo comes from a texture tinted by color
-			float4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
-			o.Albedo = c.rgba;
-			o.Alpha = tex2D(_AlphaTex, IN.uv_MainTex.xy).r;//use our custom alpha map
+			#pragma shader_feature _OVERLAY
+			#pragma shader_feature _EYETINT
+			#pragma shader_feature _EYETEX
+			#pragma shader_feature _INCLUDERINGCHECK
 
-			clip(o.Alpha - _AlphaCutoff);
+			sampler2D _MainTex;
 
-			o.Alpha = c.a;
-			o.Normal = UnpackNormal(tex2D(_NormalTex, IN.uv_NormalTex));
-			o.Occlusion = tex2D(_OcclusionMap, IN.uv_OcclusionTex) * (_OcclusionStrength);
+			sampler2D _NormalTex;
 
-			//SurfaceOutputStandard
-			//o.Metallic = _Metallic;
+			float _AlphaCutoff;
 
-			//SurfaceOutputStandardSpecular
-			o.Specular = tex2D(_SpecGlossMap, IN.uv_SpecGlossTex) * _SpecColorA;
-			o.Smoothness = _Glossiness;
-		}
-		ENDCG
+			sampler2D _SpecGlossMap;
+			sampler2D _OcclusionMap;
+			float4 _SpecColorA;
+			float _OcclusionStrength;
+
+			//MORPH3D uniforms
+			uniform sampler2D _AlphaTex;
+			uniform sampler2D   _Overlay;
+			uniform float4       _OverlayColor;
+			uniform sampler2D   _EyeTex;
+
+			uniform float4       _EyeTint;
+
+			struct Input {
+				float2 uv_MainTex;
+				float2 uv_NormalTex;
+				float2 uv_OcclusionTex;
+				float2 uv_SpecGlossTex;
+			};
+
+			float _Glossiness;
+			//half _Metallic;
+			float4 _Color;
+			
+			#include "MorphCommon.cginc"
+
+			void surf(Input IN, inout SurfaceOutputStandardSpecular o) {
+				// Albedo comes from a texture tinted by color
+				float2 uv = IN.uv_MainTex.xy;
+				float4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
+				o.Alpha = tex2D(_AlphaTex, IN.uv_MainTex.xy).r;//use our custom alpha map
+				clip(o.Alpha - _AlphaCutoff);
+
+				if (IsOpaqueEyeMask(uv)) {
+					float x = c.r + c.g + c.b;
+					if (x < 0.4) {
+						discard;
+					}
+				}
+
+				#if _OVERLAY
+					//check for our overlay
+					float4 overlay = Overlay(uv);
+					if (overlay.a > 0) {
+						//blend the overlay color with the overlay
+						overlay.rgb = ( overlay.rgb * (1 - _OverlayColor.a)) + (_OverlayColor.rgb * _OverlayColor.a);
+						//blend the overlay with the skin
+						overlay.rgb = ((1 - overlay.a) * c.rgb) + (overlay.a * overlay.rgb);
+
+						c = overlay.rgba;
+					}
+				#endif
+
+				#if _EYETEX && _EYETINT
+					if (IsIris(uv)) {
+						//check for our overlay
+						half4 eyeTex = EyeTex(uv);
+						if (eyeTex.a > 0) {
+							//blend the tint color with the replacement
+							eyeTex.rgb = (eyeTex.rgb * (1 - _EyeTint.a)) + (_EyeTint.rgb * _EyeTint.a);
+							//blend the replacement with the base
+							eyeTex.rgb = ((1 - eyeTex.a) * c.rgb) + (eyeTex.a * eyeTex.rgb);
+
+							c = eyeTex;
+						}
+					}
+
+				#endif
+
+				#if _EYETEX && !_EYETINT
+					if (IsIris(uv)) {
+						half4 eyeTex = EyeTex(uv);
+						if (eyeTex.a > 0) {
+							//blend the replacement with the base
+							eyeTex.rgb = ((1 - eyeTex.a) * c.rgb) + (eyeTex.a * eyeTex.rgb);
+
+							c = eyeTex;
+						}
+					}
+
+				#endif
+
+				#if !_EYETEX && _EYETINT
+					bool isEyeRing = IsEyeRing(uv, c);
+					if (IsIris(uv) || isEyeRing) {
+						if (isEyeRing) {
+							//fade out the tint a bit on the ring
+							_EyeTint.a *= 0.9;
+						}
+						c.rgb = ((1 - _EyeTint.a) * c.rgb) + (_EyeTint.a * _EyeTint.rgb);
+					}
+				#endif
+				
+				o.Albedo = c.rgba;
+
+
+
+				o.Alpha = c.a;
+				o.Normal = UnpackNormal(tex2D(_NormalTex, IN.uv_NormalTex));
+				o.Occlusion = tex2D(_OcclusionMap, IN.uv_OcclusionTex) * (_OcclusionStrength);
+
+				//SurfaceOutputStandard
+				//o.Metallic = _Metallic;
+
+				//SurfaceOutputStandardSpecular
+				o.Specular = tex2D(_SpecGlossMap, IN.uv_SpecGlossTex) * _SpecColorA;
+				o.Smoothness = _Glossiness;
+			}
+			ENDCG
+			
+				/*
+			Cull Back
+			ZWrite On
+			Blend SrcAlpha OneMinusSrcAlpha
+
+			CGPROGRAM
+			#pragma target 3.0
+			#pragma surface surf StandardSpecular nolightmap noforwardadd addshadow
+
+
+			sampler2D _MainTex;
+
+			sampler2D _NormalTex;
+
+			sampler2D _AlphaTex;
+			float _AlphaCutoff;
+
+			sampler2D _SpecGlossMap;
+			sampler2D _OcclusionMap;
+			float4 _SpecColorA;
+			float _OcclusionStrength;
+
+			struct Input {
+				float2 uv_MainTex;
+				float2 uv_NormalTex;
+				float2 uv_OcclusionTex;
+				float2 uv_SpecGlossTex;
+			};
+
+			float _Glossiness;
+			//half _Metallic;
+			float4 _Color;
+
+
+			void surf(Input IN, inout SurfaceOutputStandardSpecular o) {
+				// Albedo comes from a texture tinted by color
+				float4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
+				o.Albedo = c.rgba;
+				o.Alpha = tex2D(_AlphaTex, IN.uv_MainTex.xy).r;//use our custom alpha map
+
+				clip(o.Alpha - _AlphaCutoff);
+
+				o.Alpha = c.a;
+				o.Normal = UnpackNormal(tex2D(_NormalTex, IN.uv_NormalTex));
+				o.Occlusion = tex2D(_OcclusionMap, IN.uv_OcclusionTex) * (_OcclusionStrength);
+
+				//SurfaceOutputStandard
+				//o.Metallic = _Metallic;
+
+				//SurfaceOutputStandardSpecular
+				o.Specular = tex2D(_SpecGlossMap, IN.uv_SpecGlossTex) * _SpecColorA;
+				o.Smoothness = _Glossiness;
+			}
+			ENDCG
+			*/
 	}
 	FallBack "Diffuse"
+	CustomEditor "MorphSkinDeferredGUI"
 }
