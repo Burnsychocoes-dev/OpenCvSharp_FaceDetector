@@ -164,7 +164,7 @@ public class PhotoAnalysingScript : MonoBehaviour
     // The imported function
     [DllImport("face_landmark_detection_ex", EntryPoint = "FaceLandmarkDetection")] public static extern int GetLocalLandmarks(String datPath, String filePath, float[] landmarks);
 
-
+    public Boolean isMen = true;
     void Start() {
         //landmarks = GetComponent<LandmarksRetriever>();
         //avatar = GetComponent<AvatarMaker>();
@@ -332,7 +332,8 @@ public class PhotoAnalysingScript : MonoBehaviour
                 hair.FindHairRoots();
                 hair.GetHairColor();
                 hair.FindHairMax();
-                hair.GuessHairHeight();
+                hair.GuessHairCut();
+                //hair.GuessHairHeight();
                 //hair.GuessHairLength();
                 Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
 
