@@ -50,6 +50,8 @@ public class AudioEmotionAnalyser : MonoBehaviour {
     private static int secondeDivisor = 2;
 
     private float anger_offset = 0.2f;
+	//précédente valeur : 3
+	private int falseSilenceCnt = 2;
     private int countDivisor = 0;
 
     private int saveCnt = 0;
@@ -362,7 +364,7 @@ public class AudioEmotionAnalyser : MonoBehaviour {
                     cnt0++;
                 }
                 else {
-                    if (cnt0 <= 3) {
+                    if (cnt0 <= falseSilenceCnt) {
                         totalCnt0 += cnt0;                      
                     }
                     cnt0 = 0;
@@ -382,7 +384,7 @@ public class AudioEmotionAnalyser : MonoBehaviour {
                     cnt0Volatile++;
                 }
                 else {
-                    if (cnt0Volatile <= 3) {
+                    if (cnt0Volatile <= falseSilenceCnt) {
                         totalCnt0Volatile += cnt0Volatile;
                     }
                     cnt0Volatile = 0;
