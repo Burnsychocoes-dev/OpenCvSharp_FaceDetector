@@ -295,9 +295,6 @@ public class FaceDetection : MonoBehaviour
         //var rnd = new System.Random();
 
         var face_count = 0;
-        var eye_count = 0;
-        //var ear_count = 0;
-        var mouth_count = 0;
         foreach (var faceRect in faces)
         {
             var detectedFaceImage = new Mat(_image, faceRect);
@@ -305,128 +302,18 @@ public class FaceDetection : MonoBehaviour
             //Cv2.WaitKey(1); // do events
 
             var facec_rectangle_color = Scalar.FromRgb(255, 0, 0);
-            Cv2.Rectangle(_image, faceRect, facec_rectangle_color, 3);
+            Cv2.Rectangle(_image, faceRect, facec_rectangle_color, 3);          
 
 
             var detectedFaceGrayImage = new Mat();
             Cv2.CvtColor(detectedFaceImage, detectedFaceGrayImage, ColorConversionCodes.BGRA2GRAY);
 
-
-            var eyes = eye_cascade.DetectMultiScale(
-                image: grayImage,
-                scaleFactor: 1.3,
-                minNeighbors: 5,
-                flags: HaarDetectionType.DoRoughSearch | HaarDetectionType.ScaleImage,
-                minSize: new Size(50, 50)
-            );
-            foreach (var eyeRect in eyes)
-            {
-                var detectedEyeImage = new Mat(_image, eyeRect);
-                //Cv2.ImShow(string.Format("Face {0}", eye_count), detectedEyeImage);
-                //Cv2.WaitKey(1); // do events
-
-                var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
-                Cv2.Rectangle(_image, eyeRect, eye_rectangle_color, 3);
-                rectEye = eyeRect;
-
-                var detectedEyeGrayImage = new Mat();
-                Cv2.CvtColor(detectedEyeImage, detectedEyeGrayImage, ColorConversionCodes.BGRA2GRAY);
-
-                eye_count++;
-            }
-
-
-            //var left_ear = left_ear_cascade.DetectMultiScale(
-            //    image: grayImage,
-            //    scaleFactor: 1.3,
-            //    minNeighbors: 5,
-            //    flags: HaarDetectionType.DoRoughSearch | HaarDetectionType.ScaleImage,
-            //    minSize: new Size(50, 50)
-            //);
-            //foreach (var ear in left_ear)
-            //{
-            //    var detectedEarImage = new Mat(_image, ear);
-            //    //Cv2.ImShow(string.Format("Face {0}", eye_count), detectedEyeImage);
-            //    //Cv2.WaitKey(1); // do events
-
-            //    var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
-            //    Cv2.Rectangle(_image, ear, eye_rectangle_color, 3);
-
-
-            //    var detectedEyeGrayImage = new Mat();
-            //    Cv2.CvtColor(detectedEarImage, detectedEyeGrayImage, ColorConversionCodes.BGRA2GRAY);
-
-            //    ear_count++;
-            //}
-
-
-            // var right_ear = right_ear_cascade.DetectMultiScale(
-            //    image: grayImage,
-            //    scaleFactor: 1.3,
-            //    minNeighbors: 5,
-            //    flags: HaarDetectionType.DoRoughSearch | HaarDetectionType.ScaleImage,
-            //    minSize: new Size(50, 50)
-            //);
-            //foreach (var ear in right_ear)
-            //{
-            //    var detectedEarImage = new Mat(_image, ear);
-            //    //Cv2.ImShow(string.Format("Face {0}", eye_count), detectedEyeImage);
-            //    //Cv2.WaitKey(1); // do events
-
-            //    var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
-            //    Cv2.Rectangle(_image, ear, eye_rectangle_color, 3);
-
-
-            //    var detectedEyeGrayImage = new Mat();
-            //    Cv2.CvtColor(detectedEarImage, detectedEyeGrayImage, ColorConversionCodes.BGRA2GRAY);
-
-            //    ear_count++;
-            //}
-
-
-            var mouth = mouth_cascade.DetectMultiScale(
-               image: grayImage,
-               scaleFactor: 1.3,
-               minNeighbors: 5,
-               flags: HaarDetectionType.DoRoughSearch | HaarDetectionType.ScaleImage,
-               minSize: new Size(50, 50)
-           );
-            foreach (var m in mouth)
-            {
-                var detectedEarImage = new Mat(_image, m);
-                //Cv2.ImShow(string.Format("Face {0}", eye_count), detectedEyeImage);
-                //Cv2.WaitKey(1); // do events
-
-                if(m.Y > rectEye.Y && (m.Y + m.Height) < (faceRect.Y + faceRect.Height) && Mathf.Abs(m.Y - rectEye.Y) > 100)
-                {
-                    var eye_rectangle_color = Scalar.FromRgb(0, 255, 0);
-                    Cv2.Rectangle(_image, m, eye_rectangle_color, 3);
-
-
-                    var detectedEyeGrayImage = new Mat();
-                    Cv2.CvtColor(detectedEarImage, detectedEyeGrayImage, ColorConversionCodes.BGRA2GRAY);
-
-                    mouth_count++;
-                }
-            }
+           
             face_count++;
         }
-        //Debug.Log(face_count);
-        if (/*face_count == 1 && */!waitSoundEffect)
-        {
-            //Debug.Log(faces[0]);
-            //Debug.Log(meshRendererCenter.x);
-            //Debug.Log((int)meshRendererCenter.y + 50);
-            //Point origin = faces[0].Location;
-            //float width = faces[0].Width;
-            //float height = faces[0].Height;
-            // Verification si le rect de la face est bien dans la zone de photo
-            //if(origin.X > (int)meshRendererCenter.x + 350 && 
-            //    origin.X + width < (int)meshRendererCenter.x + 350 + 600 &&
-            //    origin.Y > (int)meshRendererCenter.y + 50 &&
-            //    origin.Y + height < (int)meshRendererCenter.y + 5 + 600 &&
-            //    width > 400 &&
-            //    height > 400)
+
+        if (!waitSoundEffect)
+        {          
             if(Input.GetButtonDown("Jump"))
             {
                 Debug.Log("Take photo !");
@@ -469,7 +356,7 @@ public class FaceDetection : MonoBehaviour
     // close the opencv window
     public void OnDestroy()
     {
-        Cv2.DestroyAllWindows();
+        _webcamTexture.Stop();
 
     }
 
