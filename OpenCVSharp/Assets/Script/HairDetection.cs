@@ -159,7 +159,12 @@ public class HairDetection : MonoBehaviour
 
         //draw a rectangle 
         //OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(1, 1, photo.VideoSourceImage.Cols - 1, photo.VideoSourceImage.Rows - 1);
-        OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(photo.Face.X - 100, photo.Face.Y - 100, photo.Face.Width + 200, photo.Face.Height + 200);
+
+        int hauteurVisage =(int) (photo.localLandmarks[2 * 8 + 1] - photo.localLandmarks[2 * 24 + 1]);
+
+        hauteurVisage = (int)(0.4*hauteurVisage);
+
+        OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(photo.Face.X , photo.Face.Y - hauteurVisage, photo.Face.Width, photo.Face.Height + 2* hauteurVisage);
 
         Cv2.GrabCut(photo.VideoSourceImage, result, rectangle, bgModel, fgModel, 1, GrabCutModes.InitWithRect);
         Cv2.Compare(result, new Scalar(3, 3, 3), result, CmpTypes.EQ);
@@ -176,7 +181,15 @@ public class HairDetection : MonoBehaviour
     {
         Debug.Log("Get Skin Color");
         Vec3f[] skinColorSampleYCbCr = new Vec3f[colorSampleListSize];
-        int skinColorCounter = GetColorFromRect(skinColorSampleYCbCr, photo.RectFront); // récupération d'un échantillon de couleurs dans le rectangle donné en entrée
+
+        int dx = (int) (photo.localLandmarks[2 * 27] - photo.localLandmarks[2 * 21]);
+        int dy = (int) (photo.localLandmarks[2 * 15 + 1] - photo.localLandmarks[2 * 16 + 1]);
+        dy = (int) (0.4 * dy);
+
+
+        OpenCvSharp.Rect rectFront = new OpenCvSharp.Rect((int) photo.localLandmarks[2 * 21], (int) photo.localLandmarks[2 * 21 + 1] - dy, dx, dy);
+
+        int skinColorCounter = GetColorFromRect(skinColorSampleYCbCr, rectFront); // récupération d'un échantillon de couleurs dans le rectangle donné en entrée
         //>>>Calcul de l'espérance skinColorYCbCrExpectancy
         skinColorYCbCrExpectancy = ComputeVec3fExpectancy(skinColorSampleYCbCr, skinColorCounter);
         Debug.Log("Skin Color YCbCrExpectancy");
@@ -198,6 +211,7 @@ public class HairDetection : MonoBehaviour
         Cv2.Rectangle(photo.VideoSourceImage, rectCouleur, couleurRectangle, -5);
 
 
+        Cv2.Rectangle(photo.VideoSourceImage, rectFront, Scalar.FromRgb(0,0,255), 1);
 
         //>>>Calcul des Thresholds skinColorYCbCrThresholds
         skinColorCbCrThreshold = Math.Ceiling(ComputeVec3fThresholds(skinColorSampleYCbCr, skinColorCounter, skinColorYCbCrExpectancy));
@@ -391,11 +405,11 @@ public class HairDetection : MonoBehaviour
         int pixelBlancCounter = 0;
         int pixelNonSkin = 0;
 
-        //On part du haut du front
+        //On part du bas du front
 
         int j = (int)photo.localLandmarks[2 * 8];
-
-        for (var i = photo.RectFront.Y; i > 0; i--)
+        int i0 = (int)((photo.localLandmarks[2 * 19 + 1] + photo.localLandmarks[2 * 24 + 1])/2);
+        for (var i = i0; i > 0; i--)
         {
 
             Vec3b vec = photo.VideoSourceImage.At<Vec3b>(i, j);
@@ -467,7 +481,6 @@ public class HairDetection : MonoBehaviour
         {
             for (var j = 0; j < photo.ImWidth; j++)
             {
-                //Vec3b vec = photo.VideoSourceImageData[j + i * photo.ImWidth];
                 Vec3b vec = photo.VideoSourceImage.At<Vec3b>(i, j);
                 Color32 color = new Color32
                 {
@@ -559,11 +572,7 @@ public class HairDetection : MonoBehaviour
                             };
 
                             Vec3f sample = FromRGBToYCbCr(color);
-                            if (EuclidianDistance(sample.Item1, sample.Item2, skinColorYCbCrExpectancy) > skinColorCbCrThreshold && !(color.r == 255 && color.g == 255 && color.b == 255))
-                            {
-                                droiteValide = true;
-                                break; // plus besoin de continuer
-                            }
+                            droiteValide = !(color.r == 255 && color.g == 255 && color.b == 255);
                         }
                     }
                 }
@@ -650,7 +659,7 @@ public class HairDetection : MonoBehaviour
 
 
     //Cette fonction permet de déterminer la longueur des cheveux pour les femmes
-    //En sortie : un entier compris entre 1 et 3 :
+    //En sortie : un entier compris entre 1 et 4 :
     //           - 1 => les cheveux sont très courts
     //           - 2 => les cheveux sont courts
     //           - 3 => les cheveux sont entre court et long
@@ -714,10 +723,11 @@ public class HairDetection : MonoBehaviour
 
         double proportion = (double)epaisseur / (double)(taille_visage);
         double proportion_faible = 0.05;
-        double proportion_moyenne = 0.25;
+        double proportion_moyenne = 0.20;
         double proportion_forte = 0.45;
         double proportion_tres_forte = 0.55;
 
+        Debug.Log("Proportion de l'epaisseur obtenue : " + proportion);
 
         double distance_1 = Math.Abs(proportion - proportion_faible);
         double distance_2 = Math.Abs(proportion - proportion_moyenne);
@@ -767,7 +777,7 @@ public class HairDetection : MonoBehaviour
         int taille_front = ordonnee_haut_visage - yHairRoot;
 
         double proportion = ((double)taille_front / (double)taille_visage);
-        Debug.Log("Proportion obtenue : " + proportion);
+        Debug.Log("Proportion du front obtenue : " + proportion);
 
         double proportion_forte = 0.3;
         double proportion_moyenne = 0.15;
@@ -817,7 +827,7 @@ public class HairDetection : MonoBehaviour
         for (int j = jDroit; j < photo.ImWidth; j++)
         {
             Vec3b vec = photo.VideoSourceImage.At<Vec3b>(iDroit, j); //Récupération du vecteur (b,v,r) du pixel (i,j)
-            if (vec.Item2 == 0 && vec.Item1 == 0 && vec.Item0 == 0)
+            if (vec.Item2 == 255 && vec.Item1 == 255 && vec.Item0 == 255)
             {
                 xFrontiereDroite = j;
                 break;
@@ -835,7 +845,7 @@ public class HairDetection : MonoBehaviour
         for (int j = jGauche; j >= 0; j--)
         {
             Vec3b vec = photo.VideoSourceImage.At<Vec3b>(iGauche, j); //Récupération du vecteur (b,v,r) du pixel (i,j)
-            if (vec.Item2 == 0 && vec.Item1 == 0 && vec.Item0 == 0)
+            if (vec.Item2 == 255 && vec.Item1 == 255 && vec.Item0 == 255)
             {
                 xFrontiereGauche = j;
                 break;
@@ -856,6 +866,8 @@ public class HairDetection : MonoBehaviour
         int largeurVisage = j_max - j_min;
         double proportion_1 = ((double)(xFrontiereDroite - j_max)) / ((double)largeurVisage); // décrit à quel point les cheveux débordent à droite 
         double proportion_2 = ((double)(j_min - xFrontiereGauche)) / ((double)largeurVisage); // décrit à quel point les cheveux débordent à gauche 
+
+
 
         return (proportion_1 >= proportion || proportion_2 >= proportion);
     }
@@ -908,7 +920,7 @@ public class HairDetection : MonoBehaviour
                         else
                         {
                             //l'épaisseur des cheveux est élevé, voir très élevé, il reste 2 candidats qu'on va distinguer aléatoirement (forte ressemblance)
-                            System.Random rand = new System.Random();
+                            /*System.Random rand = new System.Random();
                             int aleatoire = rand.Next(2);
                             if (aleatoire == 0)
                             {
@@ -917,7 +929,8 @@ public class HairDetection : MonoBehaviour
                             if (aleatoire == 1)
                             {
                                 haircut = Haircut.FunkyHair;
-                            }
+                            }*/
+                            haircut = Haircut.ScottHair;
                         }
 
                     }
