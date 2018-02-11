@@ -51,7 +51,7 @@ public class AudioEmotionAnalyser : MonoBehaviour {
 
     private float anger_offset = 0.2f;
 	//précédente valeur : 3
-	private int falseSilenceCnt = 2;
+	private int falseSilenceCnt = 3;
     private int countDivisor = 0;
 
     private int saveCnt = 0;
