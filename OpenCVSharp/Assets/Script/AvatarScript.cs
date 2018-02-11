@@ -30,11 +30,30 @@ public class AvatarScript : MonoBehaviour {
         Femelle
     }
 
+    public enum Haircut
+    {
+        Chauve,
+        BoldHair,
+        CasualLongHair,
+        DrifterHair,
+        FunkyHair,
+        JakeHair,
+        KamiHair,
+        ScottHair,
+        MicahMaleHair,
+        KungFuHair,
+        MicahFemaleHair,
+        ToulouseHair,
+        NordicHair,
+        FashionHair,
+        RangeHair
+    }
+
     public struct Eye
     {
-        public float distanceMiddleSourcilCenterEye;
         public float eyeWidth;
         public float distanceBetweenNoseTopAndEyes;
+        public float distanceBrowEye;
         public Taille width;
     }
 
@@ -42,7 +61,9 @@ public class AvatarScript : MonoBehaviour {
     {
         public float noseHeight;
         public float noseWidth;
-        public float nostrilThickness;
+        public float noseTipHeight;
+        public float bigAngleNoseTopTip;
+        public float littleAngleNoseTopTip;
         public Taille width;
         public Taille height;
     }
@@ -63,15 +84,9 @@ public class AvatarScript : MonoBehaviour {
     public struct Visage
     {
         public float cornerChinWidth;
-        public float distanceButtomCurve;
+        public float distanceButtomCurve;      
     }
 
-    public struct Hair
-    {
-        public bool isHairless;
-        public Taille height;
-        public Taille length;
-    }
 
     public struct Personnage
     {
@@ -81,7 +96,7 @@ public class AvatarScript : MonoBehaviour {
         public Eye eye;
         public Nose nose;
         public Mouth mouth;
-        public Hair hair;
+        public Haircut haircut;
         public Visage visage;
     }
 
@@ -101,6 +116,14 @@ public class AvatarScript : MonoBehaviour {
     //    get { return avatar1; }
     //}
     public static Personnage avatarDefinitif;
+
+    public static int avatarSelectionId = 1;
+
+    private static int avatarGenerateNumber = 3;
+    public static int AvatarGenerateNumber
+    {
+        get { return avatarGenerateNumber; }
+    }
 
     // Use this for initialization
     void Start () {

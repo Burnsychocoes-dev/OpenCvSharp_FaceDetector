@@ -42,10 +42,7 @@ public class FadingScene : MonoBehaviour {
 
     private void OnLevelWasLoaded()
     {
-        Debug.Log("salut");
-        //Debug.Log(KarmaScript.karma);
         Debug.Log(SceneManager.GetActiveScene().name);
-        BeginFade(-1);
-        
+        BeginFade(-1);       
     }
 }
