@@ -332,7 +332,7 @@ public class FaceDetectionImage : MonoBehaviour
                 hair.FindHairRoots();
                 hair.GetHairColor();
                 hair.FindHairMax();
-                hair.GuessHairHeight();
+                //hair.GuessHairHeight();
                 //hair.GuessHairLength();
                 Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
 

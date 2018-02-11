@@ -26,6 +26,12 @@ public class AudioEmotionAnalyser : MonoBehaviour {
         get { return audioRecord; }
         set { audioRecord = value; }
     }
+    private bool audioRecordButton = false;
+    public bool AudioRecordButton
+    {
+        get { return audioRecordButton; }
+        set { audioRecordButton = value; }
+    }
 
 
     [SerializeField]
@@ -70,7 +76,6 @@ public class AudioEmotionAnalyser : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        myAudioClip = Microphone.Start(null, true, (int)recordTime, 44100);
         AvatarMakerManager = GetComponent<MORPH3D.M3DCharacterManager>();
     }
 	
@@ -78,6 +83,11 @@ public class AudioEmotionAnalyser : MonoBehaviour {
 	void Update () {
         if (audioRecord)
         {
+            if (audioRecordButton)
+            {
+                myAudioClip = Microphone.Start(null, true, (int)recordTime, 44100);
+                audioRecordButton = false;
+            }
             timeCount += Time.deltaTime;
             timeSpeakCount += Time.deltaTime;
             //
@@ -176,6 +186,56 @@ public class AudioEmotionAnalyser : MonoBehaviour {
             UpdateAvatarBlendshapeOnRealTime("eCTRLSad", sadness_value);
             UpdateAvatarBlendshapeOnRealTime("eCTRLAngry", anger_value);
             UpdateAvatarBlendshapeOnRealTime("eCTRLFear", fear_value);
+        }
+        else
+        {
+            if (audioRecordButton)
+            {
+                string morphName;
+                switch (state)
+                {
+                    case 0:
+                        morphName = "eCTRLvAA";
+                        break;
+
+                    case 1:
+                        morphName = "eCTRLvEE";
+                        break;
+
+                    case 2:
+                        morphName = "eCTRLvK";
+                        break;
+
+                    case 3:
+                        morphName = "eCTRLvOW";
+                        break;
+
+                    case 4:
+                        morphName = "eCTRLvS";
+                        break;
+
+                    case 5:
+                        morphName = "eCTRLvTH";
+                        break;
+
+                    case 6:
+                        morphName = "eCTRLvUW";
+                        break;
+
+                    case 7:
+                        morphName = "eCTRLvIY";
+                        break;
+
+                    default:
+                        morphName = "eCTRLvAA";
+                        break;
+                }
+                AvatarMakerManager.SetBlendshapeValue(morphName, 0);
+                UpdateAvatarBlendshapeOnRealTime("eCTRLHappy", 0);
+                UpdateAvatarBlendshapeOnRealTime("eCTRLSad", 0);
+                UpdateAvatarBlendshapeOnRealTime("eCTRLAngry", 0);
+                UpdateAvatarBlendshapeOnRealTime("eCTRLFear", 0);
+            }
         }
     }
 
@@ -293,11 +353,11 @@ public class AudioEmotionAnalyser : MonoBehaviour {
             happiness_value += happiness[(saveCnt + i) % sizeBuffer];
             sadness_value += sadness[(saveCnt + i) % sizeBuffer];
             //comptage de faux silences
-            if (neutrality[(saveCnt + i) % size] == 0 &&
-                    happiness[(saveCnt + i) % size] == 0 &&
-                    sadness[(saveCnt + i) % size] == 0 &&
-                    anger[(saveCnt + i) % size] == 0 &&
-                    fear[(saveCnt + i) % size] == 0 ) {
+            if (neutrality[(saveCnt + i) % sizeBuffer] == 0 &&
+                    happiness[(saveCnt + i) % sizeBuffer] == 0 &&
+                    sadness[(saveCnt + i) % sizeBuffer] == 0 &&
+                    anger[(saveCnt + i) % sizeBuffer] == 0 &&
+                    fear[(saveCnt + i) % sizeBuffer] == 0 ) {
                     cnt0++;
                 }
                 else {
@@ -313,11 +373,11 @@ public class AudioEmotionAnalyser : MonoBehaviour {
             fear_value += fear[(saveCntVolatile + i) % sizeBuffer];
 
             //comptage de faux silences
-            if (neutrality[(saveCntVolatile + i) % size] == 0 &&
-                    happiness[(saveCntVolatile + i) % size] == 0 &&
-                    sadness[(saveCntVolatile + i) % size] == 0 &&
-                    anger[(saveCntVolatile + i) % size] == 0 &&
-                    fear[(saveCntVolatile + i) % size] == 0) {
+            if (neutrality[(saveCntVolatile + i) % sizeBuffer] == 0 &&
+                    happiness[(saveCntVolatile + i) % sizeBuffer] == 0 &&
+                    sadness[(saveCntVolatile + i) % sizeBuffer] == 0 &&
+                    anger[(saveCntVolatile + i) % sizeBuffer] == 0 &&
+                    fear[(saveCntVolatile + i) % sizeBuffer] == 0) {
                     cnt0Volatile++;
                 }
                 else {

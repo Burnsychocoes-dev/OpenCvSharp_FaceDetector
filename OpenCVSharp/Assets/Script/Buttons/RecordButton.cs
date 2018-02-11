@@ -70,12 +70,13 @@ public class RecordButton : MonoBehaviour {
         }
 
         var avatars = GetComponentsInChildren<AvatarMaker>();
-        foreach(var a in avatars)
+        foreach (var a in avatars)
         {
-            if(a.PrefabGender == a.Perso.gender)
+            if (a.PrefabGender == a.Perso.gender)
             {
                 var emotionAnalyser = a.GetComponent<AudioEmotionAnalyser>();
                 emotionAnalyser.AudioRecord = !emotionAnalyser.AudioRecord;
+                emotionAnalyser.AudioRecordButton = !emotionAnalyser.AudioRecordButton;
             }
         }
     }

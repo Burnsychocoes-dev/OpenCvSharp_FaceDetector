@@ -9,102 +9,19 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1051348702125402}
+  m_RootGameObject: {fileID: 1072304677364200}
   m_IsPrefabParent: 1
---- !u!1 &1051348702125402
+--- !u!1 &1001316319427544
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4911492973351688}
-  - component: {fileID: 114894246879692678}
-  - component: {fileID: 114148721410812134}
-  m_Layer: 0
-  m_Name: LH_38Revolver
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1295615660857396
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4202588670217116}
-  - component: {fileID: 33862056558848984}
-  - component: {fileID: 23748066714222822}
-  - component: {fileID: 114849930948981886}
-  m_Layer: 0
-  m_Name: DZBGSMWS649_55498_LOD0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1326594570832640
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4507323093544672}
-  m_Layer: 0
-  m_Name: M3DFemale
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1619166742260310
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4376753869538914}
-  - component: {fileID: 33837799115772346}
-  - component: {fileID: 23746923146604584}
-  - component: {fileID: 114976828311787216}
-  m_Layer: 0
-  m_Name: DZBGSMWS649_55498_LOD1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1742776177323904
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4179076442290470}
-  m_Layer: 0
-  m_Name: DZBGSMWS649_55498
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1827545342636542
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4481433943445324}
-  - component: {fileID: 33450673768492432}
-  - component: {fileID: 23786414036709206}
-  - component: {fileID: 114572454149920668}
+  - component: {fileID: 4627057594911658}
+  - component: {fileID: 33742625919772600}
+  - component: {fileID: 23455692278966304}
+  - component: {fileID: 114495288702102948}
   m_Layer: 0
   m_Name: DZBGSMWS649_55498_LOD3
   m_TagString: Untagged
@@ -112,17 +29,67 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1940168214294362
+--- !u!1 &1072304677364200
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4540442908603394}
-  - component: {fileID: 33315393628359752}
-  - component: {fileID: 23963892951749940}
-  - component: {fileID: 114256686539340612}
+  - component: {fileID: 4561348331302540}
+  - component: {fileID: 114999747423346926}
+  - component: {fileID: 114372967458772240}
+  m_Layer: 0
+  m_Name: LH_38Revolver
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1500745079372572
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4362294780443600}
+  - component: {fileID: 33844685987235502}
+  - component: {fileID: 23175582339583792}
+  - component: {fileID: 114231254829391324}
+  m_Layer: 0
+  m_Name: DZBGSMWS649_55498_LOD0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1703322514537590
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4459742976426740}
+  m_Layer: 0
+  m_Name: DZBGSMWS649_55498
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1721261970169422
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4061722673618646}
+  - component: {fileID: 33900073554483524}
+  - component: {fileID: 23091580281722472}
+  - component: {fileID: 114255669132611704}
   m_Layer: 0
   m_Name: DZBGSMWS649_55498_LOD2
   m_TagString: Untagged
@@ -130,109 +97,142 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4179076442290470
+--- !u!1 &1811827442121348
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4941863697116710}
+  m_Layer: 0
+  m_Name: M3DFemale
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1982983223695606
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4027186455349164}
+  - component: {fileID: 33553738515628776}
+  - component: {fileID: 23666271720342928}
+  - component: {fileID: 114135105915078142}
+  m_Layer: 0
+  m_Name: DZBGSMWS649_55498_LOD1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4027186455349164
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1742776177323904}
+  m_GameObject: {fileID: 1982983223695606}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4507323093544672}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4202588670217116
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1295615660857396}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4911492973351688}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4376753869538914
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1619166742260310}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4911492973351688}
+  m_Father: {fileID: 4561348331302540}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4481433943445324
+--- !u!4 &4061722673618646
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1827545342636542}
+  m_GameObject: {fileID: 1721261970169422}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4911492973351688}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4507323093544672
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1326594570832640}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 4179076442290470}
-  m_Father: {fileID: 4911492973351688}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4540442908603394
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1940168214294362}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4911492973351688}
+  m_Father: {fileID: 4561348331302540}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4911492973351688
+--- !u!4 &4362294780443600
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1051348702125402}
+  m_GameObject: {fileID: 1500745079372572}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4561348331302540}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4459742976426740
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1703322514537590}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4941863697116710}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4561348331302540
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1072304677364200}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4202588670217116}
-  - {fileID: 4376753869538914}
-  - {fileID: 4540442908603394}
-  - {fileID: 4481433943445324}
-  - {fileID: 4507323093544672}
+  - {fileID: 4362294780443600}
+  - {fileID: 4027186455349164}
+  - {fileID: 4061722673618646}
+  - {fileID: 4627057594911658}
+  - {fileID: 4941863697116710}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23746923146604584
+--- !u!4 &4627057594911658
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1001316319427544}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4561348331302540}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4941863697116710
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1811827442121348}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4459742976426740}
+  m_Father: {fileID: 4561348331302540}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &23091580281722472
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1619166742260310}
+  m_GameObject: {fileID: 1721261970169422}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -261,12 +261,12 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!23 &23748066714222822
+--- !u!23 &23175582339583792
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1295615660857396}
+  m_GameObject: {fileID: 1500745079372572}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -295,12 +295,12 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!23 &23786414036709206
+--- !u!23 &23455692278966304
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1827545342636542}
+  m_GameObject: {fileID: 1001316319427544}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -329,12 +329,12 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!23 &23963892951749940
+--- !u!23 &23666271720342928
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1940168214294362}
+  m_GameObject: {fileID: 1982983223695606}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -363,65 +363,40 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33315393628359752
+--- !u!33 &33553738515628776
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1940168214294362}
-  m_Mesh: {fileID: 4300004, guid: 5e45ea8d44985ef41b87aa5834d933d4, type: 3}
---- !u!33 &33450673768492432
-MeshFilter:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1827545342636542}
-  m_Mesh: {fileID: 4300006, guid: 5e45ea8d44985ef41b87aa5834d933d4, type: 3}
---- !u!33 &33837799115772346
-MeshFilter:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1619166742260310}
+  m_GameObject: {fileID: 1982983223695606}
   m_Mesh: {fileID: 4300002, guid: 5e45ea8d44985ef41b87aa5834d933d4, type: 3}
---- !u!33 &33862056558848984
+--- !u!33 &33742625919772600
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1295615660857396}
+  m_GameObject: {fileID: 1001316319427544}
+  m_Mesh: {fileID: 4300006, guid: 5e45ea8d44985ef41b87aa5834d933d4, type: 3}
+--- !u!33 &33844685987235502
+MeshFilter:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1500745079372572}
   m_Mesh: {fileID: 4300000, guid: 5e45ea8d44985ef41b87aa5834d933d4, type: 3}
---- !u!114 &114148721410812134
+--- !u!33 &33900073554483524
+MeshFilter:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1721261970169422}
+  m_Mesh: {fileID: 4300004, guid: 5e45ea8d44985ef41b87aa5834d933d4, type: 3}
+--- !u!114 &114135105915078142
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1051348702125402}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -2101776992, guid: 2188feb5cf201e848a09932d706b7c3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dazName: LH_38Revolver
-  ID: 8e4ed5aa-2d85-4e21-8dee-744f7c4a4695
-  LODlist:
-  - {fileID: 114849930948981886}
-  - {fileID: 114976828311787216}
-  - {fileID: 114256686539340612}
-  - {fileID: 114572454149920668}
-  currentLODlevel: 1
-  meshType: 3
-  lockMaterials: 0
-  isAttached: 0
-  isVisible: 1
-  basePosition: {x: 0, y: 0, z: 0}
-  baseRotation: {x: 0, y: 0, z: 0}
---- !u!114 &114256686539340612
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1940168214294362}
+  m_GameObject: {fileID: 1982983223695606}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -2050122676, guid: 2188feb5cf201e848a09932d706b7c3a, type: 3}
@@ -433,31 +408,13 @@ MonoBehaviour:
   meshType: 3
   originalMesh: {fileID: 0}
   originalBindposes: []
-  runtimeMorphPath: MORPH3D/The_Firearm_Pack/LH_38Revolver/DZBGSMWS649_55498_LOD2
---- !u!114 &114572454149920668
+  runtimeMorphPath: MORPH3D/The_Firearm_Pack/LH_38Revolver/DZBGSMWS649_55498_LOD1
+--- !u!114 &114231254829391324
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1827545342636542}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -2050122676, guid: 2188feb5cf201e848a09932d706b7c3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dazName: 
-  ID: 
-  meshQuality: 0
-  meshType: 3
-  originalMesh: {fileID: 0}
-  originalBindposes: []
-  runtimeMorphPath: MORPH3D/The_Firearm_Pack/LH_38Revolver/DZBGSMWS649_55498_LOD3
---- !u!114 &114849930948981886
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1295615660857396}
+  m_GameObject: {fileID: 1500745079372572}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -2050122676, guid: 2188feb5cf201e848a09932d706b7c3a, type: 3}
@@ -470,12 +427,73 @@ MonoBehaviour:
   originalMesh: {fileID: 0}
   originalBindposes: []
   runtimeMorphPath: MORPH3D/The_Firearm_Pack/LH_38Revolver/DZBGSMWS649_55498_LOD0
---- !u!114 &114894246879692678
+--- !u!114 &114255669132611704
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1051348702125402}
+  m_GameObject: {fileID: 1721261970169422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -2050122676, guid: 2188feb5cf201e848a09932d706b7c3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dazName: 
+  ID: 
+  meshQuality: 0
+  meshType: 3
+  originalMesh: {fileID: 0}
+  originalBindposes: []
+  runtimeMorphPath: MORPH3D/The_Firearm_Pack/LH_38Revolver/DZBGSMWS649_55498_LOD2
+--- !u!114 &114372967458772240
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1072304677364200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -2101776992, guid: 2188feb5cf201e848a09932d706b7c3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dazName: LH_38Revolver
+  ID: 8e4ed5aa-2d85-4e21-8dee-744f7c4a4695
+  LODlist:
+  - {fileID: 114231254829391324}
+  - {fileID: 114135105915078142}
+  - {fileID: 114255669132611704}
+  - {fileID: 114495288702102948}
+  currentLODlevel: 1
+  meshType: 3
+  lockMaterials: 0
+  isAttached: 0
+  isVisible: 1
+  basePosition: {x: 0, y: 0, z: 0}
+  baseRotation: {x: 0, y: 0, z: 0}
+--- !u!114 &114495288702102948
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1001316319427544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -2050122676, guid: 2188feb5cf201e848a09932d706b7c3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dazName: 
+  ID: 
+  meshQuality: 0
+  meshType: 3
+  originalMesh: {fileID: 0}
+  originalBindposes: []
+  runtimeMorphPath: MORPH3D/The_Firearm_Pack/LH_38Revolver/DZBGSMWS649_55498_LOD3
+--- !u!114 &114999747423346926
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1072304677364200}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 1652709342, guid: 2188feb5cf201e848a09932d706b7c3a, type: 3}
@@ -503,21 +521,3 @@ MonoBehaviour:
   mcs_version: 1.6
   item_name: LH_38Revolver
   collection_name: The_Firearm_Pack
---- !u!114 &114976828311787216
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1619166742260310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -2050122676, guid: 2188feb5cf201e848a09932d706b7c3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dazName: 
-  ID: 
-  meshQuality: 0
-  meshType: 3
-  originalMesh: {fileID: 0}
-  originalBindposes: []
-  runtimeMorphPath: MORPH3D/The_Firearm_Pack/LH_38Revolver/DZBGSMWS649_55498_LOD1
