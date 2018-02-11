@@ -223,29 +223,29 @@ public class FaceDetectionImage : MonoBehaviour
                 Debug.Log(faceWidth);
 
 
-                //// Calcule test de courbe de visage
-                float angleJawCurve = Angle2Droites(localLandmarks[2 * 3] - localLandmarks[2 * 4], localLandmarks[2 * 3 + 1] - localLandmarks[2 * 4 + 1],
-                                                             localLandmarks[2 * 5] - localLandmarks[2 * 4], localLandmarks[2 * 5 + 1] - localLandmarks[2 * 4 + 1]);
-                Debug.Log("angleJawCurve : " + angleJawCurve);
+                ////// Calcule test de courbe de visage
+                //float angleJawCurve = Angle2Droites(localLandmarks[2 * 3] - localLandmarks[2 * 4], localLandmarks[2 * 3 + 1] - localLandmarks[2 * 4 + 1],
+                //                                             localLandmarks[2 * 5] - localLandmarks[2 * 4], localLandmarks[2 * 5 + 1] - localLandmarks[2 * 4 + 1]);
+                //Debug.Log("angleJawCurve : " + angleJawCurve);
 
-                float jawCornerWidth = DistanceEuclidienne(localLandmarks[2 * 4], localLandmarks[2 * 4 + 1],
-                                                     localLandmarks[2 * 12], localLandmarks[2 * 12 + 1]) / faceWidth;
-                Debug.Log("jawCornerWidth : " + jawCornerWidth);
+                //float jawCornerWidth = DistanceEuclidienne(localLandmarks[2 * 4], localLandmarks[2 * 4 + 1],
+                //                                     localLandmarks[2 * 12], localLandmarks[2 * 12 + 1]) / faceWidth;
+                //Debug.Log("jawCornerWidth : " + jawCornerWidth);
 
-                float distanceCornerCurve1 = DistanceEuclidienne(localLandmarks[2 * 5], localLandmarks[2 * 5 + 1],
-                                        localLandmarks[2 * 11], localLandmarks[2 * 11 + 1]) / faceWidth;
-                Debug.Log("distanceCornerCurve1 : " + distanceCornerCurve1);
+                //float distanceCornerCurve1 = DistanceEuclidienne(localLandmarks[2 * 5], localLandmarks[2 * 5 + 1],
+                //                        localLandmarks[2 * 11], localLandmarks[2 * 11 + 1]) / faceWidth;
+                //Debug.Log("distanceCornerCurve1 : " + distanceCornerCurve1);
 
-                float distanceCornerCurve2 = DistanceEuclidienne(localLandmarks[2 * 6], localLandmarks[2 * 6 + 1],
-                                        localLandmarks[2 * 10], localLandmarks[2 * 10 + 1]) / faceWidth;
-                Debug.Log("distanceCornerCurve2 : " + distanceCornerCurve2);
+                //float distanceCornerCurve2 = DistanceEuclidienne(localLandmarks[2 * 6], localLandmarks[2 * 6 + 1],
+                //                        localLandmarks[2 * 10], localLandmarks[2 * 10 + 1]) / faceWidth;
+                //Debug.Log("distanceCornerCurve2 : " + distanceCornerCurve2);
 
 
-                // Calcule test de courbe de nez
-                float noseHeight = DistanceEuclidienne(localLandmarks[2 * 30], localLandmarks[2 * 30 + 1],                                                    
-                                        localLandmarks[2 * 27], localLandmarks[2 * 27 + 1]);
-                float noseWidth = DistanceEuclidienne(localLandmarks[2 * 35], localLandmarks[2 * 35 + 1],                                                      
-                                                      localLandmarks[2 * 31], localLandmarks[2 * 31 + 1]);                                                   
+                //// Calcule test de courbe de nez
+                //float noseHeight = DistanceEuclidienne(localLandmarks[2 * 30], localLandmarks[2 * 30 + 1],                                                    
+                //                        localLandmarks[2 * 27], localLandmarks[2 * 27 + 1]);
+                //float noseWidth = DistanceEuclidienne(localLandmarks[2 * 35], localLandmarks[2 * 35 + 1],                                                      
+                //                                      localLandmarks[2 * 31], localLandmarks[2 * 31 + 1]);                                                   
 
 
                 //float noseTipHeight = DistanceEuclidienne(localLandmarks[2 * 30], localLandmarks[2 * 30 + 1],
@@ -304,9 +304,14 @@ public class FaceDetectionImage : MonoBehaviour
                 //Debug.Log("distance_30_29 : " + distance_30_29);
 
 
-                // Calcul test sur chinWidth
+                // Calcul test sur Eye and Brow
+                float distanceBrowEye = DistanceEuclidienne(localLandmarks[2 * 19], localLandmarks[2 * 19 + 1],
+                                                          localLandmarks[2 * 37], localLandmarks[2 * 37 + 1]) / faceHeight;
+                Debug.Log("distanceBrowEye : " + distanceBrowEye);
 
-
+                float EyeBrowAngle = Angle2Droites(localLandmarks[2 * 17] - localLandmarks[2 * 18], localLandmarks[2 * 17 + 1] - localLandmarks[2 * 18 + 1],
+                                                   localLandmarks[2 * 21] - localLandmarks[2 * 18], localLandmarks[2 * 21 + 1] - localLandmarks[2 * 18 + 1]);
+                Debug.Log("EyeBrowAngle : " + EyeBrowAngle);
 
                 etape = Etape.SegmentationIdle;
                 break;

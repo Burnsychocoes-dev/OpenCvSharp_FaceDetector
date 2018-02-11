@@ -25,15 +25,7 @@ public class AvatarMaker : MonoBehaviour {
     private Texture femelleWhiteBodySkinTexture;
 
 
-    public enum AvatarIndex
-    {
-        avatar1,
-        avatar2,
-        avatar3,
-        avatarDefinitif
-    }
-    [SerializeField]
-    private AvatarIndex avatarIndex;
+
 
     [SerializeField]
     private AvatarScript.Gender prefabGender;
@@ -41,6 +33,9 @@ public class AvatarMaker : MonoBehaviour {
     {
         get { return prefabGender; }
     }
+
+    [SerializeField]
+    private bool isDefinitivAvatar;
 
     private AvatarScript.Personnage perso;
     public AvatarScript.Personnage Perso
@@ -57,36 +52,39 @@ public class AvatarMaker : MonoBehaviour {
     void Start()
     {
         avatarManager = GetComponent<MORPH3D.M3DCharacterManager>();
-
-        // Test
-        AvatarScript.avatarDefinitif.gender = AvatarScript.Gender.Male;
-
-
-        // Switch case qui permet de recupérer les bonnes caractéristiques de l'avatar
-        switch(avatarIndex)
-        {
-            case AvatarIndex.avatar1:
-                perso = AvatarScript.avatar1;
-                break;
-
-            case AvatarIndex.avatar2:
-                perso = AvatarScript.avatar2;
-                break;
-
-            case AvatarIndex.avatar3:
-                perso = AvatarScript.avatar3;
-                break;
-
-            case AvatarIndex.avatarDefinitif:
-                perso = AvatarScript.avatarDefinitif;
-                break;
-        }
     }
 
 
 
     // Update is called once per frame
     void Update () {
+        if(!isDefinitivAvatar)
+        {
+            // Switch case qui permet de recupérer les bonnes caractéristiques de l'avatar
+            switch (AvatarScript.avatarSelectionId)
+            {
+                case 1:
+                    perso = AvatarScript.avatar1;
+                    break;
+
+                case 2:
+                    perso = AvatarScript.avatar2;
+                    break;
+
+                case 3:
+                    perso = AvatarScript.avatar3;
+                    break;
+
+                default:
+                    perso = AvatarScript.avatar1;
+                    break;
+            }
+        }
+        else
+        {
+            perso = AvatarScript.avatarDefinitif;
+        }
+
         if (prefabGender == perso.gender)
         {
             SetDressed();
@@ -103,107 +101,6 @@ public class AvatarMaker : MonoBehaviour {
             avatarManager.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
         }
     }
-
-    //// Use this for init the personnage 
-    //public void SetPerso()
-    //{
-    //    this.transform.Translate(new Vector3(-5, 0, 0));
-    //    avatarManager.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
-    //    SetDressed();
-    //    avatarManager.SetBlendshapeValue("eCTRLHappy", 0);
-
-    //    // Partie gender
-    //    //if (landmarks.gender == "M")
-    //    //    perso.gender = Gender.Male;
-    //    //else
-    //    //    perso.gender = Gender.Femelle;
-
-    //    //Debug.Log(hair.yHairRoot);
-    //    //Debug.Log(hair.yHairTop);
-    //    //Debug.Log(Mathf.Abs(hair.yHairRoot - hair.yHairTop) / landmarks.faceHeight);
-
-    //    if (Mathf.Abs(hair.yHairRoot - hair.yHairTop)/landmarks.faceHeight < 0.05f || hair.yHairRoot == -1)
-    //    {
-    //        if(hair.longueur != HairDetection.Longueur.moyen && hair.longueur != HairDetection.Longueur.longs)
-    //        {
-    //            perso.hair.isHairless = true;
-    //        }
-                
-    //    }
-
-    //    // Partie skin color
-    //    perso.exactSkinColor = hair.FromYCbCrToRGB(hair.SkinColorYCbCrExpectancy);
-    //    Debug.Log(perso.exactSkinColor);
-
-    //    if (face.CouleurPeauFront.Item0 > 170)
-    //        perso.skinColor = AvatarScript.SkinColor.Black;
-    //    else
-    //        perso.skinColor = AvatarScript.SkinColor.White;
-
-
-    //    // Partie eye
-    //    perso.eye.distanceBetweenNoseTopAndEyes = (float)landmarks.distanceBetweenNoseTopAndEyes;
-    //    perso.eye.distanceMiddleSourcilCenterEye = Mathf.Abs((float)landmarks.RightEyeBrowMiddle.Item1 - (float)landmarks.rightEyeCenter.Item1);
-    //    perso.eye.eyeWidth = (float)landmarks.leftEyeWidth;
-
-    //    if (perso.eye.eyeWidth <= 0.22f)
-    //        perso.eye.width = AvatarScript.Taille.Little;
-    //    else
-    //        perso.eye.width = AvatarScript.Taille.Big;
-
-
-    //    // Partie nose
-    //    perso.nose.noseHeight = (float)landmarks.noseHeight;
-    //    perso.nose.noseWidth = (float)landmarks.noseWidth;
-    //    perso.nose.nostrilThickness = (float)landmarks.nostrilThickness;
-
-    //    if (perso.nose.noseHeight <= 0.39)
-    //        perso.nose.height = AvatarScript.Taille.Little;
-    //    else 
-    //        perso.nose.height = AvatarScript.Taille.Big;
-
-    //    if (perso.nose.noseWidth <= 0.215)
-    //        perso.nose.width = AvatarScript.Taille.Little;
-    //    else
-    //        perso.nose.width = AvatarScript.Taille.Big;
-
-
-    //    // Partie mouth
-    //    perso.mouth.distanceBetweenChinAndMouth = (float)landmarks.distanceBetweenLipAndChin;
-    //    perso.mouth.distanceBetweenNoseTipAndMouth = (float)landmarks.distanceBetweenNoseTipAndLip;
-
-    //    perso.mouth.buttomLipHeight = (float)landmarks.buttomLipHeight;
-    //    perso.mouth.topLipHeight = (float)landmarks.topLipHeight;
-    //    Debug.Log(Math.Abs((float)perso.mouth.topLipHeight / (float)perso.mouth.buttomLipHeight));
-    //    if (Math.Abs((float)perso.mouth.topLipHeight / (float)perso.mouth.buttomLipHeight) < 0.8)
-    //        perso.mouth.proportionLevre = AvatarScript.ProportionLevre.UnPourDeux;
-    //    else if (Math.Abs((float)perso.mouth.topLipHeight / (float)perso.mouth.buttomLipHeight) > 1.8)
-    //        perso.mouth.proportionLevre = AvatarScript.ProportionLevre.DeuxPourUn;
-    //    else
-    //        perso.mouth.proportionLevre = AvatarScript.ProportionLevre.UnPourUn;
-
-    //    if (perso.mouth.buttomLipHeight <= 0.09)
-    //        perso.mouth.buttomLipHeight_t = AvatarScript.Taille.Little;
-    //    else
-    //        perso.mouth.buttomLipHeight_t = AvatarScript.Taille.Big;
-
-    //    if (perso.mouth.topLipHeight <= 0.055)
-    //        perso.mouth.topLipHeight_t = AvatarScript.Taille.Little;
-    //    else
-    //        perso.mouth.topLipHeight_t = AvatarScript.Taille.Big;
-
-    //    perso.mouth.mouthWidth = (float)landmarks.lipWidth;
-
-    //    if (perso.mouth.mouthWidth <= 0.40)
-    //        perso.mouth.width = AvatarScript.Taille.Little;
-    //    else
-    //        perso.mouth.width = AvatarScript.Taille.Big;
-
-    //    // Partie visage curve
-    //    perso.visage.cornerChinWidth = (float)landmarks.cornerChinWidth;
-    //    perso.visage.distanceButtomCurve = (float)landmarks.distanceButtomCurve;
-
-    //}
 
 
     public void ChangeNose()
@@ -402,10 +299,6 @@ public class AvatarMaker : MonoBehaviour {
 
     public void ChangeEyes()
     {
-        //// En fonction de distanceMiddleSourcilCenterEye
-        //avatarManager.SetBlendshapeValue("PHMEyesHeight", 100);
-        //avatarManager.SetBlendshapeValue("PHMEyesHeight_NEGATIVE_", 100);
-
         // En fonction de eyeWidth
         /*
          * Version finale : 
@@ -416,7 +309,6 @@ public class AvatarMaker : MonoBehaviour {
          * Si la valeur de eyeWidth est entre 0.22 et 0.25 on va lui appliquer sa conversion en blendshape PHMEyesSize (entre 0 et 50)
          * Les valeurs varient entre 0 et 50 car les extrêmes ne ressemble pas trop à ce qu'il existe en terme de proportion.
          */
-
         switch (perso.eye.width)
         {
             case AvatarScript.Taille.Little:
@@ -431,9 +323,26 @@ public class AvatarMaker : MonoBehaviour {
         }
 
 
-        //// En fonction de distanceBetweenNoseTopAndEyes        
-        //avatarManager.SetBlendshapeValue("PHMEyesWidth", 100);
-        //avatarManager.SetBlendshapeValue("PHMEyesWidth_NEGATIVE_", 100);
+        // En fonction de distanceBrowEye
+        /*
+         * Version finale : 
+         * Avatar min : 0.08 -> 0.15
+         * Avatar max : 0.15 -> 0.22
+         * Avatar moy : 0.15
+         * Si la valeur de distanceBrowEye est entre 0.08 et 0.15 on va lui appliquer sa conversion en blendshape eCTRLBrowUp_DownL_NEGATIVE_ et eCTRLBrowUp_DownR_NEGATIVE_ 
+         * Si la valeur de distanceBrowEye est entre 0.15 et 0.22 on va lui appliquer sa conversion en blendshape eCTRLBrowUp_Down 
+         */
+        if(perso.eye.distanceBrowEye < 0.15)
+        {
+            float valeur_little = PercentageConvertorNeg(perso.eye.distanceBrowEye, 0.08f, 0.15f, 0, 100);
+            avatarManager.SetBlendshapeValue("eCTRLBrowUp_DownL_NEGATIVE_", valeur_little);
+            avatarManager.SetBlendshapeValue("eCTRLBrowUp_DownR_NEGATIVE_", valeur_little);
+        }
+        else
+        {
+            float valeur_big = PercentageConvertor(perso.eye.distanceBrowEye, 0.15f, 0.22f, 0, 100);
+            avatarManager.SetBlendshapeValue("eCTRLBrowUp_Down", valeur_big);
+        }
     }
 
     public void ChangeSkinTexture(bool isWhite)
@@ -633,43 +542,4 @@ public class AvatarMaker : MonoBehaviour {
         
     }
 
-    public static void MakeAvatarSpeak(MORPH3D.M3DCharacterManager avatar, bool mouthUp, float timeCount, float speechSpeed)
-    {
-        if(timeCount > speechSpeed)
-        {
-            timeCount = 0;
-            if(mouthUp)
-            {
-                avatar.SetBlendshapeValue("eCTRLvAA", 100);
-            }
-            else
-            {
-                avatar.SetBlendshapeValue("eCTRLvAA", 0);
-            }
-            mouthUp = !mouthUp;
-        }
-        else
-        {
-            float value = 0;
-            foreach (MORPH3D.FOUNDATIONS.Morph m in avatar.coreMorphs.morphs)
-            {
-                if(m.name == "eCTRLvAA")
-                {
-                    value = m.value;
-                }
-            }
-            if(mouthUp)
-            {
-                value += PercentageConvertor(Time.deltaTime, 0, speechSpeed, 0, 100);
-                avatar.SetBlendshapeValue("eCTRLvAA", value);
-            }
-            else
-            {
-                value -= PercentageConvertor(Time.deltaTime, 0, speechSpeed, 0, 100);
-                avatar.SetBlendshapeValue("eCTRLvAA", value);
-            }
-            
-
-        }
-    }
 }

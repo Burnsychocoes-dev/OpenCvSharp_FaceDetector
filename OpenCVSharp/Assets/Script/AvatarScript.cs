@@ -32,9 +32,9 @@ public class AvatarScript : MonoBehaviour {
 
     public struct Eye
     {
-        public float distanceMiddleSourcilCenterEye;
         public float eyeWidth;
         public float distanceBetweenNoseTopAndEyes;
+        public float distanceBrowEye;
         public Taille width;
     }
 
@@ -42,7 +42,9 @@ public class AvatarScript : MonoBehaviour {
     {
         public float noseHeight;
         public float noseWidth;
-        public float nostrilThickness;
+        public float noseTipHeight;
+        public float bigAngleNoseTopTip;
+        public float littleAngleNoseTopTip;
         public Taille width;
         public Taille height;
     }
@@ -63,7 +65,7 @@ public class AvatarScript : MonoBehaviour {
     public struct Visage
     {
         public float cornerChinWidth;
-        public float distanceButtomCurve;
+        public float distanceButtomCurve;      
     }
 
     public struct Hair
@@ -101,6 +103,14 @@ public class AvatarScript : MonoBehaviour {
     //    get { return avatar1; }
     //}
     public static Personnage avatarDefinitif;
+
+    public static int avatarSelectionId = 1;
+
+    private static int avatarGenerateNumber = 3;
+    public static int AvatarGenerateNumber
+    {
+        get { return avatarGenerateNumber; }
+    }
 
     // Use this for initialization
     void Start () {

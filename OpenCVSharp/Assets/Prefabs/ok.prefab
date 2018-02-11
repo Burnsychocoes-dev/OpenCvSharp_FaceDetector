@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4853612198323216}
   - component: {fileID: 212228006347769906}
-  - component: {fileID: 114598679668722184}
+  - component: {fileID: 114047851034733426}
   - component: {fileID: 61111247397111388}
   m_Layer: 0
   m_Name: ok
@@ -36,7 +36,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1360809273411356}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.5, y: -2, z: -2}
+  m_LocalPosition: {x: 4.27, y: -2, z: -2}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -67,7 +67,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.3257279, y: 1.2957091}
   m_EdgeRadius: 0
---- !u!114 &114598679668722184
+--- !u!114 &114047851034733426
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -75,7 +75,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1360809273411356}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d13c0388d466baf4e8d958171ce8c75a, type: 3}
+  m_Script: {fileID: 11500000, guid: 4b03c7dc0cbb5f9429b54a1c12249c52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _nextScene: Scene6
