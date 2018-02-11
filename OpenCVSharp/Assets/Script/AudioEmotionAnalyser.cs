@@ -49,6 +49,7 @@ public class AudioEmotionAnalyser : MonoBehaviour {
     //
     private static int secondeDivisor = 2;
 
+    private float anger_offset = 0.2f;
     private int countDivisor = 0;
 
     private int saveCnt = 0;
@@ -400,7 +401,10 @@ public class AudioEmotionAnalyser : MonoBehaviour {
         totalCnt0 =0;
         totalCnt0Volatile = 0;
         
-
+        //correction neutrality/colere
+        if(neutrality_value-anger_value>anger_offset){
+            anger_value = 0;
+        }
 
         neutrality_value = AvatarMaker.PercentageConvertor(neutrality_value, 0f, 1f, 0, 100);
         happiness_value = AvatarMaker.PercentageConvertor(happiness_value, 0f, 1f, 0, 100);
@@ -452,6 +456,19 @@ public class AudioEmotionAnalyser : MonoBehaviour {
         sadness_value = AvatarMaker.PercentageConvertor(sadness_value, 0f, 1f, 0, 100);
         anger_value = AvatarMaker.PercentageConvertor(anger_value, 0f, 1f, 0, 100);
         fear_value = AvatarMaker.PercentageConvertor(fear_value, 0f, 1f, 0, 100);
+    }
+
+    private void ResetTables(){
+        for(int i=0; i<sizeBuffer; i++){
+            neutrality[i] = 0;
+            happiness[i] = 0;
+            sadness[i] = 0;
+            anger[i] = 0;
+            fear[i] = 0;
+        }
+        for(int i=0; i<5; i++){
+            emotions[i] = 0;
+        }
     }
 
     public void MakeAvatarSpeak()
