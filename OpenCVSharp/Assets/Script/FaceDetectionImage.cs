@@ -166,8 +166,8 @@ public class FaceDetectionImage : MonoBehaviour
 
 
     void Start() {
-        landmarks = GetComponent<LandmarksRetriever>();
-        avatar = GetComponent<AvatarMaker>();
+        //landmarks = GetComponent<LandmarksRetriever>();
+        //avatar = GetComponent<AvatarMaker>();
         hair = GetComponent<HairDetection>();
         camera = FindObjectOfType<Camera>();
 
@@ -325,13 +325,14 @@ public class FaceDetectionImage : MonoBehaviour
                 //ProcessImage(videoSourceImage, false);
 
                 hair.Init();
-                //hair.Pretraitement();
+                hair.Pretraitement();
                 Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
                 hair.GetSkinColor();
                 hair.getEyeColor();
                 hair.FindHairRoots();
                 hair.GetHairColor();
                 hair.FindHairMax();
+                hair.GuessHairCut();
                 //hair.GuessHairHeight();
                 //hair.GuessHairLength();
                 Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
@@ -356,11 +357,11 @@ public class FaceDetectionImage : MonoBehaviour
                 break;
 
             case Etape.ClearSkinIdle:
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    etape = Etape.Avatar;
-                    Debug.Log("etape avatar");
-                }
+                //if (Input.GetKeyDown(KeyCode.Space))
+                //{
+                //    etape = Etape.Avatar;
+                //    Debug.Log("etape avatar");
+                //}
                 break;
 
             case Etape.Avatar:
