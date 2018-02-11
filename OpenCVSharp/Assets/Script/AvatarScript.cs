@@ -30,6 +30,25 @@ public class AvatarScript : MonoBehaviour {
         Femelle
     }
 
+    public enum Haircut
+    {
+        Chauve,
+        BoldHair,
+        CasualLongHair,
+        DrifterHair,
+        FunkyHair,
+        JakeHair,
+        KamiHair,
+        ScottHair,
+        MicahMaleHair,
+        KungFuHair,
+        MicahFemaleHair,
+        ToulouseHair,
+        NordicHair,
+        FashionHair,
+        RangeHair
+    }
+
     public struct Eye
     {
         public float eyeWidth;
@@ -68,12 +87,6 @@ public class AvatarScript : MonoBehaviour {
         public float distanceButtomCurve;      
     }
 
-    public struct Hair
-    {
-        public bool isHairless;
-        public Taille height;
-        public Taille length;
-    }
 
     public struct Personnage
     {
@@ -83,7 +96,7 @@ public class AvatarScript : MonoBehaviour {
         public Eye eye;
         public Nose nose;
         public Mouth mouth;
-        public Hair hair;
+        public Haircut haircut;
         public Visage visage;
     }
 

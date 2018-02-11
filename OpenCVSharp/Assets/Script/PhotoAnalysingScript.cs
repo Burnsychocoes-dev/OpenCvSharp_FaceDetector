@@ -194,8 +194,9 @@ public class PhotoAnalysingScript : MonoBehaviour
                 hair.GetHairColor();
                 hair.FindHairMax();
                 hair.GuessHairCut();
-                //hair.GuessHairHeight();
-                //hair.GuessHairLength();
+                AvatarScript.avatar1.haircut = hair.Haircut;
+                AvatarScript.avatar2.haircut = hair.Haircut;
+                AvatarScript.avatar3.haircut = hair.Haircut;
                 Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
 
                 SceneManager.LoadScene("Scene5");
