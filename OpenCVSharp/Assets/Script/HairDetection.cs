@@ -82,7 +82,7 @@ public class HairDetection : MonoBehaviour
 
     public Haircut haircut = Haircut.Chauve;
 
-    private PhotoAnalysingScript photo;
+    private FaceDetectionImage photo;
 
     private Mat matrix2_grabcut;
     public Mat Matrix2_grabcut
@@ -97,7 +97,7 @@ public class HairDetection : MonoBehaviour
         skinColorYCbCrExpectancy = new Vec3f();
         hairColorYCbCrExpectancy = new Vec3f();
 
-        photo = GetComponent<PhotoAnalysingScript>();
+        photo = GetComponent<FaceDetectionImage>();
     }
 
     // Update is called once per frame
@@ -587,7 +587,7 @@ public class HairDetection : MonoBehaviour
 
         for (var j = 0; j < photo.ImWidth; j++)
         {
-            photo.VideoSourceImage.Set<Vec3b>(i0, j, new Vec3b
+            photo.VideoSourceImage.Set<Vec3b>(yHairMax, j, new Vec3b
             {
                 Item0 = 0,
                 Item1 = 255,
