@@ -15,14 +15,17 @@ public class SliderBar : MonoBehaviour {
     }
 
     AvatarScript.Personnage previousAvatar;
+    private int previousHaircutId;
 
     [SerializeField]
     protected Slidebar type = Slidebar.NONE;
 
+    Slider slider;
+
     private void Start()
     {
         previousAvatar = AvatarScript.avatarDefinitif;
-        Slider slider = GetComponent<Slider>();
+        slider = GetComponent<Slider>();
         switch (type)
         {
             case Slidebar.NOSEINCLINAISON:
@@ -60,7 +63,43 @@ public class SliderBar : MonoBehaviour {
 
 
 
+    public void InitSlideBar()
+    {
+        AvatarScript.avatarDefinitif = previousAvatar;
+        switch (type)
+        {
+            case Slidebar.NOSEINCLINAISON:
+                slider.value = AvatarScript.avatarDefinitif.nose.noseTipHeightBlendShapeValue;
+                break;
 
+            case Slidebar.NOSERONDEUR:
+                slider.value = AvatarScript.avatarDefinitif.nose.noseTipRoundBlendShapeValue;
+                break;
+
+            case Slidebar.NOSELARGEUR:
+                switch (AvatarScript.avatarDefinitif.nose.width)
+                {
+                    case AvatarScript.Taille.Little:
+                        float valeur_little = AvatarMaker.PercentageConvertorNeg(AvatarScript.avatarDefinitif.nose.noseWidth, 0.18f, 0.215f, 0, 100);
+                        slider.value = valeur_little;
+                        break;
+
+                    case AvatarScript.Taille.Big:
+                        float valeur_big = AvatarMaker.PercentageConvertor(AvatarScript.avatarDefinitif.nose.noseWidth, 0.215f, 0.25f, 0, 100);
+                        slider.value = valeur_big;
+                        break;
+                }
+                break;
+
+            case Slidebar.NOSEECARTEMENT:
+                slider.value = AvatarScript.avatarDefinitif.nose.NosePinchBlendShapeValue;
+                break;
+
+            case Slidebar.EYESABAISSEMENT:
+                slider.value = AvatarScript.avatarDefinitif.eye.EyesAbaissementBlendShapeValue;
+                break;
+        }
+    }
 
     public void NoseInclinaison(float newValue)
     {
