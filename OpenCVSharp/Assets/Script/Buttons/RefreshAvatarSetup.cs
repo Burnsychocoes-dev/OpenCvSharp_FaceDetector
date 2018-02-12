@@ -2,23 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RefreshHaircut : MonoBehaviour {
+public class RefreshAvatarSetup : MonoBehaviour {
 
-    //public string _nextScene = "";
     public Sprite sprite;
     protected Sprite spritesave;
     protected SpriteRenderer spriterender;
 
-    //protected FadingScene fadingScene;
+    AvatarScript.Personnage previousAvatar;
+    private int previousHaircutId;
+
     void Start()
     {
-        //fadingScene = GameObject.Find("menu").GetComponent<FadingScene>();
         spriterender = GetComponent<SpriteRenderer>();
-        //if (_nextScene.Equals(""))
-        //{
-        //    _nextScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-        //}
-        //Debug.Log("yosh");
+        previousHaircutId = AvatarScript.avatarHaircutSelectionId;
     }
     protected void OnMouseEnter()
     {
@@ -36,11 +32,10 @@ public class RefreshHaircut : MonoBehaviour {
     }
     protected void OnMouseOver()
     {
-        //rend.material.color -= new Color(0.1F, 0, 0) * Time.deltaTime;
+
     }
     protected void OnMouseExit()
     {
-        //rend.material.color = Color.white;
         if (sprite != null)
         {
             spriterender.sprite = spritesave;
@@ -51,6 +46,11 @@ public class RefreshHaircut : MonoBehaviour {
 
     protected void OnMouseDown()
     {
-        
+        SliderBar[] sliders = FindObjectsOfType<SliderBar>();
+        foreach(var s in sliders)
+        {
+            s.InitSlideBar();
+        }
+        AvatarScript.avatarHaircutSelectionId = previousHaircutId;
     }
 }
