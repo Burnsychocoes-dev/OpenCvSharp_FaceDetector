@@ -129,6 +129,7 @@ public class AvatarScript : MonoBehaviour {
     public static Personnage avatar5;
  
     public static Personnage avatarDefinitif;
+    
 
     public static int avatarSelectionId = 1;
 
