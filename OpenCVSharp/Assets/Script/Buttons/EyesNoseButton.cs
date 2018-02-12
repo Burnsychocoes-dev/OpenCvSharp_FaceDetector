@@ -27,10 +27,9 @@ public class EyesNoseButton : MonoBehaviour {
     protected enum State
     {
         SELECTED,
-        NOTSELECTED,
-        BEGINNING
+        NOTSELECTED
     }
-    protected State state = State.BEGINNING;
+    protected State state = State.NOTSELECTED;
 
     private void Awake()
     {
@@ -47,6 +46,8 @@ public class EyesNoseButton : MonoBehaviour {
         if (choice == currentChoice)
         {
             UnactivateOthersAndActivateItself();
+            spriterender.sprite = spriteSelected;
+            state = State.SELECTED;
         }
         //if (_nextScene.Equals(""))
         //{
@@ -61,14 +62,6 @@ public class EyesNoseButton : MonoBehaviour {
         {
             state = State.NOTSELECTED;
             spriterender.sprite = sprite;
-        }else if (currentChoice != choice && state == State.BEGINNING)
-        {
-            state = State.NOTSELECTED;
-            spriterender.sprite = sprite;
-        }
-        else if(currentChoice == choice)
-        {
-            spriterender.sprite = spriteSelected;
         }
     }
 
@@ -106,12 +99,6 @@ public class EyesNoseButton : MonoBehaviour {
         
         switch (state)
             {
-                case State.BEGINNING:
-                    spriterender.sprite = spriteSelected;
-                    state = State.SELECTED;
-                    currentChoice = choice;
-                    UnactivateOthersAndActivateItself();
-                    break;
                 //case State.SELECTED:
                 //    spriterender.sprite = sprite;
                 //    state = State.NOTSELECTED;                    
