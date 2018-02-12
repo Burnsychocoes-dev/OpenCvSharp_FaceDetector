@@ -188,19 +188,46 @@ public class PhotoAnalysingScript : MonoBehaviour
                 ProcessImage(videoSourceImage, false);
                 // Hair analyse
                 hair.Init();
-                hair.Pretraitement();
                 Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
-                hair.GetSkinColor();
-                hair.getEyeColor();
-                hair.GetHairColor();
-                hair.FindHairMax();
-                hair.GuessHairCut();
-                AvatarScript.avatar1.haircut = hair.Haircut;
-                AvatarScript.avatar2.haircut = hair.Haircut;
-                AvatarScript.avatar3.haircut = hair.Haircut;
-                AvatarScript.avatar4.haircut = hair.Haircut;
-                AvatarScript.avatar5.haircut = hair.Haircut;
+                if (hair.GrabCut())
+                {
+                    //le grabCut s'est bien déroulé, on ooursuit les autres analyses                 
+                    hair.GetSkinColor();
+                    hair.getEyeColor();
+                    hair.GetHairColor();
+                    hair.FindHairMax();
+                    hair.GuessHairCut();
+                    AvatarScript.avatar1.haircut = hair.Haircut;
+                    AvatarScript.avatar2.haircut = hair.Haircut;
+                    AvatarScript.avatar3.haircut = hair.Haircut;
+                    AvatarScript.avatar4.haircut = hair.Haircut;
+                    AvatarScript.avatar5.haircut = hair.Haircut;               
+
+                } else
+                {
+                    hair.GetSkinColor();
+                    hair.getEyeColor();
+                    //le grabCut s'est mal déroulé, on assigne une coupe de cheveux par défaut
+                    if (AvatarScript.avatar1.gender == AvatarScript.Gender.Male)
+                    {
+                        AvatarScript.avatar1.haircut = AvatarScript.Haircut.ScottHair;
+                        AvatarScript.avatar2.haircut = AvatarScript.Haircut.ScottHair;
+                        AvatarScript.avatar3.haircut = AvatarScript.Haircut.ScottHair;
+                        AvatarScript.avatar4.haircut = AvatarScript.Haircut.ScottHair;
+                        AvatarScript.avatar5.haircut = AvatarScript.Haircut.ScottHair;
+                    }
+                    else
+                    {
+                        AvatarScript.avatar1.haircut = AvatarScript.Haircut.RangerHair;
+                        AvatarScript.avatar2.haircut = AvatarScript.Haircut.RangerHair;
+                        AvatarScript.avatar3.haircut = AvatarScript.Haircut.RangerHair;
+                        AvatarScript.avatar4.haircut = AvatarScript.Haircut.RangerHair;
+                        AvatarScript.avatar5.haircut = AvatarScript.Haircut.RangerHair;
+                    }
+
+                }
                 Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
+
 
                 SceneManager.LoadScene("Scene5");
                 break;

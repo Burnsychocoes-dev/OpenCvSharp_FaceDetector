@@ -330,7 +330,10 @@ public class FaceDetectionImage : MonoBehaviour
                 //ProcessImage(videoSourceImage, false);
 
                 hair.Init();
-                //hair.Pretraitement();
+                if (hair.GrabCut())
+                {
+
+                }
                 Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
                 hair.GetSkinColor();
                 hair.getEyeColor();
