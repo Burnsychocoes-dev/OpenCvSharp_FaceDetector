@@ -43,7 +43,7 @@ public class HairDetection : MonoBehaviour
     }
 
 
-    private FaceDetectionImage photo;
+    private PhotoAnalysingScript photo;
 
     private Mat matrix2_grabcut;
     public Mat Matrix2_grabcut
@@ -58,7 +58,7 @@ public class HairDetection : MonoBehaviour
         skinColorYCbCrExpectancy = new Vec3f();
         hairColorYCbCrExpectancy = new Vec3f();
 
-        photo = GetComponent<FaceDetectionImage>();
+        photo = GetComponent<PhotoAnalysingScript>();
     }
 
     // Update is called once per frame
@@ -67,43 +67,56 @@ public class HairDetection : MonoBehaviour
 
     }
 
-    public void Pretraitement()
+
+    public Boolean GrabCut()
     {
-        Debug.Log("Pretreat");
-        //Augmentation du contraste ou non
-        Debug.Log("GrabCutting");
-        GrabCut();
-    }
+        Debug.Log("GrabCut");       
 
-    public void GrabCut()
-    {
-        Debug.Log("GrabCut");
-        //photo = GetComponent<photo>();
-        //Mat result = new Mat(photo.VideoSourceImage.Size(), photo.VideoSourceImage.Type());
-        Mat result = new Mat(photo.VideoSourceImage.Size(), MatType.CV_8UC3);
-
-        //Mat result = photo.VideoSourceImage;
-        Mat bgModel = new Mat(); //background model
-        Mat fgModel = new Mat(); //foreground model
-
-
-        //draw a rectangle 
-        //OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(1, 1, photo.VideoSourceImage.Cols - 1, photo.VideoSourceImage.Rows - 1);
 
         int hauteurVisage = (int)(photo.localLandmarks[2 * 8 + 1] - photo.localLandmarks[2 * 24 + 1]);
 
-        hauteurVisage = (int)(0.8 * hauteurVisage);
+        hauteurVisage = (int)(0.45 * hauteurVisage);
+
+        
+
+        Boolean grabcutTermine = false;
+        int nbFailAutoriser = 5;
+        int compteurFail = 0;
 
 
-        OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(photo.Face.X, Math.Max(photo.Face.Y - hauteurVisage, 0), photo.Face.Width, photo.Face.Height + 2 * hauteurVisage);
+        while (!grabcutTermine && compteurFail < nbFailAutoriser) {
+            try
+            {
+                Mat result = new Mat(photo.VideoSourceImage.Size(), MatType.CV_8UC3);
 
-        Cv2.GrabCut(photo.VideoSourceImage, result, rectangle, bgModel, fgModel, 1, GrabCutModes.InitWithRect);
-        Cv2.Compare(result, new Scalar(3, 3, 3), result, CmpTypes.EQ);
-        matrix2_grabcut = new Mat(photo.ImHeight, photo.ImWidth, MatType.CV_8UC3, new Scalar(255, 255, 255));
+                Mat bgModel = new Mat(); //background model
+                Mat fgModel = new Mat(); //foreground model
 
-        photo.VideoSourceImage.CopyTo(matrix2_grabcut, result);
+                OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(photo.Face.X, Math.Max(photo.Face.Y - hauteurVisage, 0), photo.Face.Width, Math.Min(photo.Face.Height + 3 * hauteurVisage, photo.ImHeight));
+                Cv2.GrabCut(photo.VideoSourceImage, result, rectangle, bgModel, fgModel, 1, GrabCutModes.InitWithRect);
+                Cv2.Compare(result, new Scalar(3, 3, 3), result, CmpTypes.EQ);
+                matrix2_grabcut = new Mat(photo.ImHeight, photo.ImWidth, MatType.CV_8UC3, new Scalar(255, 255, 255));
 
-        matrix2_grabcut.CopyTo(photo.VideoSourceImage);
+                photo.VideoSourceImage.CopyTo(matrix2_grabcut, result);
+
+                matrix2_grabcut.CopyTo(photo.VideoSourceImage);
+                grabcutTermine = true;
+            }
+            catch (Exception e)
+            {
+                compteurFail++;
+            }
+        }
+
+        if (compteurFail >= nbFailAutoriser)
+        {
+            return false;
+        } else
+        {
+            return true;
+        }
+
+      
     }
 
     private void GetYHairTop()
