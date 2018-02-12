@@ -11,6 +11,8 @@ public class EyesNoseButton : MonoBehaviour {
     protected SpriteRenderer spriterender;
 
     protected GameObject hairs;
+    protected GameObject nose;
+    protected GameObject eyes;
     public enum Choice
     {
         EYES,
@@ -29,13 +31,24 @@ public class EyesNoseButton : MonoBehaviour {
     }
     protected State state = State.NOTSELECTED;
 
-    
+    private void Awake()
+    {
+        hairs = GameObject.Find("HairGestion");
+        nose = GameObject.Find("NoseGestion");
+        eyes = GameObject.Find("EyesGestion");
+        
+    }
     //protected FadingScene fadingScene;
     void Start()
     {
         //fadingScene = GameObject.Find("menu").GetComponent<FadingScene>();
         spriterender = GetComponent<SpriteRenderer>();
-        hairs = GameObject.Find("Haircut");
+        if (choice == currentChoice)
+        {
+            UnactivateOthersAndActivateItself();
+            spriterender.sprite = spriteSelected;
+            state = State.SELECTED;
+        }
         //if (_nextScene.Equals(""))
         //{
         //    _nextScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
@@ -49,9 +62,6 @@ public class EyesNoseButton : MonoBehaviour {
         {
             state = State.NOTSELECTED;
             spriterender.sprite = sprite;
-        }else if(currentChoice == choice)
-        {
-            spriterender.sprite = spriteSelected;
         }
     }
 
@@ -94,26 +104,33 @@ public class EyesNoseButton : MonoBehaviour {
                 //    state = State.NOTSELECTED;                    
                 //    break;
                 case State.NOTSELECTED:
-                    spriterender.sprite = spriteSelected;
-                    state = State.SELECTED;
-                    currentChoice = choice;
-                    UnactivateOthers();
-                    break;
+                        spriterender.sprite = spriteSelected;
+                        state = State.SELECTED;
+                        currentChoice = choice;
+                        UnactivateOthersAndActivateItself();
+                        break;
             }
         
     }
 
-    protected void UnactivateOthers()
+    protected void UnactivateOthersAndActivateItself()
     {
         switch (choice)
         {
-            case Choice.NOSE:
+            case Choice.NOSE:               
                 hairs.SetActive(false);
+                eyes.SetActive(false);
+                nose.SetActive(true);
                 break;
             case Choice.HAIRS:
+                hairs.SetActive(true);
+                eyes.SetActive(false);
+                nose.SetActive(false);
                 break;
             case Choice.EYES:
                 hairs.SetActive(false);
+                eyes.SetActive(true);
+                nose.SetActive(false);
                 break;
         }
     }

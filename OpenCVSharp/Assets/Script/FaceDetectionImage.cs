@@ -334,7 +334,6 @@ public class FaceDetectionImage : MonoBehaviour
                 Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
                 hair.GetSkinColor();
                 hair.getEyeColor();
-                hair.FindHairRoots();
                 hair.GetHairColor();
                 hair.FindHairMax();
                 hair.GuessHairCut();

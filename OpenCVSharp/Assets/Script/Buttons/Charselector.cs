@@ -75,12 +75,12 @@ public class Charselector : MonoBehaviour {
                         AvatarScript.avatarSelectionId++;
                         if(AvatarScript.avatarSelectionId > AvatarScript.AvatarGenerateNumber)
                         {
-                            AvatarScript.avatarSelectionId = 0;
+                            AvatarScript.avatarSelectionId = 1;
                         }
                         break;
                     case Type.PREVIOUS:
                         AvatarScript.avatarSelectionId--;
-                        if (AvatarScript.avatarSelectionId < 0)
+                        if (AvatarScript.avatarSelectionId <= 0)
                         {
                             AvatarScript.avatarSelectionId = AvatarScript.AvatarGenerateNumber;
                         }
@@ -91,8 +91,18 @@ public class Charselector : MonoBehaviour {
                 switch (type)
                 {
                     case Type.NEXT:
+                        AvatarScript.avatarHaircutSelectionId++;
+                        if (AvatarScript.avatarHaircutSelectionId == AvatarScript.AvatarHaircutAvailableNumber)
+                        {
+                            AvatarScript.avatarHaircutSelectionId = 0;
+                        }
                         break;
                     case Type.PREVIOUS:
+                        AvatarScript.avatarHaircutSelectionId--;
+                        if (AvatarScript.avatarHaircutSelectionId < 0)
+                        {
+                            AvatarScript.avatarHaircutSelectionId = AvatarScript.AvatarHaircutAvailableNumber;
+                        }
                         break;
                 }
                 break;

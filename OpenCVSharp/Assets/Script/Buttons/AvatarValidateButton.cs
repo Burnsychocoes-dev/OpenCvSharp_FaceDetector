@@ -23,6 +23,14 @@ public class AvatarValidateButton : ChangeSceneOnClickScript
                 AvatarScript.avatarDefinitif = AvatarScript.avatar3;
                 break;
 
+            case 4:
+                AvatarScript.avatarDefinitif = AvatarScript.avatar4;
+                break;
+
+            case 5:
+                AvatarScript.avatarDefinitif = AvatarScript.avatar5;
+                break;
+
             default:
                 AvatarScript.avatarDefinitif = AvatarScript.avatar1;
                 break;
