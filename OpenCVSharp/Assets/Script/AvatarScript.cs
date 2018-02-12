@@ -37,6 +37,7 @@ public class AvatarScript : MonoBehaviour {
         White
     }
 
+
     public enum Gender
     {
         Male,
@@ -73,6 +74,7 @@ public class AvatarScript : MonoBehaviour {
         public float distanceBetweenNoseTopAndEyes;
         public float distanceBrowEye;
         public Taille width;
+        public float EyesAbaissementBlendShapeValue;
     }
 
     public struct Nose
@@ -84,6 +86,9 @@ public class AvatarScript : MonoBehaviour {
         public Taille height;
         public NoseTipInclinaison noseTipInclinaison;
         public NoseTipType noseTipType;
+        public float noseTipHeightBlendShapeValue;
+        public float noseTipRoundBlendShapeValue;
+        public float NosePinchBlendShapeValue;
     }
 
     public struct Mouth
