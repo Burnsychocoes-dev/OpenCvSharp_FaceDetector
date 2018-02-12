@@ -33,7 +33,7 @@ public class AudioEmotionAnalyser : MonoBehaviour {
         set { audioRecordButton = value; }
     }
 
-
+    //tableau où seront stockées les émotions du dernier sample
     [SerializeField]
     private double[] emotions;
     public double[] Emotions
@@ -46,17 +46,19 @@ public class AudioEmotionAnalyser : MonoBehaviour {
     [SerializeField]
     private static int nMA = 5;
     private static int nMAVolatile = 3;
-    //
+    //pour analyser toutes les 0.5sec, on met secondeDivisor à 2
     private static int secondeDivisor = 2;
 
     private float anger_offset = 0.2f;
 	//précédente valeur : 3
 	private int falseSilenceCnt = 3;
-    private int countDivisor = 0;
 
+    //différents compteurs
+    private int countDivisor = 0;
     private int saveCnt = 0;
     private int saveCntVolatile = nMA - nMAVolatile;
     private int cnt = nMA - 1;
+    //tableaux pour garder en mémoire les précédentes émotions
     private float[] neutrality = new float[sizeBuffer];
     private float[] happiness = new float[sizeBuffer];
     private float[] sadness = new float[sizeBuffer];
@@ -93,7 +95,7 @@ public class AudioEmotionAnalyser : MonoBehaviour {
             }
             timeCount += Time.deltaTime;
             timeSpeakCount += Time.deltaTime;
-            //
+            //Pour pouvoir analyser en dessous de 1sec, il faut diviser le recordTime
             if (timeCount >= recordTime / secondeDivisor)
             {
                 timeCount = 0;
@@ -104,16 +106,6 @@ public class AudioEmotionAnalyser : MonoBehaviour {
                 Debug.Log(nbrOfSamples);
                 myAudioClip.GetData(data, countDivisor*44100/secondeDivisor);
                 countDivisor = (countDivisor+1)%secondeDivisor;
-                /*if (count05 == 0)
-                {
-                    myAudioClip.GetData(data, 0);
-                    count05 = 1;
-                }
-                else if (count05 == 1)
-                {
-                    myAudioClip.GetData(data, 44100 / 2);
-                    count05 = 0;
-                }*/
 
                 double[] double_data = new double[data.Length];
                 for (int i = 0; i < data.Length; i++)
@@ -128,7 +120,7 @@ public class AudioEmotionAnalyser : MonoBehaviour {
                 {
                     isSpeaking = false;
                 }
-                //UpdateAvatarEmotionMA();
+                //régler l'update selon la technique voulue
                 UpdateAvatarEmotionMA_correctSilence();
                 Debug.Log("Neutrality : " + neutrality_value);
                 Debug.Log("happiness : " + happiness_value);
@@ -185,6 +177,7 @@ public class AudioEmotionAnalyser : MonoBehaviour {
                 }
                 AvatarMakerManager.SetBlendshapeValue(morphName, 0);
             }
+            //mis à jour de l'avatar
             UpdateAvatarBlendshapeOnRealTime("eCTRLHappy", happiness_value);
             UpdateAvatarBlendshapeOnRealTime("eCTRLSad", sadness_value);
             UpdateAvatarBlendshapeOnRealTime("eCTRLAngry", anger_value);
@@ -241,7 +234,7 @@ public class AudioEmotionAnalyser : MonoBehaviour {
             }
         }
     }
-
+    //mis à jour à partir des données de vokaturi
     private void UpdateAvatarMakerEmotion()
     {
         //double neutrality = emotions[0];
@@ -256,6 +249,7 @@ public class AudioEmotionAnalyser : MonoBehaviour {
         fear_value = AvatarMaker.PercentageConvertor((float)emotions[4], 0f, 1f, 0, 100);
     }
 
+    //mis à jour de l'avatar avec la technique des moyennes mobiles
     private void UpdateAvatarEmotionMA()
     {
         neutrality[cnt] = (float)emotions[0];
@@ -269,13 +263,14 @@ public class AudioEmotionAnalyser : MonoBehaviour {
         sadness_value=0;
         anger_value=0;
         fear_value=0;
-
+        //moyenne mobile pour émotions - volatiles
         for(int i=0; i < nMA; i++)
         {
             neutrality_value += neutrality[(saveCnt + i) % sizeBuffer];
             happiness_value += happiness[(saveCnt + i) % sizeBuffer];
             sadness_value += sadness[(saveCnt + i) % sizeBuffer];
         }
+        //moyenne mobile pour émotions + volatiles
         for(int i=0; i < nMAVolatile; i++)
         {
             anger_value += anger[(saveCntVolatile + i) % sizeBuffer];
@@ -292,40 +287,7 @@ public class AudioEmotionAnalyser : MonoBehaviour {
         saveCntVolatile = (saveCntVolatile + 1) % sizeBuffer;
         cnt = (cnt + 1) % sizeBuffer;
 
-        //// Petit test de prise de decision par max
-        //float[] tableau = new float[5];
-        //tableau[0] = neutrality_value;
-        //tableau[1] = happiness_value;
-        //tableau[2] = sadness_value;
-        //tableau[3] = anger_value;
-        //tableau[4] = fear_value;
-
-        //int maxIndice = IndexOfMaxEmotion(tableau);
-
-        //switch(maxIndice)
-        //{
-        //    case 1:
-        //        happiness_value = 1;
-        //        break;
-
-        //    case 2:
-        //        sadness_value = 1;
-        //        break;
-
-        //    case 3:
-        //        anger_value = 1;
-        //        break;
-
-        //    case 4:
-        //        fear_value = 1;
-        //        break;
-
-        //    default:
-        //        neutrality_value = 1;
-        //        break;
-        //}
-
-
+        //mis à jour des données de l'avatar
         neutrality_value = AvatarMaker.PercentageConvertor(neutrality_value, 0f, 1f, 0, 100);
         happiness_value = AvatarMaker.PercentageConvertor(happiness_value, 0f, 1f, 0, 100);
         sadness_value = AvatarMaker.PercentageConvertor(sadness_value, 0f, 1f, 0, 100);
@@ -333,6 +295,7 @@ public class AudioEmotionAnalyser : MonoBehaviour {
         fear_value = AvatarMaker.PercentageConvertor(fear_value, 0f, 1f, 0, 100);
     }
 
+    //mis à jour de l'avatar avec la technique des MA + correction des "faux silences"
     private void UpdateAvatarEmotionMA_correctSilence(){
         int cnt0 = 0;
         int cnt0Volatile = 0;
@@ -415,6 +378,7 @@ public class AudioEmotionAnalyser : MonoBehaviour {
         fear_value = AvatarMaker.PercentageConvertor(fear_value, 0f, 1f, 0, 100);
     }
 
+    //technique MA de moyennes
     private void UpdateAvatarEmotionMAA()
     {
         neutrality_value = 0;
@@ -551,7 +515,7 @@ public class AudioEmotionAnalyser : MonoBehaviour {
         }
     }
 
-
+    //fonction pour récupérer le moment où l'émotion était la plus forte
     public int IndexOfMaxEmotion(float[] emotions)
     {
         int maxIndex = 0;
@@ -566,7 +530,7 @@ public class AudioEmotionAnalyser : MonoBehaviour {
         }
         return maxIndex;
     }
-
+    //fonction pour mettre à jour l'avatar, arguments : paramètre à modifier, valeur
     public void UpdateAvatarBlendshapeOnRealTime(string morphName, float newValue)
     {
         float previousValue = 0;
@@ -602,15 +566,4 @@ public class AudioEmotionAnalyser : MonoBehaviour {
             }
         }
     }
-    //void OnGUI()
-    //{
-    //    if (GUI.Button(new Rect(10, 10, 60, 50), "Record"))
-    //    {
-    //        myAudioClip = Microphone.Start(null, false, 10, 44100);
-    //    }
-    //    if (GUI.Button(new Rect(10, 70, 60, 50), "Save"))
-    //    {
-    //        SavWav.Save("myfile", myAudioClip);
-    //    }
-    //}
 }
