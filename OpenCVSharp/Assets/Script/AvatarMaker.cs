@@ -464,7 +464,7 @@ public class AvatarMaker : MonoBehaviour {
 
     public void SetHair(bool init)
     {
-        if(perso.hair.isHairless || init)
+        if(perso.haircut == AvatarScript.Haircut.Chauve)
         {
             foreach (var hair in avatarManager.GetAllHair())
             {
@@ -475,9 +475,13 @@ public class AvatarMaker : MonoBehaviour {
         {
             foreach (var hair in avatarManager.GetAllHair())
             {
-                if(hair.name == "ScottHair")
+                if(hair.name == perso.haircut.ToString())
                 {
                     hair.SetVisibility(true);
+                }
+                else
+                {
+                    hair.SetVisibility(false);
                 }
             }
         }

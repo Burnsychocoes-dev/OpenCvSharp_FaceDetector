@@ -34,53 +34,14 @@ public class HairDetection : MonoBehaviour
     private int yHairMax;
     private int hairHeight;
     private int j_min = -1;
-    /*public int J_min
-    {
-        get { return j_min; }
-    }
-    private int j_max=-1;
-    public int J_max
-    {
-        get { return j_max; }
-    }*/
-    /*public enum Epaisseur
-    {
-        aucune,
-        peu_epais,
-        epais,
-        tres_epais
-    }
-    public Epaisseur epaisseur = Epaisseur.aucune;
 
-    public enum Longueur
-    {
-        aucune,
-        tres_court,
-        moyen,
-        longs
-    }
-    public Longueur longueur = Longueur.aucune;*/
 
-    public enum Haircut
+    private AvatarScript.Haircut haircut = AvatarScript.Haircut.Chauve;
+    public AvatarScript.Haircut Haircut
     {
-        Chauve,
-        BoldHair,
-        CasualLongHair,
-        DrifterHair,
-        FunkyHair,
-        JakeHair,
-        KamiHair,
-        ScottHair,
-        MicahMaleHair,
-        KungFuHair,
-        MicahFemaleHair,
-        ToulouseHair,
-        NordicHair,
-        FashionHair,
-        RangeHair
+        get { return haircut; }
     }
 
-    public Haircut haircut = Haircut.Chauve;
 
     private PhotoAnalysingScript photo;
 
@@ -160,11 +121,11 @@ public class HairDetection : MonoBehaviour
         //draw a rectangle 
         //OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(1, 1, photo.VideoSourceImage.Cols - 1, photo.VideoSourceImage.Rows - 1);
 
-        int hauteurVisage =(int) (photo.localLandmarks[2 * 8 + 1] - photo.localLandmarks[2 * 24 + 1]);
+        int hauteurVisage = (int)(photo.localLandmarks[2 * 8 + 1] - photo.localLandmarks[2 * 24 + 1]);
 
-        hauteurVisage = (int)(0.4*hauteurVisage);
+        hauteurVisage = (int)(0.4 * hauteurVisage);
 
-        OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(photo.Face.X , photo.Face.Y - hauteurVisage, photo.Face.Width, photo.Face.Height + 2* hauteurVisage);
+        OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(photo.Face.X, photo.Face.Y - hauteurVisage, photo.Face.Width, photo.Face.Height + 2 * hauteurVisage);
 
         Cv2.GrabCut(photo.VideoSourceImage, result, rectangle, bgModel, fgModel, 1, GrabCutModes.InitWithRect);
         Cv2.Compare(result, new Scalar(3, 3, 3), result, CmpTypes.EQ);
@@ -182,12 +143,12 @@ public class HairDetection : MonoBehaviour
         Debug.Log("Get Skin Color");
         Vec3f[] skinColorSampleYCbCr = new Vec3f[colorSampleListSize];
 
-        int dx = (int) (photo.localLandmarks[2 * 27] - photo.localLandmarks[2 * 21]);
-        int dy = (int) (photo.localLandmarks[2 * 15 + 1] - photo.localLandmarks[2 * 16 + 1]);
-        dy = (int) (0.4 * dy);
+        int dx = (int)(photo.localLandmarks[2 * 27] - photo.localLandmarks[2 * 21]);
+        int dy = (int)(photo.localLandmarks[2 * 15 + 1] - photo.localLandmarks[2 * 16 + 1]);
+        dy = (int)(0.4 * dy);
 
 
-        OpenCvSharp.Rect rectFront = new OpenCvSharp.Rect((int) photo.localLandmarks[2 * 21], (int) photo.localLandmarks[2 * 21 + 1] - dy, dx, dy);
+        OpenCvSharp.Rect rectFront = new OpenCvSharp.Rect((int)photo.localLandmarks[2 * 21], (int)photo.localLandmarks[2 * 21 + 1] - dy, dx, dy);
 
         int skinColorCounter = GetColorFromRect(skinColorSampleYCbCr, rectFront); // récupération d'un échantillon de couleurs dans le rectangle donné en entrée
         //>>>Calcul de l'espérance skinColorYCbCrExpectancy
@@ -211,7 +172,7 @@ public class HairDetection : MonoBehaviour
         Cv2.Rectangle(photo.VideoSourceImage, rectCouleur, couleurRectangle, -5);
 
 
-        Cv2.Rectangle(photo.VideoSourceImage, rectFront, Scalar.FromRgb(0,0,255), 1);
+        Cv2.Rectangle(photo.VideoSourceImage, rectFront, Scalar.FromRgb(0, 0, 255), 1);
 
         //>>>Calcul des Thresholds skinColorYCbCrThresholds
         skinColorCbCrThreshold = Math.Ceiling(ComputeVec3fThresholds(skinColorSampleYCbCr, skinColorCounter, skinColorYCbCrExpectancy));
@@ -408,7 +369,7 @@ public class HairDetection : MonoBehaviour
         //On part du bas du front
 
         int j = (int)photo.localLandmarks[2 * 8];
-        int i0 = (int)((photo.localLandmarks[2 * 19 + 1] + photo.localLandmarks[2 * 24 + 1])/2);
+        int i0 = (int)((photo.localLandmarks[2 * 19 + 1] + photo.localLandmarks[2 * 24 + 1]) / 2);
         for (var i = i0; i > 0; i--)
         {
 
@@ -890,20 +851,20 @@ public class HairDetection : MonoBehaviour
             if (epaisseur == 1)
             {
                 //L'épaisseur des cheveux est trop faible
-                haircut = Haircut.Chauve;
+                haircut = AvatarScript.Haircut.Chauve;
             }
             else
             {
                 if (longueurCheveux == 2)
                 {
                     //Les cheveux ne sont ni court, ni long
-                    haircut = Haircut.DrifterHair;
+                    haircut = AvatarScript.Haircut.DrifterHair;
 
                 }
                 else if (longueurCheveux == 3)
                 {
                     //Les cheveux sont long
-                    haircut = Haircut.CasualLongHair;
+                    haircut = AvatarScript.Haircut.CasualLongHair;
                 }
                 else
                 {
@@ -915,7 +876,7 @@ public class HairDetection : MonoBehaviour
                         if (epaisseur == 2)
                         {
                             //l'épaisseur des cheveux est moyenne
-                            haircut = Haircut.BoldHair;
+                            haircut = AvatarScript.Haircut.BoldHair;
                         }
                         else
                         {
@@ -930,7 +891,7 @@ public class HairDetection : MonoBehaviour
                             {
                                 haircut = Haircut.FunkyHair;
                             }*/
-                            haircut = Haircut.ScottHair;
+                            haircut = AvatarScript.Haircut.ScottHair;
                         }
 
                     }
@@ -940,25 +901,25 @@ public class HairDetection : MonoBehaviour
                         if (epaisseur == 2 || epaisseur == 3)
                         {
                             //épaisseur moyenne ou élevée
-                            haircut = Haircut.JakeHair;
+                            haircut = AvatarScript.Haircut.JakeHair;
                         }
                         else
                         {
                             //épaisseur très élevée, il reste 2 candidats à départager par rapport au caractère disparate ou compacte des cheveux
                             if (EstDisparate(0.17))
                             {
-                                haircut = Haircut.MicahMaleHair;
+                                haircut = AvatarScript.Haircut.MicahMaleHair;
                             }
                             else
                             {
-                                haircut = Haircut.KamiHair;
+                                haircut = AvatarScript.Haircut.KamiHair;
                             }
                         }
                     }
                     else
                     {
                         //Le front est casiment inexistant
-                        haircut = Haircut.KungFuHair;
+                        haircut = AvatarScript.Haircut.KungFuHair;
                     }
                 }
             }
@@ -971,30 +932,30 @@ public class HairDetection : MonoBehaviour
             if (longueurCheveux == 1)
             {
                 //Les cheveux sont très courts, MicahFemaleHair est le seul candidat possible
-                haircut = Haircut.MicahFemaleHair;
+                haircut = AvatarScript.Haircut.MicahFemaleHair;
             }
             else if (longueurCheveux == 2)
             {
                 //Les cheveux sont courts, 2 candidats : ToulouseHair et NordicHair qu'on va distinguer par le caractère disparate ou non des cheveux
                 if (EstDisparate(0.23))
                 {
-                    haircut = Haircut.NordicHair;
+                    haircut = AvatarScript.Haircut.NordicHair;
                 }
                 else
                 {
-                    haircut = Haircut.ToulouseHair;
+                    haircut = AvatarScript.Haircut.ToulouseHair;
                 }
 
             }
             else if (longueurCheveux == 3)
             {
                 //Les cheveux sont ni court ni long, FashionHair est le seul candidat possible
-                haircut = Haircut.FashionHair;
+                haircut = AvatarScript.Haircut.FashionHair;
             }
             else
             {
                 //Les cheveux sont long, RangerHair est le seul candidat possible
-                haircut = Haircut.RangeHair;
+                haircut = AvatarScript.Haircut.RangeHair;
             }
 
         }
