@@ -43,7 +43,7 @@ public class HairDetection : MonoBehaviour
     }
 
 
-    private PhotoAnalysingScript photo;
+    private FaceDetectionImage photo;
 
     private Mat matrix2_grabcut;
     public Mat Matrix2_grabcut
@@ -58,7 +58,7 @@ public class HairDetection : MonoBehaviour
         skinColorYCbCrExpectancy = new Vec3f();
         hairColorYCbCrExpectancy = new Vec3f();
 
-        photo = GetComponent<PhotoAnalysingScript>();
+        photo = GetComponent<FaceDetectionImage>();
     }
 
     // Update is called once per frame
@@ -92,9 +92,10 @@ public class HairDetection : MonoBehaviour
 
         int hauteurVisage = (int)(photo.localLandmarks[2 * 8 + 1] - photo.localLandmarks[2 * 24 + 1]);
 
-        hauteurVisage = (int)(0.4 * hauteurVisage);
+        hauteurVisage = (int)(0.8 * hauteurVisage);
 
-        OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(photo.Face.X, photo.Face.Y - hauteurVisage, photo.Face.Width, photo.Face.Height + 2 * hauteurVisage);
+
+        OpenCvSharp.Rect rectangle = new OpenCvSharp.Rect(photo.Face.X, Math.Max(photo.Face.Y - hauteurVisage, 0), photo.Face.Width, photo.Face.Height + 2 * hauteurVisage);
 
         Cv2.GrabCut(photo.VideoSourceImage, result, rectangle, bgModel, fgModel, 1, GrabCutModes.InitWithRect);
         Cv2.Compare(result, new Scalar(3, 3, 3), result, CmpTypes.EQ);
@@ -253,7 +254,7 @@ public class HairDetection : MonoBehaviour
         Color32 peauBlanche = new Color32(247, 232, 209, 0);
         couplesCbCr[1] = FromRGBToYCbCr(peauBlanche);
 
-        Color32 peauPeuBronzee = new Color32(228, 204, 170, 0);
+        Color32 peauPeuBronzee = new Color32(176, 155, 129, 0);
         couplesCbCr[2] = FromRGBToYCbCr(peauPeuBronzee);
 
         Color32 peauBronzee = new Color32(219, 161, 113, 0);
@@ -286,7 +287,7 @@ public class HairDetection : MonoBehaviour
         AvatarScript.avatar3.skinColor = (AvatarScript.SkinColor)indice_minimum;
         AvatarScript.avatar4.skinColor = (AvatarScript.SkinColor)indice_minimum;
         AvatarScript.avatar5.skinColor = (AvatarScript.SkinColor)indice_minimum;
-
+        Debug.Log(AvatarScript.avatar1.skinColor);
 
     }
 
@@ -1094,6 +1095,12 @@ public class HairDetection : MonoBehaviour
     {
         return (Mathf.Sqrt(Mathf.Pow(Cb - expectancy.Item1, 2) + Mathf.Pow(Cr - expectancy.Item2, 2)));
     }
+
+    double EuclidianDistance(Vec3f candidat, Vec3f expectancy)
+    {
+        return (Mathf.Sqrt(Mathf.Pow(candidat.Item0 - expectancy.Item0, 2) + Mathf.Pow(candidat.Item1 - expectancy.Item1, 2) + Mathf.Pow(candidat.Item2 - expectancy.Item2, 2)));
+    }
+
 
     public Vec3f FromRGBToYCbCr(Color32 RGB)
     {
