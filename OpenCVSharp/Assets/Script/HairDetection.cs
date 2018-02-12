@@ -878,6 +878,7 @@ public class HairDetection : MonoBehaviour
             {
                 //L'épaisseur des cheveux est trop faible
                 haircut = AvatarScript.Haircut.Chauve;
+                AvatarScript.avatarHaircutSelectionId = 0;
             }
             else
             {
@@ -885,12 +886,13 @@ public class HairDetection : MonoBehaviour
                 {
                     //Les cheveux ne sont ni court, ni long
                     haircut = AvatarScript.Haircut.DrifterHair;
-
+                    AvatarScript.avatarHaircutSelectionId = 3;
                 }
                 else if (longueurCheveux == 3)
                 {
                     //Les cheveux sont long
                     haircut = AvatarScript.Haircut.CasualLongHair;
+                    AvatarScript.avatarHaircutSelectionId = 2;
                 }
                 else
                 {
@@ -903,6 +905,7 @@ public class HairDetection : MonoBehaviour
                         {
                             //l'épaisseur des cheveux est moyenne
                             haircut = AvatarScript.Haircut.BoldHair;
+                            AvatarScript.avatarHaircutSelectionId = 1;
                         }
                         else
                         {
@@ -918,6 +921,7 @@ public class HairDetection : MonoBehaviour
                                 haircut = Haircut.FunkyHair;
                             }*/
                             haircut = AvatarScript.Haircut.ScottHair;
+                            AvatarScript.avatarHaircutSelectionId = 7;
                         }
 
                     }
@@ -928,6 +932,7 @@ public class HairDetection : MonoBehaviour
                         {
                             //épaisseur moyenne ou élevée
                             haircut = AvatarScript.Haircut.JakeHair;
+                            AvatarScript.avatarHaircutSelectionId = 5;
                         }
                         else
                         {
@@ -935,10 +940,12 @@ public class HairDetection : MonoBehaviour
                             if (EstDisparate(0.17))
                             {
                                 haircut = AvatarScript.Haircut.MicahMaleHair;
+                                AvatarScript.avatarHaircutSelectionId = 8;
                             }
                             else
                             {
                                 haircut = AvatarScript.Haircut.KamiHair;
+                                AvatarScript.avatarHaircutSelectionId = 6;
                             }
                         }
                     }
@@ -946,6 +953,7 @@ public class HairDetection : MonoBehaviour
                     {
                         //Le front est casiment inexistant
                         haircut = AvatarScript.Haircut.KungFuHair;
+                        AvatarScript.avatarHaircutSelectionId = 9;
                     }
                 }
             }
@@ -954,11 +962,14 @@ public class HairDetection : MonoBehaviour
         {
             //L'utilisateur est une femme, le choix des coupes s'effectue parmis les coupes de femmes
             int longueurCheveux = GuessHairLength_women();
+            int epaisseurCheveux = GuessHairHeight();
+            
 
             if (longueurCheveux == 1)
             {
                 //Les cheveux sont très courts, MicahFemaleHair est le seul candidat possible
                 haircut = AvatarScript.Haircut.MicahFemaleHair;
+                AvatarScript.avatarHaircutSelectionId = 1;
             }
             else if (longueurCheveux == 2)
             {
@@ -966,10 +977,12 @@ public class HairDetection : MonoBehaviour
                 if (EstDisparate(0.23))
                 {
                     haircut = AvatarScript.Haircut.NordicHair;
+                    AvatarScript.avatarHaircutSelectionId = 6;
                 }
                 else
                 {
                     haircut = AvatarScript.Haircut.ToulouseHair;
+                    AvatarScript.avatarHaircutSelectionId = 5;
                 }
 
             }
@@ -977,11 +990,13 @@ public class HairDetection : MonoBehaviour
             {
                 //Les cheveux sont ni court ni long, FashionHair est le seul candidat possible
                 haircut = AvatarScript.Haircut.FashionHair;
+                AvatarScript.avatarHaircutSelectionId = 2;
             }
             else
             {
                 //Les cheveux sont long, RangerHair est le seul candidat possible
-                haircut = AvatarScript.Haircut.RangeHair;
+                haircut = AvatarScript.Haircut.RangerHair;
+                AvatarScript.avatarHaircutSelectionId = 7;
             }
 
         }

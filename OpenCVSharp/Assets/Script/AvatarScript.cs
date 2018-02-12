@@ -11,6 +11,19 @@ public class AvatarScript : MonoBehaviour {
         Little
     }
 
+    public enum NoseTipInclinaison
+    {
+        NezRemonte,
+        NezAbaisse,
+        NezNormal
+    }
+
+    public enum NoseTipType
+    {
+        NezRond,
+        NezPointue
+    }
+
     public enum ProportionLevre
     {
         UnPourDeux,
@@ -46,7 +59,12 @@ public class AvatarScript : MonoBehaviour {
         ToulouseHair,
         NordicHair,
         FashionHair,
-        RangeHair
+        RangerHair,
+        KeikoPonytailHair,
+        SparkleHair,
+        ShortPonytailHair,
+        SultryHair,
+        RevHair
     }
 
     public struct Eye
@@ -62,10 +80,10 @@ public class AvatarScript : MonoBehaviour {
         public float noseHeight;
         public float noseWidth;
         public float noseTipHeight;
-        public float bigAngleNoseTopTip;
-        public float littleAngleNoseTopTip;
         public Taille width;
         public Taille height;
+        public NoseTipInclinaison noseTipInclinaison;
+        public NoseTipType noseTipType;
     }
 
     public struct Mouth
@@ -101,29 +119,33 @@ public class AvatarScript : MonoBehaviour {
     }
 
     public static Personnage avatar1;
-    //public Personnage Avatar1
-    //{
-    //    get { return avatar1; }
-    //}
+ 
     public static Personnage avatar2;
-    //public Personnage Avatar2
-    //{
-    //    get { return avatar1; }
-    //}
+
     public static Personnage avatar3;
-    //public Personnage Avatar3
-    //{
-    //    get { return avatar1; }
-    //}
+
+    public static Personnage avatar4;
+
+    public static Personnage avatar5;
+ 
     public static Personnage avatarDefinitif;
+    
 
     public static int avatarSelectionId = 1;
 
-    private static int avatarGenerateNumber = 3;
+    private static int avatarGenerateNumber = 5;
     public static int AvatarGenerateNumber
     {
         get { return avatarGenerateNumber; }
     }
+
+    public static int avatarHaircutSelectionId = 1;
+    private static int avatarHaircutAvailableNumber = 10;
+    public static int AvatarHaircutAvailableNumber
+    {
+        get { return avatarHaircutAvailableNumber; }
+    }
+
 
     // Use this for initialization
     void Start () {
