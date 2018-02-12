@@ -59,7 +59,12 @@ public class AvatarScript : MonoBehaviour {
         ToulouseHair,
         NordicHair,
         FashionHair,
-        RangeHair
+        RangerHair,
+        KeikoPonytailHair,
+        SparkleHair,
+        ShortPonytailHair,
+        SultryHair,
+        RevHair
     }
 
     public struct Eye
@@ -132,6 +137,8 @@ public class AvatarScript : MonoBehaviour {
     {
         get { return avatarGenerateNumber; }
     }
+
+    public static int avatarHaircutSelectionId = 1;
 
     // Use this for initialization
     void Start () {

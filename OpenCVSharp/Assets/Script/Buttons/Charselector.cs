@@ -91,6 +91,7 @@ public class Charselector : MonoBehaviour {
                 switch (type)
                 {
                     case Type.NEXT:
+
                         break;
                     case Type.PREVIOUS:
                         break;

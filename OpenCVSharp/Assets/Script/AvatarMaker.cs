@@ -91,6 +91,100 @@ public class AvatarMaker : MonoBehaviour {
         else
         {
             perso = AvatarScript.avatarDefinitif;
+            
+            if(perso.gender == AvatarScript.Gender.Male)
+            {
+                // Switch case qui permet de choisir la coupe de cheveux (Si on la modifie ultérieurement)
+                switch (AvatarScript.avatarHaircutSelectionId)
+                {
+                    case 0:
+                        perso.haircut = AvatarScript.Haircut.Chauve;
+                        break;
+
+                    case 1:
+                        perso.haircut = AvatarScript.Haircut.BoldHair;
+                        break;
+
+                    case 2:
+                        perso.haircut = AvatarScript.Haircut.CasualLongHair;
+                        break;
+
+                    case 3:
+                        perso.haircut = AvatarScript.Haircut.DrifterHair;
+                        break;
+
+                    case 4:
+                        perso.haircut = AvatarScript.Haircut.FunkyHair;
+                        break;
+
+                    case 5:
+                        perso.haircut = AvatarScript.Haircut.JakeHair;
+                        break;
+
+                    case 6:
+                        perso.haircut = AvatarScript.Haircut.KamiHair;
+                        break;
+
+                    case 7:
+                        perso.haircut = AvatarScript.Haircut.ScottHair;
+                        break;
+
+                    case 8:
+                        perso.haircut = AvatarScript.Haircut.MicahMaleHair;
+                        break;
+
+                    case 9:
+                        perso.haircut = AvatarScript.Haircut.KungFuHair;
+                        break;
+                }
+            }
+            else
+            {
+                // Switch case qui permet de choisir la coupe de cheveux (Si on la modifie ultérieurement)
+                switch (AvatarScript.avatarHaircutSelectionId)
+                {
+                    case 0:
+                        perso.haircut = AvatarScript.Haircut.Chauve;
+                        break;
+
+                    case 1:
+                        perso.haircut = AvatarScript.Haircut.MicahFemaleHair;
+                        break;
+
+                    case 2:
+                        perso.haircut = AvatarScript.Haircut.FashionHair;
+                        break;
+
+                    case 3:
+                        perso.haircut = AvatarScript.Haircut.ShortPonytailHair;
+                        break;
+
+                    case 4:
+                        perso.haircut = AvatarScript.Haircut.SparkleHair;
+                        break;
+
+                    case 5:
+                        perso.haircut = AvatarScript.Haircut.ToulouseHair;
+                        break;
+
+                    case 6:
+                        perso.haircut = AvatarScript.Haircut.NordicHair;
+                        break;
+
+                    case 7:
+                        perso.haircut = AvatarScript.Haircut.RangerHair;
+                        break;
+
+                    case 8:
+                        perso.haircut = AvatarScript.Haircut.SultryHair;
+                        break;
+
+                    case 9:
+                        perso.haircut = AvatarScript.Haircut.RevHair;
+                        break;
+                }
+            }
+            
         }
 
         if (prefabGender == perso.gender)
