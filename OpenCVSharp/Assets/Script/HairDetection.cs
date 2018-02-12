@@ -11,7 +11,7 @@ public class HairDetection : MonoBehaviour
 {
     [SerializeField]
     //private int fixThreshold = 10;
-    private int colorSampleListSize = 300;
+    private int colorSampleListSize = 10000;
     private double skinColorCbCrThreshold;
     private Vec3f skinColorYCbCrExpectancy;
     public Vec3f SkinColorYCbCrExpectancy
@@ -43,7 +43,7 @@ public class HairDetection : MonoBehaviour
     }
 
 
-    private PhotoAnalysingScript photo;
+    private FaceDetectionImage photo;
 
     private Mat matrix2_grabcut;
     public Mat Matrix2_grabcut
@@ -58,7 +58,7 @@ public class HairDetection : MonoBehaviour
         skinColorYCbCrExpectancy = new Vec3f();
         hairColorYCbCrExpectancy = new Vec3f();
 
-        photo = GetComponent<PhotoAnalysingScript>();
+        photo = GetComponent<FaceDetectionImage>();
     }
 
     // Update is called once per frame
@@ -136,27 +136,118 @@ public class HairDetection : MonoBehaviour
         matrix2_grabcut.CopyTo(photo.VideoSourceImage);
     }
 
+    private void GetYHairTop()
+    {
+        int nbOfPixelBlancThreshold = 6;
+        int pixelBlancCounter = 0;
+
+        //On part du bas du front
+
+        int j = (int)photo.localLandmarks[2 * 8];
+        int i0 = (int)((photo.localLandmarks[2 * 19 + 1] + photo.localLandmarks[2 * 24 + 1]) / 2);
+        for (var i = i0; i > 0; i--)
+        {
+
+            Vec3b vec = photo.VideoSourceImage.At<Vec3b>(i, j);
+            Color32 color = new Color32
+            {
+                r = vec.Item2,
+                g = vec.Item1,
+                b = vec.Item0
+            };
+
+            if (color.r == 255 && color.g == 255 && color.b == 255)
+            {
+                pixelBlancCounter++;
+                if (pixelBlancCounter >= nbOfPixelBlancThreshold)
+                {
+                    yHairTop = i + nbOfPixelBlancThreshold;
+                    break;
+                }
+            }
+            else
+            {
+                pixelBlancCounter = 0;
+            }
+
+        }
+
+        if (yHairTop == -1)
+        {
+            yHairTop = 0;
+        }
+
+    }
+
 
 
     public void GetSkinColor()
     {
         Debug.Log("Get Skin Color");
+        GetYHairTop();
+
+        int dx = (int)(photo.localLandmarks[2 * 34] - photo.localLandmarks[2 * 32]);
+        int dy = (int)(photo.localLandmarks[2 * 15 + 1] - photo.localLandmarks[2 * 16 + 1]);
+
+        int ordonnee_sommet_haut = (int)photo.localLandmarks[2 * 21 + 1] - (int)(0.5*dy);
+
+        colorSampleListSize = dx * (ordonnee_sommet_haut - yHairTop) / 10;
         Vec3f[] skinColorSampleYCbCr = new Vec3f[colorSampleListSize];
 
-        int dx = (int)(photo.localLandmarks[2 * 27] - photo.localLandmarks[2 * 21]);
-        int dy = (int)(photo.localLandmarks[2 * 15 + 1] - photo.localLandmarks[2 * 16 + 1]);
-        dy = (int)(0.4 * dy);
-
-
-        OpenCvSharp.Rect rectFront = new OpenCvSharp.Rect((int)photo.localLandmarks[2 * 21], (int)photo.localLandmarks[2 * 21 + 1] - dy, dx, dy);
+        OpenCvSharp.Rect rectFront = new OpenCvSharp.Rect((int)photo.localLandmarks[2 * 32], ordonnee_sommet_haut, dx, (int)(0.4*dy));
 
         int skinColorCounter = GetColorFromRect(skinColorSampleYCbCr, rectFront); // récupération d'un échantillon de couleurs dans le rectangle donné en entrée
-        //>>>Calcul de l'espérance skinColorYCbCrExpectancy
+        //>>>Calcul de l'espérance skinColorYCbCrExpectancy ainsi que du seuil skinColorCbCrThreshold
         skinColorYCbCrExpectancy = ComputeVec3fExpectancy(skinColorSampleYCbCr, skinColorCounter);
-        Debug.Log("Skin Color YCbCrExpectancy");
-        Debug.Log(skinColorYCbCrExpectancy.Item1);
-        Debug.Log(skinColorYCbCrExpectancy.Item2);
+        skinColorCbCrThreshold = Math.Ceiling(ComputeVec3fThresholds(skinColorSampleYCbCr, skinColorCounter, skinColorYCbCrExpectancy));
 
+
+        
+
+        //Robustesse : on prélève de nouveaux pixels en translatant le Rect vers le haut afin d'affiner la mesure de la moyenne et du seuil des couple (Cb,Cr) de la peau
+
+        ordonnee_sommet_haut -= (int)(0.5*dy);
+
+        rectFront = new OpenCvSharp.Rect((int)photo.localLandmarks[2 * 32], ordonnee_sommet_haut, dx, (int)(0.5*dy));
+        Cv2.Rectangle(photo.VideoSourceImage, rectFront, Scalar.FromRgb(0, 0, 255), 1);
+
+        int newElementCounter = GetColorFromRect(skinColorSampleYCbCr, skinColorCounter,  rectFront, skinColorYCbCrExpectancy, skinColorCbCrThreshold);
+
+        //Valeurs de moyenne et de seuil qui seront utilisés par défaut en cas d'echec de la robustesse
+        Vec3f skinColorDefaultExpectency = skinColorYCbCrExpectancy;
+        double skinColorCbCrDefaultThreshold = skinColorCbCrThreshold;
+        Boolean firstIteration = true;
+
+        while (newElementCounter > 0 && ordonnee_sommet_haut > 0.4*dy && ordonnee_sommet_haut > yHairTop + 0.3*dy)
+        {
+            //Mise à jour de la moyenne ainsi que du seuil des couples (Cb,Cr) des pixels du fronts
+            skinColorCounter += newElementCounter;
+            skinColorYCbCrExpectancy = ComputeVec3fExpectancy(skinColorSampleYCbCr, skinColorCounter);
+            skinColorCbCrThreshold = Math.Ceiling(ComputeVec3fThresholds(skinColorSampleYCbCr, skinColorCounter, skinColorYCbCrExpectancy));
+
+            if (firstIteration)
+            {
+                //Les valeurs obtenus à la première itération seront les valeurs par défauts utilisées en cas d'échec de la robustesse
+                skinColorDefaultExpectency = skinColorYCbCrExpectancy;
+                skinColorCbCrDefaultThreshold = skinColorCbCrThreshold;
+                firstIteration = false;
+            }
+
+            ordonnee_sommet_haut -= (int)(0.4*dy);
+
+            rectFront = new OpenCvSharp.Rect((int)photo.localLandmarks[2 * 32], ordonnee_sommet_haut, dx, (int)(0.3 * dy));
+            newElementCounter = GetColorFromRect(skinColorSampleYCbCr, skinColorCounter, rectFront, skinColorYCbCrExpectancy, skinColorCbCrThreshold);
+        }
+
+       /* if (newElementCounter > 0 && ordonnee_sommet_haut <= yHairTop + 0.3*dy)
+        {
+            //L'algorithme visant à rendre l'estimation de la couleur de la peau robuste n'a pas fonctionné, on prend la valeur par défaut
+            Debug.Log("FAIIL");
+            skinColorYCbCrExpectancy = skinColorDefaultExpectency;
+            skinColorCbCrThreshold = skinColorCbCrDefaultThreshold;
+        }*/
+
+        //A present, nous avons une moyenne et un seuil des couples (Cb,Cr) des pixels du front assez fiable
 
 
         //Affichage de la couleur de peau sur un carré rempli en haut à gauche de l'image
@@ -172,14 +263,13 @@ public class HairDetection : MonoBehaviour
         Cv2.Rectangle(photo.VideoSourceImage, rectCouleur, couleurRectangle, -5);
 
 
-        Cv2.Rectangle(photo.VideoSourceImage, rectFront, Scalar.FromRgb(0, 0, 255), 1);
+        
 
         //>>>Calcul des Thresholds skinColorYCbCrThresholds
-        skinColorCbCrThreshold = Math.Ceiling(ComputeVec3fThresholds(skinColorSampleYCbCr, skinColorCounter, skinColorYCbCrExpectancy));
 
         //skinColorCbCrThreshold = fixThreshold;
-        Debug.Log("Skin Color YCbCrThresholds");
-        Debug.Log(skinColorCbCrThreshold);
+        //Debug.Log("Skin Color YCbCrThresholds");
+        //Debug.Log(skinColorCbCrThreshold);
     }
 
 
@@ -207,7 +297,7 @@ public class HairDetection : MonoBehaviour
             OpenCvSharp.Rect rect = new OpenCvSharp.Rect((int)abscisse_landmark_22, ordonnee_rect, distance, (yHairRoot - yHairTop) / 10);
 
             int hairColorCounter = GetColorFromRect(hairColorSampleYCbCr, rect);
-
+            
             //>>>Calcul de l'espérance hairColorYCbCrExpectancy
             hairColorYCbCrExpectancy = ComputeVec3fExpectancy(hairColorSampleYCbCr, hairColorCounter);
             Debug.Log("Hair Color YCbCrExpectancy");
@@ -243,7 +333,6 @@ public class HairDetection : MonoBehaviour
     private int GetColorFromRect(Vec3f[] colorSampleYcbcr, OpenCvSharp.Rect rect)
     {
 
-        Debug.Log("Get Skin Color");
         int skinColorCounter = 0;
         //you can Pick if it's 0
         int youCanPick = 0;
@@ -260,7 +349,7 @@ public class HairDetection : MonoBehaviour
 
 
                 //>>>Récupérations d'échantillons de couleur du front
-                if (youCanPick == 0 && skinColorCounter < colorSampleListSize)
+                if (youCanPick == 0)
                 {
 
                     //Récupérer un échantillon de couleur du front
@@ -290,27 +379,69 @@ public class HairDetection : MonoBehaviour
 
     }
 
+    private int GetColorFromRect(Vec3f[] colorSampleYcbcr, int colorSampleYcbcrCounter, OpenCvSharp.Rect rect, Vec3f skinColorYCbCrExpectancy, double skinColorCbCrThreshold)
+    {
+        int newElementCounter = 0;
+        //you can Pick if it's 0
+        int youCanPick = 0;
+        //On va pick tous les 10 pixels
+        int youCanPickEveryXPixels = 10;
+        
+        System.Random rand = new System.Random();
+
+
+        for (var i = rect.Y; i < rect.Y + rect.Height; i++)
+        {
+           
+            for (var j = rect.X; j < rect.X + rect.Width; j++)
+            {
+                if (colorSampleYcbcrCounter + newElementCounter >= colorSampleListSize)
+                {
+                    Debug.Log("STOP");
+                    break;
+                }
+                Vec3b vec = photo.VideoSourceImage.At<Vec3b>(i, j);
+                Color32 color = new Color32
+                {
+                    r = vec.Item2,
+                    g = vec.Item1,
+                    b = vec.Item0
+                };
+                
+                Vec3f ycbcr = FromRGBToYCbCr(color);
+
+                //>>>Récupérations d'échantillons de couleur du front
+                if (youCanPick == 0)
+                {
+                    Boolean isOutsider = EuclidianDistance(ycbcr.Item1, ycbcr.Item2, skinColorYCbCrExpectancy) > skinColorCbCrThreshold;
+                    if (!isOutsider)
+                    {
+                        //L'ajouter au tableau skinColorSampleYCbCr
+                        colorSampleYcbcr[colorSampleYcbcrCounter + newElementCounter] = ycbcr;
+                        newElementCounter++;
+                        youCanPick = (youCanPick + 1) % youCanPickEveryXPixels;
+                    }
+                } else
+                {
+                    youCanPick = (youCanPick + 1) % youCanPickEveryXPixels;
+                }
+
+
+                if (youCanPick == 1)
+                {
+                    youCanPickEveryXPixels = rand.Next(5, 15);
+                }
+
+            }
+            
+        }
+
+        return newElementCounter;
+    }
+
+
     public void getEyeColor()
     {
-        // Récupération des coordonnées des point 44 et 45 des landmarks (voir schéma des landmarks)
-        /* Vec2f point_44 = new Vec2f(photo.localLandmarks[2 * 43], photo.localLandmarks[2 * 43 + 1]);
-         Vec2f point_45 = new Vec2f(photo.localLandmarks[2 * 44], photo.localLandmarks[2 * 44 + 1]);
-
-         // Récupération des coordonnées des point 47 et 48 des landmarks (voir schéma des landmarks)
-         Vec2f point_47 = new Vec2f(photo.localLandmarks[2 * 46], photo.localLandmarks[2 * 46 + 1]);
-         Vec2f point_48 = new Vec2f(photo.localLandmarks[2 * 47], photo.localLandmarks[2 * 47 + 1]);
-
-         float moyenne_abscisses_44_45 = (point_44.Item0 + point_45.Item0) / 2;
-         float moyenne_ordonnees_44_45 = (point_44.Item1 + point_45.Item1) / 2;
-
-         float moyenne_abscisses_47_48 = (point_47.Item0 + point_48.Item0) / 2;
-         float moyenne_ordonnees_47_48 = (point_47.Item1 + point_48.Item1) / 2;
-
-         //Point en lequel nous prélevons la couleur des yeux
-         float abscisse_point_choisit = (moyenne_abscisses_44_45 + moyenne_abscisses_47_48)/2;
-         float ordonnee_point_choisit = (( float ) 3 / 10) * moyenne_ordonnees_44_45 + ((float) 7 / 10) * moyenne_ordonnees_47_48;
-
-         */
 
         Vec2f point_43 = new Vec2f(photo.localLandmarks[2 * 42], photo.localLandmarks[2 * 42 + 1]);
         Vec2f point_46 = new Vec2f(photo.localLandmarks[2 * 45], photo.localLandmarks[2 * 45 + 1]);
@@ -332,18 +463,6 @@ public class HairDetection : MonoBehaviour
         OpenCvSharp.Rect rectCouleur = new OpenCvSharp.Rect(abscisse, ordonnee, photo.VideoSourceImage.Width / 20, photo.VideoSourceImage.Height / 20);
         Cv2.Rectangle(photo.VideoSourceImage, rectCouleur, couleurRectangle, -5);
 
-        /*for (int i = (int)Math.Floor(ordonnee_point_choisit)-1; i<= (int)Math.Floor(ordonnee_point_choisit) + 1; i++)
-        {
-            for (int j = (int)Math.Floor(abscisse_point_choisit) - 1; j <= (int)Math.Floor(abscisse_point_choisit) + 1; j++)
-            {
-                photo.VideoSourceImage.Set<Vec3b>(i, j, new Vec3b
-                {
-                    Item0 = 0,
-                    Item1 = 255,
-                    Item2 = 0
-                });
-            }
-        }*/
 
         photo.VideoSourceImage.Set<Vec3b>((int)Math.Floor(ordonnee_point_choisit), (int)Math.Floor(abscisse_point_choisit), new Vec3b
         {
@@ -353,82 +472,6 @@ public class HairDetection : MonoBehaviour
         });
 
 
-
-    }
-
-
-
-    public void FindHairRoots()
-    {
-        Debug.Log("Find Hair Roots");
-
-        int nbOfPixelBlancThreshold = 4;
-        int pixelBlancCounter = 0;
-        int pixelNonSkin = 0;
-
-        //On part du bas du front
-
-        int j = (int)photo.localLandmarks[2 * 8];
-        int i0 = (int)((photo.localLandmarks[2 * 19 + 1] + photo.localLandmarks[2 * 24 + 1]) / 2);
-        for (var i = i0; i > 0; i--)
-        {
-
-            Vec3b vec = photo.VideoSourceImage.At<Vec3b>(i, j);
-            Color32 color = new Color32
-            {
-                r = vec.Item2,
-                g = vec.Item1,
-                b = vec.Item0
-            };
-
-            if (color.r == 255 && color.g == 255 && color.b == 255)
-            {
-                pixelBlancCounter++;
-                if (pixelBlancCounter >= nbOfPixelBlancThreshold)
-                {
-                    yHairTop = i + nbOfPixelBlancThreshold;
-                    if (yHairRoot == -1)
-                    {
-                        yHairRoot = yHairTop;
-                    }
-                    break;
-                }
-            }
-            else
-            {
-                pixelBlancCounter = 0;
-            }
-
-            Vec3f sample = FromRGBToYCbCr(color);
-            //Tant qu'on ne trouve pas les cheveux (le pixel courant est de la peau), on remonte vers le haut (donc on varie le y)
-            if (yHairRoot == -1)
-            {
-                if (EuclidianDistance(sample.Item1, sample.Item2, skinColorYCbCrExpectancy) > skinColorCbCrThreshold)
-                {
-                    pixelNonSkin++;
-                    if (pixelNonSkin >= nbOfPixelBlancThreshold)
-                    {
-                        yHairRoot = i + pixelNonSkin;
-                        Debug.Log("Hair roots found, y : ");
-                        Debug.Log(yHairRoot);
-                    }
-                }
-                else
-                {
-                    pixelNonSkin = 0;
-                }
-
-            }
-            else
-            { // yHairRoot a déjà été défini, on se contente d'afficher le pixel courant
-                photo.VideoSourceImage.Set<Vec3b>(i, j, new Vec3b
-                {
-                    Item0 = 0,
-                    Item1 = 255,
-                    Item2 = 0
-                });
-            }
-        }
 
     }
 
@@ -464,11 +507,74 @@ public class HairDetection : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void FindHairRoots()
+    {
+        Debug.Log("Find Hair Roots");
+
+        int nbOfPixelBlancThreshold = 6;
+        int pixelNonSkin = 0;
+
+        //On part du bas du front
+
+        int j = (int)photo.localLandmarks[2 * 8];
+        int i0 = (int)((photo.localLandmarks[2 * 19 + 1] + photo.localLandmarks[2 * 24 + 1]) / 2);
+        for (var i = i0; i > yHairTop; i--)
+        {
+            if (i == yHairTop && yHairRoot == -1)
+            {
+                //A priori, il n'y a pas de cheveux
+                yHairRoot = yHairTop;
+                break;
+            }
+            else
+            {
+                Vec3b vec = photo.VideoSourceImage.At<Vec3b>(i, j);
+                Color32 color = new Color32
+                {
+                    r = vec.Item2,
+                    g = vec.Item1,
+                    b = vec.Item0
+                };
+
+
+                Vec3f sample = FromRGBToYCbCr(color);
+                //Tant qu'on ne trouve pas les cheveux (le pixel courant est de la peau), on remonte vers le haut (donc on varie le y)
+                if (yHairRoot == -1)
+                {
+                    if (EuclidianDistance(sample.Item1, sample.Item2, skinColorYCbCrExpectancy) > skinColorCbCrThreshold)
+                    {
+                        pixelNonSkin++;
+                        if (pixelNonSkin >= nbOfPixelBlancThreshold)
+                        {
+                            yHairRoot = i + pixelNonSkin;
+                            Debug.Log("Hair roots found, y : ");
+                            Debug.Log(yHairRoot);
+                        }
+                    }
+                    else
+                    {
+                        pixelNonSkin = 0;
+                    }
+
+                }
+                else
+                { // yHairRoot a déjà été défini, on se contente d'afficher le pixel courant
+                    photo.VideoSourceImage.Set<Vec3b>(i, j, new Vec3b
+                    {
+                        Item0 = 0,
+                        Item1 = 255,
+                        Item2 = 0
+                    });
+                }
+            }
+        }
 
     }
 
 
-
+    //Permet de trouver l'ordonnée max des pixels des cheveux
     public void FindHairMax()
     {
         int nbOfLineNonHairThreshold = 4;
@@ -683,7 +789,7 @@ public class HairDetection : MonoBehaviour
         int taille_visage = ordonnee_bas_visage - ordonnee_haut_visage;
 
         double proportion = (double)epaisseur / (double)(taille_visage);
-        double proportion_faible = 0.05;
+        double proportion_faible = 0.10;
         double proportion_moyenne = 0.20;
         double proportion_forte = 0.45;
         double proportion_tres_forte = 0.55;
