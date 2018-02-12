@@ -11,6 +11,8 @@ public class EyesNoseButton : MonoBehaviour {
     protected SpriteRenderer spriterender;
 
     protected GameObject hairs;
+    protected GameObject nose;
+    protected GameObject eyes;
     public enum Choice
     {
         EYES,
@@ -35,7 +37,9 @@ public class EyesNoseButton : MonoBehaviour {
     {
         //fadingScene = GameObject.Find("menu").GetComponent<FadingScene>();
         spriterender = GetComponent<SpriteRenderer>();
-        hairs = GameObject.Find("Haircut");
+        hairs = GameObject.Find("HairGestion");
+        nose = GameObject.Find("NoseGestion");
+        eyes = GameObject.Find("EyesGestion");
         //if (_nextScene.Equals(""))
         //{
         //    _nextScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
