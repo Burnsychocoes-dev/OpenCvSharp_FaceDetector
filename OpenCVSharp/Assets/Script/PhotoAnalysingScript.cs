@@ -187,8 +187,8 @@ public class PhotoAnalysingScript : MonoBehaviour
                 TextureToMat();
                 ProcessImage(videoSourceImage, false);
                 // Hair analyse
-                //hair.Init();
-                //hair.Pretraitement();
+                hair.Init();
+                hair.Pretraitement();
                 Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
                 //hair.GetSkinColor();
                 //hair.getEyeColor();

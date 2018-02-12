@@ -91,7 +91,7 @@ public class AvatarMaker : MonoBehaviour {
         else
         {
             perso = AvatarScript.avatarDefinitif;
-            
+
             if(perso.gender == AvatarScript.Gender.Male)
             {
                 // Switch case qui permet de choisir la coupe de cheveux (Si on la modifie ultérieurement)
@@ -207,6 +207,10 @@ public class AvatarMaker : MonoBehaviour {
 
     public void ChangeNose()
     {
+        // Init certaines valeurs 
+        avatarManager.SetBlendshapeValue("PHMNosePinch", 0);
+        avatarManager.SetBlendshapeValue("PHMNosePinch_NEGATIVE_", 0);
+
         // En fonction de noseHeight
         /*
          * Version finale : 
