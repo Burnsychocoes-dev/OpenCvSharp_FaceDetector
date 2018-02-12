@@ -377,7 +377,7 @@ public class FaceDetectionImage : MonoBehaviour
                 avatar.ChangeNose();
                 avatar.ChangeMouth();
                 avatar.ModelingFaceCurve();
-                avatar.ChangeSkinTexture(true);
+                //avatar.ChangeSkinTexture(true);
                 etape = Etape.Idle;
                 break;
 

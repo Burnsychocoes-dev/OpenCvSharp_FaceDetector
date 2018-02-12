@@ -7,22 +7,22 @@ using System;
 public class AvatarMaker : MonoBehaviour {
 
     private MORPH3D.M3DCharacterManager avatarManager;
-    [SerializeField]
-    private Texture maleBlackHeadSkinTexture;
-    [SerializeField]
-    private Texture maleWhiteHeadSkinTexture;
-    [SerializeField]
-    private Texture maleBlackBodySkinTexture;
-    [SerializeField]
-    private Texture maleWhiteBodySkinTexture;
-    [SerializeField]
-    private Texture femelleBlackHeadSkinTexture;
-    [SerializeField]
-    private Texture femelleWhiteHeadSkinTexture;
-    [SerializeField]
-    private Texture femelleBlackBodySkinTexture;
-    [SerializeField]
-    private Texture femelleWhiteBodySkinTexture;
+    //[SerializeField]
+    //private Texture maleBlackHeadSkinTexture;
+    //[SerializeField]
+    //private Texture maleWhiteHeadSkinTexture;
+    //[SerializeField]
+    //private Texture maleBlackBodySkinTexture;
+    //[SerializeField]
+    //private Texture maleWhiteBodySkinTexture;
+    //[SerializeField]
+    //private Texture femelleBlackHeadSkinTexture;
+    //[SerializeField]
+    //private Texture femelleWhiteHeadSkinTexture;
+    //[SerializeField]
+    //private Texture femelleBlackBodySkinTexture;
+    //[SerializeField]
+    //private Texture femelleWhiteBodySkinTexture;
 
     [SerializeField]
     private bool isOnSelection;
@@ -340,6 +340,7 @@ public class AvatarMaker : MonoBehaviour {
                             avatarManager.SetBlendshapeValue("PHMNoseTipRound_NEGATIVE_", 50);
                             AvatarScript.avatar4.nose.noseTipHeightBlendShapeValue = -50;
                             AvatarScript.avatar4.nose.noseTipRoundBlendShapeValue = -50;
+                            AvatarScript.avatar4.eye.EyesAbaissementBlendShapeValue = 0;                           
                             break;
 
                         case AvatarScript.NoseTipInclinaison.NezNormal:
@@ -611,32 +612,32 @@ public class AvatarMaker : MonoBehaviour {
         avatarManager.SetBlendshapeValue("Eyelid_Size", perso.eye.EyesAbaissementBlendShapeValue);
     }
 
-    public void ChangeSkinTexture(bool isWhite)
-    {
-        if(isWhite && perso.gender == AvatarScript.Gender.Male)
-        {
-            avatarManager.GetHairMaterial().mainTexture = maleWhiteHeadSkinTexture;
-            avatarManager.GetBodyMaterial().mainTexture = maleWhiteBodySkinTexture;
-        }
-        else if(isWhite && perso.gender == AvatarScript.Gender.Femelle)
-        {
-            avatarManager.GetHairMaterial().mainTexture = femelleWhiteHeadSkinTexture;
-            avatarManager.GetBodyMaterial().mainTexture = femelleWhiteBodySkinTexture;
-        }
-        else if(!isWhite && perso.gender == AvatarScript.Gender.Male)
-        {
-            avatarManager.GetHairMaterial().mainTexture = maleBlackHeadSkinTexture;
-            avatarManager.GetBodyMaterial().mainTexture = maleBlackBodySkinTexture;
-        }
-        else if(!isWhite && perso.gender == AvatarScript.Gender.Femelle)
-        {
-            avatarManager.GetHairMaterial().mainTexture = femelleBlackHeadSkinTexture;
-            avatarManager.GetBodyMaterial().mainTexture = femelleBlackBodySkinTexture;
-        }
-        //Color color = new Color((float)perso.exactSkinColor.r / 255, (float)perso.exactSkinColor.g / 255, (float)perso.exactSkinColor.b / 255);
-        //avatarManager.GetBodyMaterial().SetColor("_Color", color);
-        //avatarManager.GetHairMaterial().SetColor("_Color", color);
-    }
+    //public void ChangeSkinTexture(bool isWhite)
+    //{
+    //    if(isWhite && perso.gender == AvatarScript.Gender.Male)
+    //    {
+    //        avatarManager.GetHairMaterial().mainTexture = maleWhiteHeadSkinTexture;
+    //        avatarManager.GetBodyMaterial().mainTexture = maleWhiteBodySkinTexture;
+    //    }
+    //    else if(isWhite && perso.gender == AvatarScript.Gender.Femelle)
+    //    {
+    //        avatarManager.GetHairMaterial().mainTexture = femelleWhiteHeadSkinTexture;
+    //        avatarManager.GetBodyMaterial().mainTexture = femelleWhiteBodySkinTexture;
+    //    }
+    //    else if(!isWhite && perso.gender == AvatarScript.Gender.Male)
+    //    {
+    //        avatarManager.GetHairMaterial().mainTexture = maleBlackHeadSkinTexture;
+    //        avatarManager.GetBodyMaterial().mainTexture = maleBlackBodySkinTexture;
+    //    }
+    //    else if(!isWhite && perso.gender == AvatarScript.Gender.Femelle)
+    //    {
+    //        avatarManager.GetHairMaterial().mainTexture = femelleBlackHeadSkinTexture;
+    //        avatarManager.GetBodyMaterial().mainTexture = femelleBlackBodySkinTexture;
+    //    }
+    //    //Color color = new Color((float)perso.exactSkinColor.r / 255, (float)perso.exactSkinColor.g / 255, (float)perso.exactSkinColor.b / 255);
+    //    //avatarManager.GetBodyMaterial().SetColor("_Color", color);
+    //    //avatarManager.GetHairMaterial().SetColor("_Color", color);
+    //}
 
     public void ModelingFaceCurve()
     {
