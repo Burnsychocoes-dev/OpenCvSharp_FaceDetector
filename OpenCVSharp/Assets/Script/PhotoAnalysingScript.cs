@@ -190,17 +190,16 @@ public class PhotoAnalysingScript : MonoBehaviour
                 hair.Init();
                 hair.Pretraitement();
                 Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
-                //hair.GetSkinColor();
-                //hair.getEyeColor();
-                //hair.FindHairRoots();
-                //hair.GetHairColor();
-                //hair.FindHairMax();
-                //hair.GuessHairCut();
-                //AvatarScript.avatar1.haircut = hair.Haircut;
-                //AvatarScript.avatar2.haircut = hair.Haircut;
-                //AvatarScript.avatar3.haircut = hair.Haircut;
-                //AvatarScript.avatar4.haircut = hair.Haircut;
-                //AvatarScript.avatar5.haircut = hair.Haircut;
+                hair.GetSkinColor();
+                hair.getEyeColor();
+                hair.GetHairColor();
+                hair.FindHairMax();
+                hair.GuessHairCut();
+                AvatarScript.avatar1.haircut = hair.Haircut;
+                AvatarScript.avatar2.haircut = hair.Haircut;
+                AvatarScript.avatar3.haircut = hair.Haircut;
+                AvatarScript.avatar4.haircut = hair.Haircut;
+                AvatarScript.avatar5.haircut = hair.Haircut;
                 Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
 
                 SceneManager.LoadScene("Scene5");

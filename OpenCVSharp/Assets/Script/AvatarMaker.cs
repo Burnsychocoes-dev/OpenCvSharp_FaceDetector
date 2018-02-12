@@ -369,7 +369,7 @@ public class AvatarMaker : MonoBehaviour {
         {
             if(perso.nose.noseTipHeightBlendShapeValue < 0)
             {
-                avatarManager.SetBlendshapeValue("PHMNoseTipHeight_NEGATIVE_", perso.nose.noseTipHeightBlendShapeValue);
+                avatarManager.SetBlendshapeValue("PHMNoseTipHeight_NEGATIVE_", -perso.nose.noseTipHeightBlendShapeValue);
             }
             else
             {
@@ -377,7 +377,7 @@ public class AvatarMaker : MonoBehaviour {
             }
             if(perso.nose.noseTipRoundBlendShapeValue < 0)
             {
-                avatarManager.SetBlendshapeValue("PHMNoseTipRound_NEGATIVE_", perso.nose.noseTipRoundBlendShapeValue);
+                avatarManager.SetBlendshapeValue("PHMNoseTipRound_NEGATIVE_", -perso.nose.noseTipRoundBlendShapeValue);
             }
             else
             {
@@ -385,7 +385,7 @@ public class AvatarMaker : MonoBehaviour {
             }
             if(perso.nose.NosePinchBlendShapeValue < 0)
             {
-                avatarManager.SetBlendshapeValue("PHMNosePinch_NEGATIVE_", perso.nose.NosePinchBlendShapeValue);
+                avatarManager.SetBlendshapeValue("PHMNosePinch_NEGATIVE_", -perso.nose.NosePinchBlendShapeValue);
             }
             else
             {
@@ -582,7 +582,7 @@ public class AvatarMaker : MonoBehaviour {
             avatarManager.SetBlendshapeValue("eCTRLBrowUp_Down", valeur_big);
         }
 
-        avatarManager.SetBlendshapeValue("", perso.eye.EyesAbaissementBlendShapeValue);
+        avatarManager.SetBlendshapeValue("Eyelid_Size", perso.eye.EyesAbaissementBlendShapeValue);
     }
 
     public void ChangeSkinTexture(bool isWhite)
