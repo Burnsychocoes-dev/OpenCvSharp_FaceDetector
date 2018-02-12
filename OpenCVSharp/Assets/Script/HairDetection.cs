@@ -43,7 +43,7 @@ public class HairDetection : MonoBehaviour
     }
 
 
-    private FaceDetectionImage photo;
+    private PhotoAnalysingScript photo;
 
     private Mat matrix2_grabcut;
     public Mat Matrix2_grabcut
@@ -58,7 +58,7 @@ public class HairDetection : MonoBehaviour
         skinColorYCbCrExpectancy = new Vec3f();
         hairColorYCbCrExpectancy = new Vec3f();
 
-        photo = GetComponent<FaceDetectionImage>();
+        photo = GetComponent<PhotoAnalysingScript>();
     }
 
     // Update is called once per frame
