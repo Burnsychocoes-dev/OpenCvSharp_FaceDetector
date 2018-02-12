@@ -244,14 +244,50 @@ public class HairDetection : MonoBehaviour
         OpenCvSharp.Rect rectCouleur = new OpenCvSharp.Rect(abscisse, ordonnee, photo.VideoSourceImage.Width / 20, photo.VideoSourceImage.Height / 20);
         Cv2.Rectangle(photo.VideoSourceImage, rectCouleur, couleurRectangle, -5);
 
+        //Calcul de la couleur assignée :
+        Vec3f[] couplesCbCr = new Vec3f[6];
 
+        Color32 peauPale = new Color32(252, 234, 180, 0);
+        couplesCbCr[0] = FromRGBToYCbCr(peauPale);
+
+        Color32 peauBlanche = new Color32(247, 232, 209, 0);
+        couplesCbCr[1] = FromRGBToYCbCr(peauBlanche);
+
+        Color32 peauPeuBronzee = new Color32(228, 204, 170, 0);
+        couplesCbCr[2] = FromRGBToYCbCr(peauPeuBronzee);
+
+        Color32 peauBronzee = new Color32(219, 161, 113, 0);
+        couplesCbCr[3] = FromRGBToYCbCr(peauBronzee);
+
+        Color32 peauTresBronzee = new Color32(172, 123, 82, 0);
+        couplesCbCr[4] = FromRGBToYCbCr(peauTresBronzee);
+
+        Color32 peauNoire = new Color32(96, 77, 62, 0);
+        couplesCbCr[5] = FromRGBToYCbCr(peauNoire);
+
+        double[] distances = new double[6];
         
+        double minimum = double.MaxValue;
+        int indice_minimum = -1;
 
-        //>>>Calcul des Thresholds skinColorYCbCrThresholds
+        for (int i = 0; i < 6; i++)
+        {
+            //Détermine la couleur de peau la + adaptée
+            distances[i] = EuclidianDistance(couplesCbCr[i].Item1, couplesCbCr[i].Item2, skinColorYCbCrExpectancy);
+            if (distances[i] < minimum)
+            {
+                indice_minimum = i;
+                minimum = distances[i];
+            }
+        }
 
-        //skinColorCbCrThreshold = fixThreshold;
-        //Debug.Log("Skin Color YCbCrThresholds");
-        //Debug.Log(skinColorCbCrThreshold);
+        AvatarScript.avatar1.skinColor = (AvatarScript.SkinColor)indice_minimum;
+        AvatarScript.avatar2.skinColor = (AvatarScript.SkinColor)indice_minimum;
+        AvatarScript.avatar3.skinColor = (AvatarScript.SkinColor)indice_minimum;
+        AvatarScript.avatar4.skinColor = (AvatarScript.SkinColor)indice_minimum;
+        AvatarScript.avatar5.skinColor = (AvatarScript.SkinColor)indice_minimum;
+
+
     }
 
 

@@ -33,8 +33,23 @@ public class AvatarScript : MonoBehaviour {
 
     public enum SkinColor
     {
-        Black,
-        White
+        peauPale = 0,
+        //Texture blanche, (r,g,b,a) = (245, 255, 218, 255)
+
+        peauBlanche = 1,
+        //Texture blanche, (r,g,b,a) = (255, 255, 255, 255)
+
+        peauPeuBronzee = 2,
+        //Texture blanche, (r,g,b,a) = (197, 167, 140, 255)
+
+        peauBronzee = 3,
+        //Texture blanche, (r,g,b,a) = (137, 107, 81, 255)
+
+        peauTresBronzee = 4,
+        //Texture noire, (r,g,b,a) = (255, 255, 255, 255)
+
+        peauNoire = 5
+        //Texture noire, (r,g,b,a) = (124, 101, 101, 255)
     }
 
 
