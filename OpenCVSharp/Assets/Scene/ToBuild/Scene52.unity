@@ -236,6 +236,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6453925}
   - component: {fileID: 6453926}
+  - component: {fileID: 6453927}
   m_Layer: 5
   m_Name: SliderInclinaison
   m_TagString: Untagged
@@ -323,6 +324,18 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &6453927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 6453924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60f147da3f0bf0e4eb67a4f14721fcba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
 --- !u!1 &120485211
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,6 +443,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60f147da3f0bf0e4eb67a4f14721fcba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
 --- !u!1001 &143702669
 Prefab:
   m_ObjectHideFlags: 0
@@ -712,6 +726,7 @@ GameObject:
   m_Component:
   - component: {fileID: 220877641}
   - component: {fileID: 220877642}
+  - component: {fileID: 220877643}
   m_Layer: 5
   m_Name: SliderLargeur
   m_TagString: Untagged
@@ -799,6 +814,18 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &220877643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 220877640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60f147da3f0bf0e4eb67a4f14721fcba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 3
 --- !u!1 &246579381
 GameObject:
   m_ObjectHideFlags: 0
@@ -938,6 +965,7 @@ GameObject:
   m_Component:
   - component: {fileID: 425658279}
   - component: {fileID: 425658280}
+  - component: {fileID: 425658281}
   m_Layer: 5
   m_Name: SliderRondeur
   m_TagString: Untagged
@@ -1025,6 +1053,18 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &425658281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 425658278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60f147da3f0bf0e4eb67a4f14721fcba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 2
 --- !u!1 &467501018
 GameObject:
   m_ObjectHideFlags: 0
@@ -2729,6 +2769,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60f147da3f0bf0e4eb67a4f14721fcba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
 --- !u!1 &1480966493
 GameObject:
   m_ObjectHideFlags: 0
@@ -3434,6 +3475,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1926520923}
   - component: {fileID: 1926520924}
+  - component: {fileID: 1926520925}
   m_Layer: 5
   m_Name: SliderAbaissement
   m_TagString: Untagged
@@ -3521,6 +3563,18 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &1926520925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1926520922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60f147da3f0bf0e4eb67a4f14721fcba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 5
 --- !u!1001 &1957781297
 Prefab:
   m_ObjectHideFlags: 0
@@ -3967,6 +4021,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2106534632}
   - component: {fileID: 2106534633}
+  - component: {fileID: 2106534634}
   m_Layer: 5
   m_Name: SliderEcartement
   m_TagString: Untagged
@@ -4054,3 +4109,15 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &2106534634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2106534631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60f147da3f0bf0e4eb67a4f14721fcba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 4
