@@ -31,15 +31,22 @@ public class EyesNoseButton : MonoBehaviour {
     }
     protected State state = State.NOTSELECTED;
 
-    
+    private void Awake()
+    {
+        hairs = GameObject.Find("HairGestion");
+        nose = GameObject.Find("NoseGestion");
+        eyes = GameObject.Find("EyesGestion");
+        
+    }
     //protected FadingScene fadingScene;
     void Start()
     {
         //fadingScene = GameObject.Find("menu").GetComponent<FadingScene>();
         spriterender = GetComponent<SpriteRenderer>();
-        hairs = GameObject.Find("HairGestion");
-        nose = GameObject.Find("NoseGestion");
-        eyes = GameObject.Find("EyesGestion");
+        if (choice == currentChoice)
+        {
+            UnactivateOthersAndActivateItself();
+        }
         //if (_nextScene.Equals(""))
         //{
         //    _nextScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
@@ -101,23 +108,30 @@ public class EyesNoseButton : MonoBehaviour {
                     spriterender.sprite = spriteSelected;
                     state = State.SELECTED;
                     currentChoice = choice;
-                    UnactivateOthers();
+                    UnactivateOthersAndActivateItself();
                     break;
             }
         
     }
 
-    protected void UnactivateOthers()
+    protected void UnactivateOthersAndActivateItself()
     {
         switch (choice)
         {
-            case Choice.NOSE:
+            case Choice.NOSE:               
                 hairs.SetActive(false);
+                eyes.SetActive(false);
+                nose.SetActive(true);
                 break;
             case Choice.HAIRS:
+                hairs.SetActive(true);
+                eyes.SetActive(false);
+                nose.SetActive(false);
                 break;
             case Choice.EYES:
                 hairs.SetActive(false);
+                eyes.SetActive(true);
+                nose.SetActive(false);
                 break;
         }
     }
