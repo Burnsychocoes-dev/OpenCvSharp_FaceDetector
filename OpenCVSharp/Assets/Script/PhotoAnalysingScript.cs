@@ -178,6 +178,8 @@ public class PhotoAnalysingScript : MonoBehaviour
                 LandmarkAnalyserAvatar1();
                 LandmarkAnalyserAvatar2();
                 LandmarkAnalyserAvatar3();
+                LandmarkAnalyserAvatar4();
+                LandmarkAnalyserAvatar5();
                 etape = Etape.AnalysingHaircut;
                 break;
 
@@ -197,6 +199,8 @@ public class PhotoAnalysingScript : MonoBehaviour
                 AvatarScript.avatar1.haircut = hair.Haircut;
                 AvatarScript.avatar2.haircut = hair.Haircut;
                 AvatarScript.avatar3.haircut = hair.Haircut;
+                AvatarScript.avatar4.haircut = hair.Haircut;
+                AvatarScript.avatar5.haircut = hair.Haircut;
                 Cv2.Flip(videoSourceImage, videoSourceImage, FlipMode.X);
 
                 SceneManager.LoadScene("Scene5");
@@ -632,15 +636,27 @@ public class PhotoAnalysingScript : MonoBehaviour
         AvatarScript.avatar1.nose.noseTipHeight = DistanceEuclidienne(localLandmarks[2 * 30], localLandmarks[2 * 30 + 1],
                                                   localLandmarks[2 * 33], localLandmarks[2 * 33 + 1]) / noseHeight;
         Debug.Log("noseTipHeight : " + AvatarScript.avatar1.nose.noseTipHeight);
-
-        AvatarScript.avatar1.nose.bigAngleNoseTopTip = Angle2Droites(localLandmarks[2 * 31] - localLandmarks[2 * 30], localLandmarks[2 * 31 + 1] - localLandmarks[2 * 30 + 1],
-                                                 localLandmarks[2 * 35] - localLandmarks[2 * 30], localLandmarks[2 * 35 + 1] - localLandmarks[2 * 30 + 1]);
-        Debug.Log("bigAngleNoseTopTip : " + AvatarScript.avatar1.nose.bigAngleNoseTopTip);
-
-        AvatarScript.avatar1.nose.littleAngleNoseTopTip = Angle2Droites(localLandmarks[2 * 32] - localLandmarks[2 * 30], localLandmarks[2 * 32 + 1] - localLandmarks[2 * 30 + 1],
-                                                    localLandmarks[2 * 34] - localLandmarks[2 * 30], localLandmarks[2 * 34 + 1] - localLandmarks[2 * 30 + 1]);
-        Debug.Log("littleAngleNoseTopTip : " + AvatarScript.avatar1.nose.littleAngleNoseTopTip);
-
+        // Debut algo de prise de decision pour les differents nez
+        if (AvatarScript.avatar1.nose.noseTipHeight > 0.38)
+        {
+            AvatarScript.avatar1.nose.noseTipInclinaison = AvatarScript.NoseTipInclinaison.NezRemonte;
+        }
+        else if(AvatarScript.avatar1.nose.noseTipHeight < 0.23)
+        {
+            AvatarScript.avatar1.nose.noseTipInclinaison = AvatarScript.NoseTipInclinaison.NezAbaisse;
+        }
+        else
+        {
+            AvatarScript.avatar1.nose.noseTipInclinaison = AvatarScript.NoseTipInclinaison.NezNormal;
+        }
+        if (AvatarScript.avatar1.nose.noseTipHeight <= 0.305)
+        {
+            AvatarScript.avatar1.nose.noseTipType = AvatarScript.NoseTipType.NezRond;
+        }
+        else
+        {
+            AvatarScript.avatar1.nose.noseTipType = AvatarScript.NoseTipType.NezPointue;
+        }
 
         // Partie mouth
         AvatarScript.avatar1.mouth.distanceBetweenChinAndMouth = DistanceEuclidienne(localLandmarks[2 * 8], localLandmarks[2 * 8 + 1],
@@ -721,12 +737,27 @@ public class PhotoAnalysingScript : MonoBehaviour
 
         AvatarScript.avatar2.nose.noseTipHeight = DistanceEuclidienne(localLandmarks[2 * 30], localLandmarks[2 * 30 + 1],
                                           localLandmarks[2 * 33], localLandmarks[2 * 33 + 1]) / AvatarScript.avatar1.nose.noseHeight;
-
-        AvatarScript.avatar2.nose.bigAngleNoseTopTip = Angle2Droites(localLandmarks[2 * 31] - localLandmarks[2 * 30], localLandmarks[2 * 31 + 1] - localLandmarks[2 * 30 + 1],
-                                                 localLandmarks[2 * 35] - localLandmarks[2 * 30], localLandmarks[2 * 35 + 1] - localLandmarks[2 * 30 + 1]);
-
-        AvatarScript.avatar2.nose.littleAngleNoseTopTip = Angle2Droites(localLandmarks[2 * 32] - localLandmarks[2 * 30], localLandmarks[2 * 32 + 1] - localLandmarks[2 * 30 + 1],
-                                                    localLandmarks[2 * 34] - localLandmarks[2 * 30], localLandmarks[2 * 34 + 1] - localLandmarks[2 * 30 + 1]);
+        // Debut algo de prise de decision pour les differents nez
+        if (AvatarScript.avatar2.nose.noseTipHeight > 0.38)
+        {
+            AvatarScript.avatar2.nose.noseTipInclinaison = AvatarScript.NoseTipInclinaison.NezRemonte;
+        }
+        else if (AvatarScript.avatar2.nose.noseTipHeight < 0.23)
+        {
+            AvatarScript.avatar2.nose.noseTipInclinaison = AvatarScript.NoseTipInclinaison.NezAbaisse;
+        }
+        else
+        {
+            AvatarScript.avatar2.nose.noseTipInclinaison = AvatarScript.NoseTipInclinaison.NezNormal;
+        }
+        if (AvatarScript.avatar2.nose.noseTipHeight <= 0.305)
+        {
+            AvatarScript.avatar2.nose.noseTipType = AvatarScript.NoseTipType.NezRond;
+        }
+        else
+        {
+            AvatarScript.avatar2.nose.noseTipType = AvatarScript.NoseTipType.NezPointue;
+        }
 
 
         // Partie mouth
@@ -808,12 +839,27 @@ public class PhotoAnalysingScript : MonoBehaviour
 
         AvatarScript.avatar3.nose.noseTipHeight = DistanceEuclidienne(localLandmarks[2 * 30], localLandmarks[2 * 30 + 1],
                                          localLandmarks[2 * 33], localLandmarks[2 * 33 + 1]) / AvatarScript.avatar1.nose.noseHeight;
-
-        AvatarScript.avatar3.nose.bigAngleNoseTopTip = Angle2Droites(localLandmarks[2 * 31] - localLandmarks[2 * 30], localLandmarks[2 * 31 + 1] - localLandmarks[2 * 30 + 1],
-                                                 localLandmarks[2 * 35] - localLandmarks[2 * 30], localLandmarks[2 * 35 + 1] - localLandmarks[2 * 30 + 1]);
-
-        AvatarScript.avatar3.nose.littleAngleNoseTopTip = Angle2Droites(localLandmarks[2 * 32] - localLandmarks[2 * 30], localLandmarks[2 * 32 + 1] - localLandmarks[2 * 30 + 1],
-                                                    localLandmarks[2 * 34] - localLandmarks[2 * 30], localLandmarks[2 * 34 + 1] - localLandmarks[2 * 30 + 1]);
+        // Debut algo de prise de decision pour les differents nez
+        if (AvatarScript.avatar3.nose.noseTipHeight > 0.38)
+        {
+            AvatarScript.avatar3.nose.noseTipInclinaison = AvatarScript.NoseTipInclinaison.NezRemonte;
+        }
+        else if (AvatarScript.avatar3.nose.noseTipHeight < 0.23)
+        {
+            AvatarScript.avatar3.nose.noseTipInclinaison = AvatarScript.NoseTipInclinaison.NezAbaisse;
+        }
+        else
+        {
+            AvatarScript.avatar3.nose.noseTipInclinaison = AvatarScript.NoseTipInclinaison.NezNormal;
+        }
+        if (AvatarScript.avatar3.nose.noseTipHeight <= 0.305)
+        {
+            AvatarScript.avatar3.nose.noseTipType = AvatarScript.NoseTipType.NezRond;
+        }
+        else
+        {
+            AvatarScript.avatar3.nose.noseTipType = AvatarScript.NoseTipType.NezPointue;
+        }
 
 
         // Partie mouth
@@ -851,6 +897,212 @@ public class PhotoAnalysingScript : MonoBehaviour
         AvatarScript.avatar3.visage.cornerChinWidth = DistanceEuclidienne(localLandmarks[2 * 4], localLandmarks[2 * 4 + 1],
                                                                localLandmarks[2 * 12], localLandmarks[2 * 12 + 1]) / faceWidth;
         AvatarScript.avatar3.visage.distanceButtomCurve = DistanceEuclidienne(localLandmarks[2 * 5], localLandmarks[2 * 5 + 1],
+                                                               localLandmarks[2 * 11], localLandmarks[2 * 11 + 1]) / faceWidth;
+    }
+
+    public void LandmarkAnalyserAvatar4()
+    {
+        // Dimension visage
+        float faceHeight = FaceDetectionImage.DistanceEuclidienne(localLandmarks[2 * 8], localLandmarks[2 * 8 + 1],
+                                                               localLandmarks[2 * 27], localLandmarks[2 * 27 + 1]);
+        Debug.Log("face height : " + faceHeight);
+
+        float faceWidth = FaceDetectionImage.DistanceEuclidienne(localLandmarks[2 * 1], localLandmarks[2 * 1 + 1],
+                                                           localLandmarks[2 * 15], localLandmarks[2 * 15 + 1]);
+        Debug.Log("face width : " + faceWidth);
+
+
+        // Partie eye
+        AvatarScript.avatar4.eye.distanceBrowEye = DistanceEuclidienne(localLandmarks[2 * 19], localLandmarks[2 * 19 + 1],
+                                                          localLandmarks[2 * 37], localLandmarks[2 * 37 + 1]) / faceHeight;
+        AvatarScript.avatar4.eye.eyeWidth = DistanceEuclidienne(localLandmarks[2 * 36], localLandmarks[2 * 36 + 1],
+                                                                localLandmarks[2 * 39], localLandmarks[2 * 39 + 1]) / faceWidth;
+
+        if (AvatarScript.avatar4.eye.eyeWidth <= 0.22f)
+            AvatarScript.avatar4.eye.width = AvatarScript.Taille.Little;
+        else
+            AvatarScript.avatar4.eye.width = AvatarScript.Taille.Big;
+
+
+        // Partie nose
+        AvatarScript.avatar4.nose.noseHeight = DistanceEuclidienne(localLandmarks[2 * 27], localLandmarks[2 * 27 + 1],
+                                                               localLandmarks[2 * 30], localLandmarks[2 * 30 + 1]) / faceHeight;
+        AvatarScript.avatar4.nose.noseWidth = DistanceEuclidienne(localLandmarks[2 * 31], localLandmarks[2 * 31 + 1],
+                                                               localLandmarks[2 * 35], localLandmarks[2 * 35 + 1]) / faceWidth;
+
+        if (AvatarScript.avatar4.nose.noseHeight <= 0.39)
+            AvatarScript.avatar4.nose.height = AvatarScript.Taille.Little;
+        else
+            AvatarScript.avatar4.nose.height = AvatarScript.Taille.Big;
+
+        if (AvatarScript.avatar4.nose.noseWidth <= 0.215)
+            AvatarScript.avatar4.nose.width = AvatarScript.Taille.Little;
+        else
+            AvatarScript.avatar4.nose.width = AvatarScript.Taille.Big;
+
+        AvatarScript.avatar4.nose.noseTipHeight = DistanceEuclidienne(localLandmarks[2 * 30], localLandmarks[2 * 30 + 1],
+                                         localLandmarks[2 * 33], localLandmarks[2 * 33 + 1]) / AvatarScript.avatar1.nose.noseHeight;
+        // Debut algo de prise de decision pour les differents nez
+        if (AvatarScript.avatar4.nose.noseTipHeight > 0.38)
+        {
+            AvatarScript.avatar4.nose.noseTipInclinaison = AvatarScript.NoseTipInclinaison.NezRemonte;
+        }
+        else if (AvatarScript.avatar4.nose.noseTipHeight < 0.23)
+        {
+            AvatarScript.avatar4.nose.noseTipInclinaison = AvatarScript.NoseTipInclinaison.NezAbaisse;
+        }
+        else
+        {
+            AvatarScript.avatar4.nose.noseTipInclinaison = AvatarScript.NoseTipInclinaison.NezNormal;
+        }
+        if (AvatarScript.avatar4.nose.noseTipHeight <= 0.305)
+        {
+            AvatarScript.avatar4.nose.noseTipType = AvatarScript.NoseTipType.NezRond;
+        }
+        else
+        {
+            AvatarScript.avatar4.nose.noseTipType = AvatarScript.NoseTipType.NezPointue;
+        }
+
+
+        // Partie mouth
+        AvatarScript.avatar4.mouth.distanceBetweenChinAndMouth = DistanceEuclidienne(localLandmarks[2 * 8], localLandmarks[2 * 8 + 1],
+                                                                                     localLandmarks[2 * 57], localLandmarks[2 * 57 + 1]) / faceHeight;
+        AvatarScript.avatar4.mouth.distanceBetweenNoseTipAndMouth = DistanceEuclidienne(localLandmarks[2 * 33], localLandmarks[2 * 33 + 1],
+                                                               localLandmarks[2 * 51], localLandmarks[2 * 51 + 1]) / faceHeight;
+
+        AvatarScript.avatar4.mouth.buttomLipHeight = DistanceEuclidienne(localLandmarks[2 * 66], localLandmarks[2 * 66 + 1],
+                                                               localLandmarks[2 * 57], localLandmarks[2 * 57 + 1]) / faceHeight;
+        AvatarScript.avatar4.mouth.topLipHeight = DistanceEuclidienne(localLandmarks[2 * 52], localLandmarks[2 * 52 + 1],
+                                                               localLandmarks[2 * 63], localLandmarks[2 * 63 + 1]) / faceHeight;
+
+
+
+        if (AvatarScript.avatar4.mouth.buttomLipHeight <= 0.09)
+            AvatarScript.avatar4.mouth.buttomLipHeight_t = AvatarScript.Taille.Little;
+        else
+            AvatarScript.avatar4.mouth.buttomLipHeight_t = AvatarScript.Taille.Big;
+
+        if (AvatarScript.avatar4.mouth.topLipHeight <= 0.055)
+            AvatarScript.avatar4.mouth.topLipHeight_t = AvatarScript.Taille.Little;
+        else
+            AvatarScript.avatar4.mouth.topLipHeight_t = AvatarScript.Taille.Big;
+
+        AvatarScript.avatar4.mouth.mouthWidth = DistanceEuclidienne(localLandmarks[2 * 48], localLandmarks[2 * 48 + 1],
+                                                               localLandmarks[2 * 54], localLandmarks[2 * 54 + 1]) / faceWidth;
+
+        if (AvatarScript.avatar4.mouth.mouthWidth <= 0.40)
+            AvatarScript.avatar4.mouth.width = AvatarScript.Taille.Little;
+        else
+            AvatarScript.avatar4.mouth.width = AvatarScript.Taille.Big;
+
+        // Partie visage curve
+        AvatarScript.avatar4.visage.cornerChinWidth = DistanceEuclidienne(localLandmarks[2 * 4], localLandmarks[2 * 4 + 1],
+                                                               localLandmarks[2 * 12], localLandmarks[2 * 12 + 1]) / faceWidth;
+        AvatarScript.avatar4.visage.distanceButtomCurve = DistanceEuclidienne(localLandmarks[2 * 5], localLandmarks[2 * 5 + 1],
+                                                               localLandmarks[2 * 11], localLandmarks[2 * 11 + 1]) / faceWidth;
+    }
+
+    public void LandmarkAnalyserAvatar5()
+    {
+        // Dimension visage
+        float faceHeight = FaceDetectionImage.DistanceEuclidienne(localLandmarks[2 * 8], localLandmarks[2 * 8 + 1],
+                                                               localLandmarks[2 * 27], localLandmarks[2 * 27 + 1]);
+        Debug.Log("face height : " + faceHeight);
+
+        float faceWidth = FaceDetectionImage.DistanceEuclidienne(localLandmarks[2 * 1], localLandmarks[2 * 1 + 1],
+                                                           localLandmarks[2 * 15], localLandmarks[2 * 15 + 1]);
+        Debug.Log("face width : " + faceWidth);
+
+
+        // Partie eye
+        AvatarScript.avatar5.eye.distanceBrowEye = DistanceEuclidienne(localLandmarks[2 * 19], localLandmarks[2 * 19 + 1],
+                                                          localLandmarks[2 * 37], localLandmarks[2 * 37 + 1]) / faceHeight;
+        AvatarScript.avatar5.eye.eyeWidth = DistanceEuclidienne(localLandmarks[2 * 36], localLandmarks[2 * 36 + 1],
+                                                                localLandmarks[2 * 39], localLandmarks[2 * 39 + 1]) / faceWidth;
+
+        if (AvatarScript.avatar5.eye.eyeWidth <= 0.22f)
+            AvatarScript.avatar5.eye.width = AvatarScript.Taille.Little;
+        else
+            AvatarScript.avatar5.eye.width = AvatarScript.Taille.Big;
+
+
+        // Partie nose
+        AvatarScript.avatar5.nose.noseHeight = DistanceEuclidienne(localLandmarks[2 * 27], localLandmarks[2 * 27 + 1],
+                                                               localLandmarks[2 * 30], localLandmarks[2 * 30 + 1]) / faceHeight;
+        AvatarScript.avatar5.nose.noseWidth = DistanceEuclidienne(localLandmarks[2 * 31], localLandmarks[2 * 31 + 1],
+                                                               localLandmarks[2 * 35], localLandmarks[2 * 35 + 1]) / faceWidth;
+
+        if (AvatarScript.avatar5.nose.noseHeight <= 0.39)
+            AvatarScript.avatar5.nose.height = AvatarScript.Taille.Little;
+        else
+            AvatarScript.avatar5.nose.height = AvatarScript.Taille.Big;
+
+        if (AvatarScript.avatar5.nose.noseWidth <= 0.215)
+            AvatarScript.avatar5.nose.width = AvatarScript.Taille.Little;
+        else
+            AvatarScript.avatar5.nose.width = AvatarScript.Taille.Big;
+
+        AvatarScript.avatar5.nose.noseTipHeight = DistanceEuclidienne(localLandmarks[2 * 30], localLandmarks[2 * 30 + 1],
+                                         localLandmarks[2 * 33], localLandmarks[2 * 33 + 1]) / AvatarScript.avatar1.nose.noseHeight;
+        // Debut algo de prise de decision pour les differents nez
+        if (AvatarScript.avatar5.nose.noseTipHeight > 0.38)
+        {
+            AvatarScript.avatar5.nose.noseTipInclinaison = AvatarScript.NoseTipInclinaison.NezRemonte;
+        }
+        else if (AvatarScript.avatar5.nose.noseTipHeight < 0.23)
+        {
+            AvatarScript.avatar5.nose.noseTipInclinaison = AvatarScript.NoseTipInclinaison.NezAbaisse;
+        }
+        else
+        {
+            AvatarScript.avatar5.nose.noseTipInclinaison = AvatarScript.NoseTipInclinaison.NezNormal;
+        }
+        if (AvatarScript.avatar5.nose.noseTipHeight <= 0.305)
+        {
+            AvatarScript.avatar5.nose.noseTipType = AvatarScript.NoseTipType.NezRond;
+        }
+        else
+        {
+            AvatarScript.avatar5.nose.noseTipType = AvatarScript.NoseTipType.NezPointue;
+        }
+
+
+        // Partie mouth
+        AvatarScript.avatar5.mouth.distanceBetweenChinAndMouth = DistanceEuclidienne(localLandmarks[2 * 8], localLandmarks[2 * 8 + 1],
+                                                                                     localLandmarks[2 * 57], localLandmarks[2 * 57 + 1]) / faceHeight;
+        AvatarScript.avatar5.mouth.distanceBetweenNoseTipAndMouth = DistanceEuclidienne(localLandmarks[2 * 33], localLandmarks[2 * 33 + 1],
+                                                               localLandmarks[2 * 51], localLandmarks[2 * 51 + 1]) / faceHeight;
+
+        AvatarScript.avatar5.mouth.buttomLipHeight = DistanceEuclidienne(localLandmarks[2 * 66], localLandmarks[2 * 66 + 1],
+                                                               localLandmarks[2 * 57], localLandmarks[2 * 57 + 1]) / faceHeight;
+        AvatarScript.avatar5.mouth.topLipHeight = DistanceEuclidienne(localLandmarks[2 * 52], localLandmarks[2 * 52 + 1],
+                                                               localLandmarks[2 * 63], localLandmarks[2 * 63 + 1]) / faceHeight;
+
+
+
+        if (AvatarScript.avatar5.mouth.buttomLipHeight <= 0.09)
+            AvatarScript.avatar5.mouth.buttomLipHeight_t = AvatarScript.Taille.Little;
+        else
+            AvatarScript.avatar5.mouth.buttomLipHeight_t = AvatarScript.Taille.Big;
+
+        if (AvatarScript.avatar5.mouth.topLipHeight <= 0.055)
+            AvatarScript.avatar5.mouth.topLipHeight_t = AvatarScript.Taille.Little;
+        else
+            AvatarScript.avatar5.mouth.topLipHeight_t = AvatarScript.Taille.Big;
+
+        AvatarScript.avatar5.mouth.mouthWidth = DistanceEuclidienne(localLandmarks[2 * 48], localLandmarks[2 * 48 + 1],
+                                                               localLandmarks[2 * 54], localLandmarks[2 * 54 + 1]) / faceWidth;
+
+        if (AvatarScript.avatar5.mouth.mouthWidth <= 0.40)
+            AvatarScript.avatar5.mouth.width = AvatarScript.Taille.Little;
+        else
+            AvatarScript.avatar5.mouth.width = AvatarScript.Taille.Big;
+
+        // Partie visage curve
+        AvatarScript.avatar5.visage.cornerChinWidth = DistanceEuclidienne(localLandmarks[2 * 4], localLandmarks[2 * 4 + 1],
+                                                               localLandmarks[2 * 12], localLandmarks[2 * 12 + 1]) / faceWidth;
+        AvatarScript.avatar5.visage.distanceButtomCurve = DistanceEuclidienne(localLandmarks[2 * 5], localLandmarks[2 * 5 + 1],
                                                                localLandmarks[2 * 11], localLandmarks[2 * 11 + 1]) / faceWidth;
     }
 
