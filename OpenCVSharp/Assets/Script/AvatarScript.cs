@@ -139,6 +139,12 @@ public class AvatarScript : MonoBehaviour {
     }
 
     public static int avatarHaircutSelectionId = 1;
+    private static int avatarHaircutAvailableNumber = 10;
+    public static int AvatarHaircutAvailableNumber
+    {
+        get { return avatarHaircutAvailableNumber; }
+    }
+
 
     // Use this for initialization
     void Start () {

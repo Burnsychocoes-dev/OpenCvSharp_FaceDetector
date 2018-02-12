@@ -91,9 +91,18 @@ public class Charselector : MonoBehaviour {
                 switch (type)
                 {
                     case Type.NEXT:
-
+                        AvatarScript.avatarHaircutSelectionId++;
+                        if (AvatarScript.avatarHaircutSelectionId > AvatarScript.AvatarHaircutAvailableNumber)
+                        {
+                            AvatarScript.avatarHaircutSelectionId = 0;
+                        }
                         break;
                     case Type.PREVIOUS:
+                        AvatarScript.avatarHaircutSelectionId--;
+                        if (AvatarScript.avatarHaircutSelectionId < 0)
+                        {
+                            AvatarScript.avatarHaircutSelectionId = AvatarScript.AvatarHaircutAvailableNumber;
+                        }
                         break;
                 }
                 break;
