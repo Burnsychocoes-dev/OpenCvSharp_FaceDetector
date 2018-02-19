@@ -286,7 +286,7 @@ public class FaceDetection : MonoBehaviour
         Vector3 meshRendererCenter = meshRendererBounds.center;
         Vector3 maxBound = meshRendererBounds.max;
         Vector3 minBound = meshRendererBounds.min;
-        OpenCvSharp.Rect rect = new OpenCvSharp.Rect((int)meshRendererCenter.x + 350,(int)meshRendererCenter.y + 50, 600,600);
+        OpenCvSharp.Rect rect = new OpenCvSharp.Rect((int)meshRendererCenter.x + 450,(int)meshRendererCenter.y + 150, 400,400);
         var global_rectangle_color = Scalar.FromRgb(0, 0, 255);
         Cv2.Rectangle(_image, rect, global_rectangle_color, 3);
         //Console.WriteLine("Detected faces: {0}", faces.Length);
@@ -312,16 +312,16 @@ public class FaceDetection : MonoBehaviour
             face_count++;
         }
 
-        if (!waitSoundEffect)
-        {          
-            if(Input.GetButtonDown("Jump"))
-            {
-                Debug.Log("Take photo !");
-                TakePhoto();
-                soundEffects.MakePhotoSound();
-                waitSoundEffect = true;
-            }
-        }
+        //if (!waitSoundEffect)
+        //{          
+        //    if(Input.GetButtonDown("Jump"))
+        //    {
+        //        Debug.Log("Take photo !");
+        //        TakePhoto();
+        //        soundEffects.MakePhotoSound();
+        //        waitSoundEffect = true;
+        //    }
+        //}
 
 
 

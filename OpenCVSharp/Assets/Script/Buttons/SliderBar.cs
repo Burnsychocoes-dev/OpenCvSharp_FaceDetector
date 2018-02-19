@@ -40,11 +40,13 @@ public class SliderBar : MonoBehaviour {
                 switch (AvatarScript.avatarDefinitif.nose.width)
                 {
                     case AvatarScript.Taille.Little:
+                        Debug.Log(AvatarScript.avatarDefinitif.nose.noseWidth);
                         float valeur_little = AvatarMaker.PercentageConvertorNeg(AvatarScript.avatarDefinitif.nose.noseWidth, 0.18f, 0.215f, 0, 100);
-                        slider.value = valeur_little;
+                        slider.value = -valeur_little;
                         break;
 
                     case AvatarScript.Taille.Big:
+                        Debug.Log(AvatarScript.avatarDefinitif.nose.noseWidth);
                         float valeur_big = AvatarMaker.PercentageConvertor(AvatarScript.avatarDefinitif.nose.noseWidth, 0.215f, 0.25f, 0, 100);
                         slider.value = valeur_big;
                         break;

@@ -189,6 +189,7 @@ public class AvatarMaker : MonoBehaviour {
 
         if (prefabGender == perso.gender)
         {
+            //ResetAllBlendshape();
             SetDressed();
             SetHair(false);
             ChangeEyes();
@@ -268,12 +269,12 @@ public class AvatarMaker : MonoBehaviour {
                     {
                         case AvatarScript.NoseTipInclinaison.NezRemonte:
                             avatarManager.SetBlendshapeValue("PHMNoseTipHeight", 100);
-                            AvatarScript.avatar1.nose.noseTipHeightBlendShapeValue = 100;
+                            AvatarScript.avatar1.nose.noseTipHeightBlendShapeValue = 100f;
                             break;
 
                         case AvatarScript.NoseTipInclinaison.NezAbaisse:
                             avatarManager.SetBlendshapeValue("PHMNoseTipHeight_NEGATIVE_", 100);
-                            AvatarScript.avatar1.nose.noseTipHeightBlendShapeValue = -100;
+                            AvatarScript.avatar1.nose.noseTipHeightBlendShapeValue = -100f;
                             break;
 
                         case AvatarScript.NoseTipInclinaison.NezNormal:
@@ -289,12 +290,12 @@ public class AvatarMaker : MonoBehaviour {
                     {
                         case AvatarScript.NoseTipType.NezRond:
                             avatarManager.SetBlendshapeValue("PHMNoseTipRound", 100);
-                            AvatarScript.avatar2.nose.noseTipRoundBlendShapeValue = 100;
+                            AvatarScript.avatar2.nose.noseTipRoundBlendShapeValue = 100f;
                             break;
 
                         case AvatarScript.NoseTipType.NezPointue:
                             avatarManager.SetBlendshapeValue("PHMNoseTipRound_NEGATIVE_", 100);
-                            AvatarScript.avatar2.nose.noseTipRoundBlendShapeValue = -100;
+                            AvatarScript.avatar2.nose.noseTipRoundBlendShapeValue = -100f;
                             break;
                     }
                     break;
@@ -306,20 +307,20 @@ public class AvatarMaker : MonoBehaviour {
                         case AvatarScript.NoseTipInclinaison.NezRemonte:
                             avatarManager.SetBlendshapeValue("PHMNoseTipHeight", 50);
                             avatarManager.SetBlendshapeValue("PHMNoseTipRound", 50);
-                            AvatarScript.avatar3.nose.noseTipHeightBlendShapeValue = 50;
-                            AvatarScript.avatar3.nose.noseTipRoundBlendShapeValue = 50;
+                            AvatarScript.avatar3.nose.noseTipHeightBlendShapeValue = 50f;
+                            AvatarScript.avatar3.nose.noseTipRoundBlendShapeValue = 50f;
                             break;
 
                         case AvatarScript.NoseTipInclinaison.NezAbaisse:
                             avatarManager.SetBlendshapeValue("PHMNoseTipHeight_NEGATIVE_", 50);
                             avatarManager.SetBlendshapeValue("PHMNoseTipRound", 50);
-                            AvatarScript.avatar3.nose.noseTipHeightBlendShapeValue = -50;
-                            AvatarScript.avatar3.nose.noseTipRoundBlendShapeValue = 50;
+                            AvatarScript.avatar3.nose.noseTipHeightBlendShapeValue = -50f;
+                            AvatarScript.avatar3.nose.noseTipRoundBlendShapeValue = 50f;
                             break;
 
                         case AvatarScript.NoseTipInclinaison.NezNormal:
                             avatarManager.SetBlendshapeValue("PHMNoseTipRound", 50);
-                            AvatarScript.avatar3.nose.noseTipRoundBlendShapeValue = 50;
+                            AvatarScript.avatar3.nose.noseTipRoundBlendShapeValue = 50f;
                             break;
                     }
                     break;
@@ -331,21 +332,20 @@ public class AvatarMaker : MonoBehaviour {
                         case AvatarScript.NoseTipInclinaison.NezRemonte:
                             avatarManager.SetBlendshapeValue("PHMNoseTipHeight", 50);
                             avatarManager.SetBlendshapeValue("PHMNoseTipRound_NEGATIVE_", 50);
-                            AvatarScript.avatar4.nose.noseTipHeightBlendShapeValue = 50;
-                            AvatarScript.avatar4.nose.noseTipRoundBlendShapeValue = -50;
+                            AvatarScript.avatar4.nose.noseTipHeightBlendShapeValue = 50f;
+                            AvatarScript.avatar4.nose.noseTipRoundBlendShapeValue = -50f;
                             break;
 
                         case AvatarScript.NoseTipInclinaison.NezAbaisse:
                             avatarManager.SetBlendshapeValue("PHMNoseTipHeight_NEGATIVE_", 50);
                             avatarManager.SetBlendshapeValue("PHMNoseTipRound_NEGATIVE_", 50);
-                            AvatarScript.avatar4.nose.noseTipHeightBlendShapeValue = -50;
-                            AvatarScript.avatar4.nose.noseTipRoundBlendShapeValue = -50;
-                            AvatarScript.avatar4.eye.EyesAbaissementBlendShapeValue = 0;                           
+                            AvatarScript.avatar4.nose.noseTipHeightBlendShapeValue = -50f;
+                            AvatarScript.avatar4.nose.noseTipRoundBlendShapeValue = -50f;                   
                             break;
 
                         case AvatarScript.NoseTipInclinaison.NezNormal:
                             avatarManager.SetBlendshapeValue("PHMNoseTipRound_NEGATIVE_", 50);           
-                            AvatarScript.avatar4.nose.noseTipRoundBlendShapeValue = -50;
+                            AvatarScript.avatar4.nose.noseTipRoundBlendShapeValue = -50f;
                             break;
                     }
                     break;
@@ -356,17 +356,15 @@ public class AvatarMaker : MonoBehaviour {
                     {
                         avatarManager.SetBlendshapeValue("PHMNoseWidth", 50);
                         avatarManager.SetBlendshapeValue("PHMNosePinch_NEGATIVE_", 100);
-                        float valeur_big = PercentageConvertor(50, 0.215f, 0.25f, 0, 100);
-                        AvatarScript.avatar4.nose.noseWidth = valeur_big;
-                        AvatarScript.avatar4.nose.NosePinchBlendShapeValue = -100;
+                        AvatarScript.avatar5.nose.noseWidth = PercentageConvertor(50, 0, 100, 0.215f, 0.25f);
+                        AvatarScript.avatar5.nose.NosePinchBlendShapeValue = -100;
                     }
                     else if (perso.nose.noseWidth < 0.18)
                     {
                         avatarManager.SetBlendshapeValue("PHMNoseWidth_NEGATIVE_", 50);
                         avatarManager.SetBlendshapeValue("PHMNosePinch", 100);
-                        float valeur_little = PercentageConvertorNeg(50, 0.18f, 0.215f, 0, 100);
-                        AvatarScript.avatar4.nose.noseWidth = valeur_little;
-                        AvatarScript.avatar4.nose.NosePinchBlendShapeValue = 100;
+                        AvatarScript.avatar5.nose.noseWidth = -PercentageConvertorNeg(50, 0, 100, 0.18f, 0.215f);
+                        AvatarScript.avatar5.nose.NosePinchBlendShapeValue = 100;
                     }
                     else
                     {
@@ -375,18 +373,16 @@ public class AvatarMaker : MonoBehaviour {
                             float valeur_big = PercentageConvertor(perso.nose.noseWidth, 0.215f, 0.25f, 0, 100);
                             avatarManager.SetBlendshapeValue("PHMNoseWidth", 25);
                             avatarManager.SetBlendshapeValue("PHMNosePinch_NEGATIVE_", valeur_big);
-                            float valeur = PercentageConvertor(25, 0.215f, 0.25f, 0, 100);
-                            AvatarScript.avatar4.nose.noseWidth = valeur;
-                            AvatarScript.avatar4.nose.NosePinchBlendShapeValue = -valeur_big;
+                            AvatarScript.avatar5.nose.noseWidth = PercentageConvertor(25, 0, 100, 0.215f, 0.25f);
+                            AvatarScript.avatar5.nose.NosePinchBlendShapeValue = -valeur_big;
                         }
                         else
                         {
                             float valeur_little = PercentageConvertorNeg(perso.nose.noseWidth, 0.18f, 0.215f, 0, 100);
                             avatarManager.SetBlendshapeValue("PHMNoseWidth_NEGATIVE_", 25);
                             avatarManager.SetBlendshapeValue("PHMNosePinch", valeur_little);
-                            float valeur = PercentageConvertorNeg(25, 0.18f, 0.215f, 0, 100);
-                            AvatarScript.avatar4.nose.noseWidth = valeur;
-                            AvatarScript.avatar4.nose.NosePinchBlendShapeValue = valeur_little;
+                            AvatarScript.avatar5.nose.noseWidth = -PercentageConvertorNeg(25, 0, 100, 0.18f, 0.215f); 
+                            AvatarScript.avatar5.nose.NosePinchBlendShapeValue = valeur_little;
                         }
                     }
                     break;
@@ -801,6 +797,15 @@ public class AvatarMaker : MonoBehaviour {
         }
         float destD = - PercentageConvertor(vToConvert, srcIntervalMin, srcIntervalMax, -destIntervalMax, -destIntervalMin);
         return destD;
+    }
+
+    public void ResetAllBlendshape()
+    {
+        var morphs = avatarManager.coreMorphs.morphs;
+        foreach (var m in morphs)
+        {
+            avatarManager.SetBlendshapeValue(m.name, 0);
+        }
     }
 
     public void Useless()

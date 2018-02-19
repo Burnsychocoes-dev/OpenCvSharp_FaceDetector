@@ -367,9 +367,20 @@ public class AudioEmotionAnalyser : MonoBehaviour {
         totalCnt0Volatile = 0;
         
         //correction neutrality/colere
-        if(neutrality_value-anger_value>anger_offset){
+        //if(neutrality_value-anger_value>anger_offset){
+        //    anger_value = 0;
+        //}
+        if(neutrality_value > 0.40)
+        {
+            happiness_value = neutrality_value; // A tester
             anger_value = 0;
         }
+        //if(happiness_value > 0.20)
+        //{
+        //    anger_value = 0;
+        //    sadness_value = 0;
+        //    fear_value = 0;
+        //}
 
         neutrality_value = AvatarMaker.PercentageConvertor(neutrality_value, 0f, 1f, 0, 100);
         happiness_value = AvatarMaker.PercentageConvertor(happiness_value, 0f, 1f, 0, 100);
